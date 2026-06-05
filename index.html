@@ -144,6 +144,9 @@
   .weak-empty { text-align: center; padding: 30px; color: var(--text3); font-size: 13px; }
   #toast { position: fixed; bottom: 24px; right: 20px; background: var(--bg3); border: 1px solid var(--border2); border-left: 3px solid var(--green); border-radius: var(--radius-sm); color: var(--text); font-size: 12px; padding: 8px 14px; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; pointer-events: none; z-index: 999; }
   #toast.show { opacity: 1; transform: translateY(0); }
+  .sync-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--text3); margin-left: 8px; vertical-align: middle; transition: background 0.3s; }
+  .sync-dot.online { background: var(--green); box-shadow: 0 0 6px rgba(95,208,160,0.6); }
+  .sync-dot.offline { background: var(--text3); }
   @media (max-width: 600px) {
     .header-top { flex-direction: column; gap: 10px; }
     .dday-box { justify-content: space-between; }
@@ -163,7 +166,7 @@
 <header>
   <div class="header-top">
     <div class="header-title">
-      <h1>막바지 작전실</h1>
+      <h1>막바지 작전실<span class="sync-dot offline" id="sync-dot" title="동기화 상태"></span></h1>
       <p>헌법 &middot; 형사법 &middot; 경찰학</p>
     </div>
     <div class="dday-box">
@@ -266,7 +269,26 @@
 
 <div id="toast">저장됨</div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBYMyARMkz6hIQOfdkzOdXVVtKCPu6yH04",
+  authDomain: "foryourgoal-7f49e.firebaseapp.com",
+  projectId: "foryourgoal-7f49e",
+  storageBucket: "foryourgoal-7f49e.firebasestorage.app",
+  messagingSenderId: "562549074144",
+  appId: "1:562549074144:web:744218ca41785a60524885"
+};
+
+let db = null, stateRef = null;
+try {
+  const app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+  stateRef = doc(db, 'app', 'state');
+} catch (e) { console.warn('Firebase 초기화 실패, 로컬 모드로 동작:', e); }
+
 const STORAGE_KEY = 'fyg_data';
 const SUB_COLORS = { '헌법': '#e6b450', '형사법': '#6ea8ff', '경찰학': '#5fd0a0' };
 const SUB_ORDER = ['헌법', '형사법', '경찰학'];
@@ -327,7 +349,7 @@ function defaultData() {
       '형사법': { theory:0, past:0, tTarget:3, pTarget:4 },
       '경찰학': { theory:0, past:0, tTarget:3, pTarget:4 },
     },
-    scores: [], weak: [], checks: {},
+    scores: [], weak: [], checks: {}, _updatedAt: 0,
   };
 }
 
@@ -335,13 +357,53 @@ let data = (() => {
   try { const r = localStorage.getItem(STORAGE_KEY); if (r) return JSON.parse(r); } catch(e) {}
   return defaultData();
 })();
+if (typeof data._updatedAt !== 'number') data._updatedAt = 0;
 
+// ─── 동기화 ────────────────────────────────────────────────────────────────────
+let applyingRemote = false;
 let saveTimer;
-function save() {
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); showToast(); }, 300);
+
+function setSyncDot(state) {
+  const dot = document.getElementById('sync-dot');
+  if (!dot) return;
+  dot.className = 'sync-dot ' + (state ? 'online' : 'offline');
+  dot.title = state ? '클라우드 동기화 켜짐' : '로컬 저장 (오프라인)';
 }
 
+function pushCloud() {
+  if (!stateRef) return;
+  setDoc(stateRef, JSON.parse(JSON.stringify(data)))
+    .then(() => setSyncDot(true))
+    .catch(e => { console.warn('클라우드 저장 실패:', e); setSyncDot(false); });
+}
+
+function save() {
+  data._updatedAt = Date.now();
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => { pushCloud(); showToast(); }, 300);
+}
+
+if (stateRef) {
+  onSnapshot(stateRef, (snap) => {
+    setSyncDot(true);
+    if (snap.exists()) {
+      const remote = snap.data();
+      if ((remote._updatedAt || 0) > (data._updatedAt || 0)) {
+        applyingRemote = true;
+        data = remote;
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+        renderAll();
+        applyingRemote = false;
+      }
+    } else {
+      // 클라우드에 아직 문서 없음 → 현재 로컬 데이터로 최초 생성
+      pushCloud();
+    }
+  }, (err) => { console.warn('실시간 구독 오류:', err); setSyncDot(false); });
+}
+
+// ─── TOAST ────────────────────────────────────────────────────────────────────
 let toastTimer;
 function showToast() {
   const t = document.getElementById('toast');
@@ -350,6 +412,7 @@ function showToast() {
   toastTimer = setTimeout(() => t.classList.remove('show'), 1500);
 }
 
+// ─── UTILS ────────────────────────────────────────────────────────────────────
 function todayStr() { return new Date().toISOString().slice(0, 10); }
 function daysBetween(a, b) { return Math.round((new Date(a) - new Date(b)) / 86400000); }
 
@@ -589,7 +652,11 @@ function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-renderDday(); renderTodo(); renderHoedok(); renderScores(); renderWeak();
+function renderAll() {
+  renderDday(); renderTodo(); renderHoedok(); renderScores(); renderWeak();
+}
+
+renderAll();
 
 window.addEventListener('resize', () => {
   if (document.getElementById('tab-scores').classList.contains('active')) renderScoreChart();
