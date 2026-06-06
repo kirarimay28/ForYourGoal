@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>막바지 작전실</title>
+<title>순경 합격 작전실</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -22,6 +22,7 @@
     --green: #5fd0a0;
     --green-dim: rgba(95,208,160,0.15);
     --red: #ff6b6b;
+    --red-dim: rgba(255,107,107,0.15);
     --text: #d4dce8;
     --text2: #8898aa;
     --text3: #556070;
@@ -34,18 +35,18 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'IBM Plex Sans KR', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
-  header { background: linear-gradient(180deg, #0d1520 0%, var(--bg2) 100%); border-bottom: 1px solid var(--border); padding: 20px 20px 0; position: sticky; top: 0; z-index: 100; }
-  .header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
-  .header-title h1 { font-family: 'Nanum Myeongjo', serif; font-size: 22px; font-weight: 800; color: var(--gold); letter-spacing: 0.02em; line-height: 1.2; }
-  .header-title p { font-size: 11px; color: var(--text2); margin-top: 2px; letter-spacing: 0.15em; text-transform: uppercase; }
-  .dday-box { display: flex; align-items: center; gap: 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 16px; flex-shrink: 0; }
+  header { background: linear-gradient(180deg, #0d1520 0%, var(--bg2) 100%); border-bottom: 1px solid var(--border); padding: 16px 20px 0; position: sticky; top: 0; z-index: 100; }
+  .header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+  .header-title h1 { font-family: 'Nanum Myeongjo', serif; font-size: 20px; font-weight: 800; color: var(--gold); letter-spacing: 0.02em; line-height: 1.2; }
+  .daily-quote { font-size: 11px; color: var(--green); margin-top: 4px; font-style: italic; letter-spacing: 0.01em; line-height: 1.4; max-width: 260px; }
+  .dday-box { display: flex; align-items: center; gap: 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 14px; flex-shrink: 0; }
   .dday-label { font-size: 11px; color: var(--text2); letter-spacing: 0.1em; }
-  .dday-count { font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 600; color: var(--gold); line-height: 1; }
-  .dday-count span { font-size: 14px; color: var(--text2); margin-left: 2px; }
+  .dday-count { font-family: 'IBM Plex Mono', monospace; font-size: 26px; font-weight: 600; color: var(--gold); line-height: 1; }
+  .dday-count span { font-size: 13px; color: var(--text2); margin-left: 2px; }
   .dday-input { background: var(--bg4); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text2); font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 4px 8px; cursor: pointer; outline: none; width: 130px; }
   .dday-input:focus { border-color: var(--gold); color: var(--text); }
-  .tabs { display: flex; gap: 2px; margin-top: 4px; }
-  .tab-btn { background: none; border: none; color: var(--text3); font-family: 'IBM Plex Sans KR', sans-serif; font-size: 13px; font-weight: 500; padding: 10px 16px; cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; white-space: nowrap; }
+  .tabs { display: flex; gap: 2px; margin-top: 4px; overflow-x: auto; }
+  .tab-btn { background: none; border: none; color: var(--text3); font-family: 'IBM Plex Sans KR', sans-serif; font-size: 12px; font-weight: 500; padding: 10px 14px; cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; white-space: nowrap; flex-shrink: 0; }
   .tab-btn:hover { color: var(--text); }
   .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
   main { max-width: 800px; margin: 0 auto; padding: 20px 16px 60px; }
@@ -54,6 +55,44 @@
   @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
   .card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
   .card-title { font-size: 11px; font-weight: 600; color: var(--text2); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+
+  /* ── 단계 표시 ── */
+  .stage-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 16px; }
+  .stage-badge-name { font-family: 'Nanum Myeongjo', serif; font-size: 13px; color: var(--gold); font-weight: 700; }
+  .stage-badge-desc { font-size: 11px; color: var(--text2); }
+
+  /* ── 날짜 네비 ── */
+  .date-nav { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .date-nav-btn { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text2); font-size: 14px; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+  .date-nav-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+  .date-nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .date-nav-label { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--text); flex: 1; text-align: center; }
+  .date-today-btn { font-size: 10px; color: var(--text3); background: var(--bg4); border: 1px solid var(--border); border-radius: 10px; padding: 2px 8px; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+  .date-today-btn:hover { color: var(--gold); border-color: var(--gold); }
+
+  /* ── 자가진단 항목 ── */
+  .cl-summary { display: flex; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+  .cl-summary-item { font-size: 11px; display: flex; align-items: center; gap: 4px; }
+  .cl-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .cl-progress-bar { width: 100%; height: 4px; background: var(--bg4); border-radius: 2px; margin-bottom: 16px; overflow: hidden; }
+  .cl-progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), #7fffcc); border-radius: 2px; transition: width 0.3s ease; }
+  .cl-section-title { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; margin: 16px 0 8px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
+  .cl-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 7px; transition: border-color 0.2s; }
+  .cl-item.carryover { border-left: 2px solid var(--gold); }
+  .cl-text { flex: 1; min-width: 0; }
+  .cl-text-name { font-size: 13px; color: var(--text); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .cl-text-desc { font-size: 10px; color: var(--text3); margin-top: 2px; }
+  .carryover-tag { font-size: 9px; font-weight: 600; background: var(--gold-dim); color: var(--gold); padding: 1px 6px; border-radius: 8px; white-space: nowrap; }
+  .carryover-tag.red { background: var(--red-dim); color: var(--red); }
+  .cl-buttons { display: flex; gap: 4px; flex-shrink: 0; }
+  .cl-btn { width: 40px; height: 28px; border: 1px solid var(--border2); border-radius: var(--radius-sm); background: var(--bg4); color: var(--text3); font-size: 12px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Sans KR', sans-serif; }
+  .cl-btn:hover { border-color: var(--border); color: var(--text2); }
+  .cl-btn.sel-O { background: var(--green-dim); border-color: var(--green); color: var(--green); font-weight: 700; }
+  .cl-btn.sel-D { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); font-weight: 700; }
+  .cl-btn.sel-X { background: var(--red-dim); border-color: var(--red); color: var(--red); font-weight: 700; }
+  .cl-btn.sel-N { background: rgba(136,152,170,0.1); border-color: var(--text3); color: var(--text3); }
+
+  /* ── 회독 ── */
   .stage-bar { display: flex; gap: 6px; margin-bottom: 20px; }
   .stage-step { flex: 1; height: 6px; background: var(--bg4); border-radius: 3px; transition: background 0.3s; }
   .stage-step.done { background: var(--gold); opacity: 0.5; }
@@ -62,28 +101,6 @@
   .stage-label { flex: 1; font-size: 9px; color: var(--text3); text-align: center; transition: color 0.3s; }
   .stage-label.current { color: var(--gold); font-weight: 600; }
   .stage-label.done { color: var(--text2); }
-  .stage-info { background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 16px; }
-  .stage-info h2 { font-family: 'Nanum Myeongjo', serif; font-size: 16px; color: var(--gold); margin-bottom: 6px; }
-  .stage-info p { font-size: 12px; color: var(--text2); line-height: 1.6; }
-  .stage-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-  .stage-date { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text2); }
-  .stage-count { font-size: 12px; color: var(--text); font-weight: 600; }
-  .tasks-progress-bar { width: 100%; height: 4px; background: var(--bg4); border-radius: 2px; margin-bottom: 14px; overflow: hidden; }
-  .tasks-progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 2px; transition: width 0.3s ease; }
-  .task-item { display: flex; align-items: center; gap: 12px; padding: 11px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 8px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
-  .task-item:hover { border-color: var(--border2); background: var(--bg4); }
-  .task-item.checked { opacity: 0.55; }
-  .task-check { width: 20px; height: 20px; border: 2px solid var(--border2); border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-  .task-item.checked .task-check { background: var(--gold); border-color: var(--gold); }
-  .task-check svg { display: none; }
-  .task-item.checked .task-check svg { display: block; }
-  .task-text { flex: 1; font-size: 13px; color: var(--text); transition: color 0.2s; }
-  .task-item.checked .task-text { text-decoration: line-through; color: var(--text3); }
-  .tag { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; padding: 2px 7px; border-radius: 10px; flex-shrink: 0; }
-  .tag-h { background: rgba(230,180,80,0.18); color: var(--tag-h); }
-  .tag-f { background: rgba(110,168,255,0.18); color: var(--tag-f); }
-  .tag-p { background: rgba(95,208,160,0.18); color: var(--tag-p); }
-  .tag-x { background: rgba(136,152,170,0.18); color: var(--tag-x); }
   .hoedok-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 8px; }
   .hoedok-subject { font-size: 12px; font-weight: 600; width: 56px; flex-shrink: 0; color: var(--text); }
   .hoedok-type { font-size: 11px; color: var(--text2); width: 30px; flex-shrink: 0; }
@@ -101,6 +118,8 @@
   .ctrl-btn.plus { font-size: 18px; }
   .target-edit { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text3); cursor: pointer; white-space: nowrap; border-bottom: 1px dashed var(--border2); padding-bottom: 1px; }
   .target-edit:hover { color: var(--text2); border-color: var(--border); }
+
+  /* ── 점수 ── */
   .score-form { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
   .form-group { display: flex; flex-direction: column; gap: 4px; }
   .form-label { font-size: 10px; color: var(--text2); letter-spacing: 0.08em; text-transform: uppercase; }
@@ -112,8 +131,6 @@
   .btn-primary { background: var(--gold); border: none; border-radius: var(--radius-sm); color: #0b0f1a; font-family: 'IBM Plex Sans KR', sans-serif; font-size: 13px; font-weight: 700; padding: 8px 16px; cursor: pointer; transition: background 0.2s, transform 0.1s; align-self: flex-end; }
   .btn-primary:hover { background: var(--gold2); }
   .btn-primary:active { transform: scale(0.97); }
-  .chart-wrap { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; overflow: hidden; }
-  .chart-wrap svg { display: block; width: 100%; }
   .chart-empty { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 13px; }
   .chart-legend { display: flex; gap: 16px; margin-top: 8px; flex-wrap: wrap; }
   .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text2); }
@@ -125,12 +142,15 @@
   .score-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; min-width: 36px; text-align: right; }
   .score-del { background: none; border: 1px solid var(--border); border-radius: 4px; color: var(--text3); font-size: 12px; cursor: pointer; padding: 3px 8px; transition: all 0.2s; }
   .score-del:hover { border-color: var(--red); color: var(--red); }
+
+  /* ── 약점노트 ── */
   .weak-form { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
   .weak-text-input { flex: 1; min-width: 180px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: 'IBM Plex Sans KR', sans-serif; font-size: 13px; padding: 8px 12px; outline: none; transition: border-color 0.2s; }
   .weak-text-input:focus { border-color: var(--gold); }
   .weak-list { list-style: none; }
   .weak-item { display: flex; align-items: flex-start; gap: 10px; padding: 11px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 7px; transition: opacity 0.2s; }
   .weak-item.done { opacity: 0.45; }
+  .weak-tags { display: flex; gap: 4px; flex-shrink: 0; flex-direction: column; align-items: flex-start; margin-top: 1px; }
   .weak-content { flex: 1; font-size: 13px; line-height: 1.5; }
   .weak-item.done .weak-content { text-decoration: line-through; color: var(--text2); }
   .weak-actions { display: flex; gap: 6px; flex-shrink: 0; margin-top: 1px; }
@@ -142,23 +162,36 @@
   .weak-del-btn { color: var(--text3); }
   .weak-del-btn:hover { border-color: var(--red); color: var(--red); }
   .weak-empty { text-align: center; padding: 30px; color: var(--text3); font-size: 13px; }
+  .weak-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .filter-btn { font-size: 11px; background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; color: var(--text3); padding: 3px 10px; cursor: pointer; transition: all 0.15s; }
+  .filter-btn:hover, .filter-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+  /* ── 공통 ── */
+  .tag { font-size: 9px; font-weight: 600; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 10px; flex-shrink: 0; white-space: nowrap; }
+  .tag-h { background: rgba(230,180,80,0.18); color: var(--tag-h); }
+  .tag-f { background: rgba(110,168,255,0.18); color: var(--tag-f); }
+  .tag-p { background: rgba(95,208,160,0.18); color: var(--tag-p); }
+  .tag-x { background: rgba(136,152,170,0.18); color: var(--tag-x); }
+  .tag-cat { background: rgba(136,152,170,0.12); color: var(--text3); font-size: 9px; }
   #toast { position: fixed; bottom: 24px; right: 20px; background: var(--bg3); border: 1px solid var(--border2); border-left: 3px solid var(--green); border-radius: var(--radius-sm); color: var(--text); font-size: 12px; padding: 8px 14px; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; pointer-events: none; z-index: 999; }
   #toast.show { opacity: 1; transform: translateY(0); }
   .sync-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--text3); margin-left: 8px; vertical-align: middle; transition: background 0.3s; }
   .sync-dot.online { background: var(--green); box-shadow: 0 0 6px rgba(95,208,160,0.6); }
   .sync-dot.offline { background: var(--text3); }
-  @media (max-width: 600px) {
-    .header-top { flex-direction: column; gap: 10px; }
-    .dday-box { justify-content: space-between; }
-    .tab-btn { padding: 10px 10px; font-size: 12px; }
-    .hoedok-row { flex-wrap: wrap; }
-    .score-form, .weak-form { flex-direction: column; }
-    .form-input[type="date"], .form-input[type="number"], .form-select { width: 100%; }
-  }
   .section-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
   .no-data { text-align: center; padding: 20px; color: var(--text3); font-size: 13px; }
   input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.5); cursor: pointer; }
   option { background: var(--bg2); }
+  @media (max-width: 600px) {
+    .header-top { flex-direction: column; gap: 8px; }
+    .dday-box { justify-content: space-between; }
+    .tab-btn { padding: 10px 10px; font-size: 11px; }
+    .hoedok-row { flex-wrap: wrap; }
+    .score-form, .weak-form { flex-direction: column; }
+    .form-input[type="date"], .form-input[type="number"], .form-select { width: 100%; }
+    .cl-btn { width: 34px; height: 26px; font-size: 11px; }
+    .stage-badge { flex-direction: column; align-items: flex-start; gap: 4px; }
+  }
 </style>
 </head>
 <body>
@@ -166,8 +199,8 @@
 <header>
   <div class="header-top">
     <div class="header-title">
-      <h1>막바지 작전실<span class="sync-dot offline" id="sync-dot" title="동기화 상태"></span></h1>
-      <p>헌법 &middot; 형사법 &middot; 경찰학</p>
+      <h1>순경 합격 작전실<span class="sync-dot offline" id="sync-dot" title="동기화 상태"></span></h1>
+      <p class="daily-quote" id="daily-quote"></p>
     </div>
     <div class="dday-box">
       <div>
@@ -181,7 +214,7 @@
     </div>
   </div>
   <nav class="tabs">
-    <button class="tab-btn active" data-tab="todo">오늘 할 일</button>
+    <button class="tab-btn active" data-tab="checklist">자가진단 Checklist</button>
     <button class="tab-btn" data-tab="hoedok">회독 진행률</button>
     <button class="tab-btn" data-tab="scores">점수 추이</button>
     <button class="tab-btn" data-tab="weak">약점노트</button>
@@ -189,19 +222,25 @@
 </header>
 
 <main>
-  <div class="tab-panel active" id="tab-todo">
-    <div class="stage-bar" id="stage-bar"></div>
-    <div class="stage-labels" id="stage-labels"></div>
-    <div class="stage-info" id="stage-info"></div>
-    <div class="stage-meta">
-      <div class="stage-date" id="today-date"></div>
-      <div class="stage-count" id="tasks-count"></div>
+  <!-- ── 자가진단 Checklist ── -->
+  <div class="tab-panel active" id="tab-checklist">
+    <div id="stage-badge-wrap"></div>
+    <div class="date-nav">
+      <button class="date-nav-btn" id="cl-prev">◀</button>
+      <span class="date-nav-label" id="cl-date-label"></span>
+      <button class="date-nav-btn" id="cl-next" disabled>▶</button>
+      <button class="date-today-btn" id="cl-today">오늘</button>
     </div>
-    <div class="tasks-progress-bar"><div class="tasks-progress-fill" id="tasks-progress-fill"></div></div>
-    <div id="tasks-list"></div>
+    <div class="cl-progress-bar"><div class="cl-progress-fill" id="cl-progress-fill" style="width:0%"></div></div>
+    <div class="cl-summary" id="cl-summary"></div>
+    <div id="cl-carryover-section"></div>
+    <div id="cl-items-section"></div>
   </div>
 
+  <!-- ── 회독 진행률 ── -->
   <div class="tab-panel" id="tab-hoedok">
+    <div class="stage-bar" id="stage-bar"></div>
+    <div class="stage-labels" id="stage-labels"></div>
     <div class="card">
       <div class="card-title">이론 회독</div>
       <div id="hoedok-theory"></div>
@@ -213,6 +252,7 @@
     <p style="font-size:11px;color:var(--text3);text-align:center;margin-top:8px;">목표 회독수는 숫자를 클릭하여 수정</p>
   </div>
 
+  <!-- ── 점수 추이 ── -->
   <div class="tab-panel" id="tab-scores">
     <div class="card">
       <div class="card-title">점수 기록</div>
@@ -249,19 +289,35 @@
     <ul class="score-list" id="score-list"></ul>
   </div>
 
+  <!-- ── 약점노트 ── -->
   <div class="tab-panel" id="tab-weak">
     <div class="card">
       <div class="card-title">약점 추가</div>
       <div class="weak-form">
-        <select class="form-select" id="weak-sub">
-          <option value="헌법">헌법</option>
-          <option value="형사법">형사법</option>
-          <option value="경찰학">경찰학</option>
-        </select>
-        <input type="text" class="weak-text-input" id="weak-text" placeholder="틀린 개념, 판례, 조문…">
+        <div class="form-group">
+          <label class="form-label">과목</label>
+          <select class="form-select" id="weak-sub">
+            <option value="헌법">헌법</option>
+            <option value="형사법">형사법</option>
+            <option value="경찰학">경찰학</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">카테고리</label>
+          <select class="form-select" id="weak-cat">
+            <option value="개념/이론">개념/이론</option>
+            <option value="판례/조문">판례/조문</option>
+            <option value="계산/적용">계산/적용</option>
+            <option value="암기/용어">암기/용어</option>
+            <option value="함정/혼동">함정/혼동</option>
+            <option value="절차/순서">절차/순서</option>
+          </select>
+        </div>
+        <input type="text" class="weak-text-input" id="weak-text" placeholder="틀린 이유, 헷갈린 개념, 판례 번호…">
         <button class="btn-primary" id="weak-add-btn">추가</button>
       </div>
     </div>
+    <div class="weak-filter" id="weak-filter"></div>
     <ul class="weak-list" id="weak-list"></ul>
     <div class="weak-empty" id="weak-empty" style="display:none">아직 등록된 약점이 없습니다.</div>
   </div>
@@ -294,53 +350,60 @@ const STORAGE_KEY = 'fyg_data';
 const SUB_COLORS = { '헌법': '#e6b450', '형사법': '#6ea8ff', '경찰학': '#5fd0a0' };
 const SUB_ORDER = ['헌법', '형사법', '경찰학'];
 
+const DAILY_QUOTES = [
+  "포기하면 그 자리에서 끝이다. 오늘도 계속 달린다.",
+  "경찰관이 된 내 모습을 상상하며 오늘도 전진.",
+  "기출 한 문제가 합격을 만든다. 오늘도 회독.",
+  "어제보다 나은 오늘, 오늘보다 나은 내일.",
+  "반복이 실력이 된다. 멈추지 마라.",
+  "시험장에서 웃으려면 지금 이 순간에 집중해야 한다.",
+  "약점을 알면 합격이 보인다.",
+  "오답이 곧 득점 포인트다. 틀린 것을 사랑하라.",
+  "오늘의 노력이 시험 날 빛난다.",
+  "단 하루도 허투루 쓰지 않겠다는 다짐.",
+  "내 꿈은 대한민국 경찰관. 오늘도 한 발짝.",
+  "집중하면 시간이 배가 된다.",
+  "모르는 것이 있다면, 지금이 배울 기회다.",
+  "최선을 다했다고 말할 수 있는 하루를 만들자.",
+  "경찰관 그 날까지, 오늘도 전진.",
+  "작은 성취가 쌓여 큰 합격이 된다.",
+  "흔들려도 괜찮다. 다시 잡으면 그만이다.",
+  "헌법 한 조문, 판례 하나가 합격의 열쇠다.",
+  "순경 공채, 반드시 내 이름을 올린다.",
+  "오늘 공부한 만큼, 시험장에서 웃는다.",
+  "두려움보다 준비가 강하다.",
+  "멈추지 않는 사람이 결국 합격한다.",
+  "한 문제라도 더, 한 번이라도 더.",
+  "시간은 공평하다. 쓰는 방법이 다를 뿐이다.",
+  "경찰관이 되는 그날, 오늘의 나를 고마워할 것이다.",
+  "지금 이 고통이 합격의 씨앗이 된다.",
+  "남들이 쉴 때 나는 한 페이지를 더 읽는다.",
+  "형사법 판례 하나, 경찰학 조문 하나 — 쌓이면 합격이다.",
+  "매일의 루틴이 결국 나를 경찰관으로 만든다.",
+  "오늘도 스스로를 믿고, 계획대로 움직인다.",
+  "끝이 보이지 않아도 방향이 맞으면 된다.",
+];
+
 const STAGES = [
-  {
-    name: '1단계 · 단권화 & 약점 색출', short: '단권화',
-    desc: '이론서를 처음부터 다시 보지 말고, 회독하며 모르는 것만 단권화 노트 한 권에 몰아넣기. 기출 1회독 병행하며 약점 파트 표시.',
-    tasks: [
-      { id:'t0', text:'헌법 이론 회독 + 단권화 (조문·판례)', tag:'h' },
-      { id:'t1', text:'형사법 기출 1회독 (틀린 것 표시)', tag:'f' },
-      { id:'t2', text:'경찰학 두문자·암기 정리', tag:'x' },
-      { id:'t3', text:'단권화 노트 10분 점검', tag:'p' },
-      { id:'t4', text:'체력 가볍게 유지', tag:'x' },
-    ]
-  },
-  {
-    name: '2단계 · 기출 회독 가속', short: '기출',
-    desc: '기출 2~3회독으로 압축. 맞은 건 넘기고 틀린·헷갈린 문제만 반복. 오답은 "왜 틀렸는지" 한 줄 분류(개념/실수/함정).',
-    tasks: [
-      { id:'t0', text:'형사법 기출 2~3회독 (오답만)', tag:'f' },
-      { id:'t1', text:'헌법 기출 + 판례 정리', tag:'h' },
-      { id:'t2', text:'경찰학 기출 + 암기 점검', tag:'x' },
-      { id:'t3', text:'오답노트 정리 → 약점노트 등록', tag:'p' },
-      { id:'t4', text:'체력 가볍게 유지', tag:'x' },
-    ]
-  },
-  {
-    name: '3단계 · 실전 전환', short: '실전',
-    desc: '시간 재고 푸는 습관 들이기. 실전 모의고사 주 2~3회, 한 타임에 풀고 채점 → 약점 즉시 보강. 점수 추이 기록.',
-    tasks: [
-      { id:'t0', text:'실전 모의고사 1타임 (시간 엄수)', tag:'p' },
-      { id:'t1', text:'모의 채점 + 점수 기록', tag:'p' },
-      { id:'t2', text:'취약 과목 집중 보강', tag:'x' },
-      { id:'t3', text:'단권화·약점노트 회독', tag:'x' },
-      { id:'t4', text:'체력 최저기준 점검', tag:'x' },
-    ]
-  },
-  {
-    name: '4단계 · 최종 점검', short: '최종',
-    desc: '새 건 안 봄. 전과목 모의고사 + 단권화·오답노트 회독만 반복. 마지막 주 암기 정점, 수면·컨디션·시험장 시뮬레이션 집중.',
-    tasks: [
-      { id:'t0', text:'전과목 모의고사 (실전 시뮬레이션)', tag:'p' },
-      { id:'t1', text:'헌법 조문·판례 최종 암기', tag:'h' },
-      { id:'t2', text:'형사법 판례 최종 암기', tag:'f' },
-      { id:'t3', text:'경찰학 암기 마무리', tag:'x' },
-      { id:'t4', text:'수면·컨디션 관리 (체력 휴식)', tag:'x' },
-    ]
-  }
+  { name: '1단계 · 단권화 & 약점 색출', short: '단권화', desc: '이론서 회독하며 모르는 것만 단권화 노트에 정리. 기출 1회독 병행하며 약점 파트 표시.' },
+  { name: '2단계 · 기출 회독 가속', short: '기출', desc: '기출 2~3회독 압축. 틀린·헷갈린 문제만 반복. 오답은 개념/실수/함정으로 한 줄 분류.' },
+  { name: '3단계 · 실전 전환', short: '실전', desc: '시간 재고 푸는 습관. 실전 모의고사 주 2~3회, 채점 후 약점 즉시 보강.' },
+  { name: '4단계 · 최종 점검', short: '최종', desc: '새 건 안 봄. 전과목 모의고사 + 단권화·오답노트 회독만 반복. 수면·컨디션 집중.' },
 ];
 const STAGE_STARTS = [0, 3, 5, 7];
+
+const CHECKLIST_ITEMS = [
+  { id: 'c0', text: '단권화',      desc: '이론서/단권화 노트 정리' },
+  { id: 'c1', text: '회독',        desc: '이론 또는 기출 회독' },
+  { id: 'c2', text: '강의 수강',   desc: '인강 또는 스터디 강의' },
+  { id: 'c3', text: '문제 풀이',   desc: '기출/모의고사 문제 풀기' },
+  { id: 'c4', text: '스스로 오답', desc: '채점 후 혼자 오답 분석' },
+  { id: 'c5', text: '해설 오답',   desc: '해설지로 오답 확인' },
+  { id: 'c6', text: '암기',        desc: '조문/판례/두문자 암기' },
+  { id: 'c7', text: '노트 점검',   desc: '단권화·약점노트 점검' },
+];
+
+const WEAK_CATS = ['개념/이론', '판례/조문', '계산/적용', '암기/용어', '함정/혼동', '절차/순서'];
 
 function defaultData() {
   return {
@@ -350,7 +413,7 @@ function defaultData() {
       '형사법': { theory:0, past:0, tTarget:3, pTarget:4 },
       '경찰학': { theory:0, past:0, tTarget:3, pTarget:4 },
     },
-    scores: [], weak: [], checks: {}, _updatedAt: 0,
+    scores: [], weak: [], checklist: {}, _updatedAt: 0,
   };
 }
 
@@ -358,10 +421,10 @@ let data = (() => {
   try { const r = localStorage.getItem(STORAGE_KEY); if (r) return JSON.parse(r); } catch(e) {}
   return defaultData();
 })();
+if (!data.checklist) data.checklist = {};
 if (typeof data._updatedAt !== 'number') data._updatedAt = 0;
 
-let applyingRemote = false;
-let saveTimer;
+let applyingRemote = false, saveTimer;
 
 function setSyncDot(state) {
   const dot = document.getElementById('sync-dot');
@@ -392,6 +455,7 @@ if (dbRef) {
       if ((remote._updatedAt || 0) > (data._updatedAt || 0)) {
         applyingRemote = true;
         data = remote;
+        if (!data.checklist) data.checklist = {};
         try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
         renderAll();
         applyingRemote = false;
@@ -412,7 +476,18 @@ function showToast() {
 
 function todayStr() { return new Date().toISOString().slice(0, 10); }
 function daysBetween(a, b) { return Math.round((new Date(a) - new Date(b)) / 86400000); }
-
+function addDays(dateStr, n) {
+  const d = new Date(dateStr); d.setDate(d.getDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+function fmtDate(dateStr) {
+  const d = new Date(dateStr);
+  const days = ['일','월','화','수','목','금','토'];
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} (${days[d.getDay()]})`;
+}
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 function getStageIndex(examDate) {
   const rem = daysBetween(examDate, todayStr());
   if (rem <= 0) return 3;
@@ -421,19 +496,25 @@ function getStageIndex(examDate) {
   return 0;
 }
 
-function renderDday() {
+// ── 헤더 ─────────────────────────────────────────────────────────────────────
+function renderHeader() {
   document.getElementById('exam-date-input').value = data.examDate;
   const rem = daysBetween(data.examDate, todayStr());
   const el = document.getElementById('dday-display');
   if (rem < 0) el.innerHTML = `+${Math.abs(rem)}<span>일 경과</span>`;
   else if (rem === 0) el.innerHTML = `D-DAY<span></span>`;
   else el.innerHTML = `${rem}<span>일</span>`;
+  const d = new Date();
+  const idx = (d.getMonth() * 31 + d.getDate()) % DAILY_QUOTES.length;
+  document.getElementById('daily-quote').textContent = '💬 ' + DAILY_QUOTES[idx];
 }
 
 document.getElementById('exam-date-input').addEventListener('change', e => {
-  data.examDate = e.target.value; save(); renderDday(); renderTodo();
+  data.examDate = e.target.value;
+  save(); renderHeader(); renderStageBadge(); renderHoedokStagebar();
 });
 
+// ── 탭 ───────────────────────────────────────────────────────────────────────
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -444,12 +525,106 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-function renderTodo() {
+// ── 자가진단 Checklist ────────────────────────────────────────────────────────
+let clViewDate = todayStr();
+
+function renderStageBadge() {
   const si = getStageIndex(data.examDate);
   const stage = STAGES[si];
-  const dk = todayStr();
-  const dc = data.checks[dk] || {};
+  document.getElementById('stage-badge-wrap').innerHTML =
+    `<div class="stage-badge"><span class="stage-badge-name">${stage.name}</span><span class="stage-badge-desc">${stage.desc}</span></div>`;
+}
 
+function renderChecklist() {
+  const isToday = clViewDate === todayStr();
+  const prevDate = addDays(clViewDate, -1);
+
+  document.getElementById('cl-date-label').textContent = fmtDate(clViewDate);
+  document.getElementById('cl-prev').disabled = false;
+  document.getElementById('cl-next').disabled = isToday;
+
+  const checks = data.checklist[clViewDate] || {};
+  const prevChecks = data.checklist[prevDate] || {};
+
+  const carryItems = CHECKLIST_ITEMS.filter(item =>
+    prevChecks[item.id] === 'D' || prevChecks[item.id] === 'X'
+  );
+
+  const answered = CHECKLIST_ITEMS.filter(item => checks[item.id]).length;
+  document.getElementById('cl-progress-fill').style.width = (answered / CHECKLIST_ITEMS.length * 100) + '%';
+
+  const oCount = CHECKLIST_ITEMS.filter(i => checks[i.id] === 'O').length;
+  const dCount = CHECKLIST_ITEMS.filter(i => checks[i.id] === 'D').length;
+  const xCount = CHECKLIST_ITEMS.filter(i => checks[i.id] === 'X').length;
+  const nCount = CHECKLIST_ITEMS.filter(i => checks[i.id] === 'N').length;
+  document.getElementById('cl-summary').innerHTML = `
+    <div class="cl-summary-item"><div class="cl-dot" style="background:var(--green)"></div><span style="color:var(--green)">O ${oCount}</span></div>
+    <div class="cl-summary-item"><div class="cl-dot" style="background:var(--gold)"></div><span style="color:var(--gold)">△ ${dCount}</span></div>
+    <div class="cl-summary-item"><div class="cl-dot" style="background:var(--red)"></div><span style="color:var(--red)">X ${xCount}</span></div>
+    <div class="cl-summary-item"><div class="cl-dot" style="background:var(--text3)"></div><span style="color:var(--text3)">없음 ${nCount}</span></div>
+    <div class="cl-summary-item" style="margin-left:auto;color:var(--text2);font-size:11px;">${answered}/${CHECKLIST_ITEMS.length} 체크</div>
+  `;
+
+  const carrySection = document.getElementById('cl-carryover-section');
+  if (carryItems.length > 0) {
+    carrySection.innerHTML = `<div class="cl-section-title">⚠ 이월 항목 (${fmtDate(prevDate)} △/X)</div>`;
+    carryItems.forEach(item => carrySection.appendChild(buildClItem(item, checks, prevChecks[item.id])));
+  } else {
+    carrySection.innerHTML = '';
+  }
+
+  const mainSection = document.getElementById('cl-items-section');
+  mainSection.innerHTML = `<div class="cl-section-title">오늘의 학습 자가진단</div>`;
+  CHECKLIST_ITEMS.forEach(item => mainSection.appendChild(buildClItem(item, checks, null)));
+}
+
+function buildClItem(item, checks, carryoverFrom) {
+  const cur = checks[item.id] || null;
+  const div = document.createElement('div');
+  div.className = 'cl-item' + (carryoverFrom ? ' carryover' : '');
+  const carryTag = carryoverFrom
+    ? `<span class="carryover-tag${carryoverFrom === 'X' ? ' red' : ''}">이월 ${carryoverFrom === 'X' ? 'X' : '△'}</span>`
+    : '';
+  div.innerHTML = `
+    <div class="cl-text">
+      <div class="cl-text-name">${item.text}${carryTag}</div>
+      <div class="cl-text-desc">${item.desc}</div>
+    </div>
+    <div class="cl-buttons">
+      <button class="cl-btn${cur==='O'?' sel-O':''}" data-val="O">O</button>
+      <button class="cl-btn${cur==='D'?' sel-D':''}" data-val="D">△</button>
+      <button class="cl-btn${cur==='X'?' sel-X':''}" data-val="X">X</button>
+      <button class="cl-btn${cur==='N'?' sel-N':''}" data-val="N">없음</button>
+    </div>
+  `;
+  div.querySelectorAll('.cl-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!data.checklist[clViewDate]) data.checklist[clViewDate] = {};
+      const prev = data.checklist[clViewDate][item.id];
+      if (prev === btn.dataset.val) {
+        delete data.checklist[clViewDate][item.id];
+      } else {
+        data.checklist[clViewDate][item.id] = btn.dataset.val;
+      }
+      save(); renderChecklist();
+    });
+  });
+  return div;
+}
+
+document.getElementById('cl-prev').addEventListener('click', () => {
+  clViewDate = addDays(clViewDate, -1); renderChecklist();
+});
+document.getElementById('cl-next').addEventListener('click', () => {
+  if (clViewDate < todayStr()) { clViewDate = addDays(clViewDate, 1); renderChecklist(); }
+});
+document.getElementById('cl-today').addEventListener('click', () => {
+  clViewDate = todayStr(); renderChecklist();
+});
+
+// ── 회독 진행률 ──────────────────────────────────────────────────────────────
+function renderHoedokStagebar() {
+  const si = getStageIndex(data.examDate);
   const bar = document.getElementById('stage-bar'), lbels = document.getElementById('stage-labels');
   bar.innerHTML = ''; lbels.innerHTML = '';
   STAGES.forEach((s, i) => {
@@ -460,36 +635,10 @@ function renderTodo() {
     lb.className = 'stage-label' + (i < si ? ' done' : i === si ? ' current' : '');
     lb.textContent = s.short; lbels.appendChild(lb);
   });
-
-  document.getElementById('stage-info').innerHTML = `<h2>${stage.name}</h2><p>${stage.desc}</p>`;
-  const d = new Date();
-  document.getElementById('today-date').textContent = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
-  const total = stage.tasks.length;
-  const done = stage.tasks.filter(t => dc[t.id]).length;
-  document.getElementById('tasks-count').textContent = `${done} / ${total} 완료`;
-  document.getElementById('tasks-progress-fill').style.width = (total ? done/total*100 : 0) + '%';
-
-  const list = document.getElementById('tasks-list');
-  list.innerHTML = '';
-  stage.tasks.forEach(task => {
-    const checked = !!dc[task.id];
-    const item = document.createElement('div');
-    item.className = 'task-item' + (checked ? ' checked' : '');
-    item.innerHTML = `
-      <div class="task-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0b0f1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="task-text">${task.text}</span>
-      <span class="tag tag-${task.tag}">${{h:'헌법',f:'형사법',p:'실전',x:'공통'}[task.tag]}</span>
-    `;
-    item.addEventListener('click', () => {
-      if (!data.checks[dk]) data.checks[dk] = {};
-      data.checks[dk][task.id] = !data.checks[dk][task.id];
-      save(); renderTodo();
-    });
-    list.appendChild(item);
-  });
 }
 
 function renderHoedok() {
+  renderHoedokStagebar();
   renderHoedokSection('theory', '이론', 'tTarget', 'hoedok-theory');
   renderHoedokSection('past', '기출', 'pTarget', 'hoedok-past');
 }
@@ -533,6 +682,7 @@ function renderHoedokSection(key, label, targetKey, containerId) {
   });
 }
 
+// ── 점수 추이 ────────────────────────────────────────────────────────────────
 document.getElementById('score-date').value = todayStr();
 
 document.getElementById('score-add-btn').addEventListener('click', () => {
@@ -606,11 +756,28 @@ function renderScoreList() {
   });
 }
 
+// ── 약점노트 ─────────────────────────────────────────────────────────────────
+let weakFilter = 'all';
+
+function buildWeakFilter() {
+  const wrap = document.getElementById('weak-filter');
+  const filters = [['all','전체'], ['헌법','헌법'], ['형사법','형사법'], ['경찰학','경찰학'], ...WEAK_CATS.map(c=>[c,c])];
+  wrap.innerHTML = '';
+  filters.forEach(([val, label]) => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (weakFilter === val ? ' active' : '');
+    btn.textContent = label;
+    btn.addEventListener('click', () => { weakFilter = val; buildWeakFilter(); renderWeak(); });
+    wrap.appendChild(btn);
+  });
+}
+
 function addWeak() {
   const sub = document.getElementById('weak-sub').value;
+  const cat = document.getElementById('weak-cat').value;
   const tx = document.getElementById('weak-text').value.trim();
   if (!tx) return;
-  data.weak.push({ sub, tx, done: false });
+  data.weak.push({ sub, cat, tx, done: false });
   document.getElementById('weak-text').value = '';
   save(); renderWeak();
 }
@@ -622,7 +789,9 @@ function renderWeak() {
   const list = document.getElementById('weak-list');
   const empty = document.getElementById('weak-empty');
   list.innerHTML = '';
-  const sorted = data.weak.map((w,i) => ({...w,_i:i})).sort((a,b) => {
+  let items = data.weak.map((w,i) => ({...w, _i:i}));
+  if (weakFilter !== 'all') items = items.filter(w => w.sub === weakFilter || w.cat === weakFilter);
+  const sorted = items.sort((a,b) => {
     if (a.done !== b.done) return a.done ? 1 : -1;
     return SUB_ORDER.indexOf(a.sub) - SUB_ORDER.indexOf(b.sub);
   });
@@ -632,10 +801,13 @@ function renderWeak() {
     const li = document.createElement('li');
     li.className = 'weak-item' + (w.done ? ' done' : '');
     li.innerHTML = `
-      <span class="tag tag-${tm[w.sub]}">${w.sub}</span>
+      <div class="weak-tags">
+        <span class="tag tag-${tm[w.sub]}">${w.sub}</span>
+        <span class="tag tag-cat">${w.cat || '기타'}</span>
+      </div>
       <span class="weak-content">${escHtml(w.tx)}</span>
       <div class="weak-actions">
-        <button class="weak-resolve-btn">${w.done ? '↩ 되돌리기' : '✓ 해결'}</button>
+        <button class="weak-resolve-btn">${w.done ? '↩' : '✓ 해결'}</button>
         <button class="weak-del-btn">삭제</button>
       </div>
     `;
@@ -645,12 +817,15 @@ function renderWeak() {
   });
 }
 
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
+// ── 전체 렌더 ────────────────────────────────────────────────────────────────
 function renderAll() {
-  renderDday(); renderTodo(); renderHoedok(); renderScores(); renderWeak();
+  renderHeader();
+  renderStageBadge();
+  renderChecklist();
+  renderHoedok();
+  renderScores();
+  buildWeakFilter();
+  renderWeak();
 }
 
 renderAll();
