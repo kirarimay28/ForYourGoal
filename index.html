@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>순경 합격 작전실</title>
+<title>For Your Goal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -29,6 +29,7 @@
     --tag-h: #e6b450;
     --tag-f: #6ea8ff;
     --tag-p: #5fd0a0;
+    --tag-s: #b06cff;
     --tag-x: #8898aa;
     --radius: 10px;
     --radius-sm: 6px;
@@ -55,13 +56,9 @@
   @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
   .card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
   .card-title { font-size: 11px; font-weight: 600; color: var(--text2); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
-
-  /* ── 단계 표시 ── */
   .stage-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 16px; }
   .stage-badge-name { font-family: 'Nanum Myeongjo', serif; font-size: 13px; color: var(--gold); font-weight: 700; }
   .stage-badge-desc { font-size: 11px; color: var(--text2); }
-
-  /* ── 날짜 네비 ── */
   .date-nav { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
   .date-nav-btn { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text2); font-size: 14px; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
   .date-nav-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
@@ -69,16 +66,12 @@
   .date-nav-label { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--text); flex: 1; text-align: center; }
   .date-today-btn { font-size: 10px; color: var(--text3); background: var(--bg4); border: 1px solid var(--border); border-radius: 10px; padding: 2px 8px; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
   .date-today-btn:hover { color: var(--gold); border-color: var(--gold); }
-
-  /* ── 자가진단 항목 ── */
   .cl-summary { display: flex; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
   .cl-summary-item { font-size: 11px; display: flex; align-items: center; gap: 4px; }
   .cl-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .cl-progress-bar { width: 100%; height: 4px; background: var(--bg4); border-radius: 2px; margin-bottom: 16px; overflow: hidden; }
   .cl-progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), #7fffcc); border-radius: 2px; transition: width 0.3s ease; }
-
   .cl-section-title { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; margin: 16px 0 8px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
-
   .cl-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 7px; transition: border-color 0.2s; }
   .cl-item.carryover { border-left: 2px solid var(--gold); }
   .cl-text { flex: 1; min-width: 0; }
@@ -93,8 +86,6 @@
   .cl-btn.sel-D { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); font-weight: 700; }
   .cl-btn.sel-X { background: var(--red-dim); border-color: var(--red); color: var(--red); font-weight: 700; }
   .cl-btn.sel-N { background: rgba(136,152,170,0.1); border-color: var(--text3); color: var(--text3); }
-
-  /* ── 회독 ── */
   .stage-bar { display: flex; gap: 6px; margin-bottom: 20px; }
   .stage-step { flex: 1; height: 6px; background: var(--bg4); border-radius: 3px; transition: background 0.3s; }
   .stage-step.done { background: var(--gold); opacity: 0.5; }
@@ -104,7 +95,7 @@
   .stage-label.current { color: var(--gold); font-weight: 600; }
   .stage-label.done { color: var(--text2); }
   .hoedok-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 8px; }
-  .hoedok-subject { font-size: 12px; font-weight: 600; width: 56px; flex-shrink: 0; color: var(--text); }
+  .hoedok-subject { font-size: 12px; font-weight: 600; width: 70px; flex-shrink: 0; color: var(--text); }
   .hoedok-type { font-size: 11px; color: var(--text2); width: 30px; flex-shrink: 0; }
   .hoedok-progress { flex: 1; }
   .hoedok-bar { width: 100%; height: 6px; background: var(--bg4); border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
@@ -112,6 +103,7 @@
   .fill-h { background: linear-gradient(90deg, #c89a30, var(--gold)); }
   .fill-f { background: linear-gradient(90deg, #4a80e0, var(--blue)); }
   .fill-p { background: linear-gradient(90deg, #3faa80, var(--green)); }
+  .fill-s { background: linear-gradient(90deg, #8040d0, #b06cff); }
   .hoedok-nums { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text2); }
   .hoedok-nums strong { color: var(--text); }
   .hoedok-controls { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
@@ -120,8 +112,6 @@
   .ctrl-btn.plus { font-size: 18px; }
   .target-edit { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text3); cursor: pointer; white-space: nowrap; border-bottom: 1px dashed var(--border2); padding-bottom: 1px; }
   .target-edit:hover { color: var(--text2); border-color: var(--border); }
-
-  /* ── 점수 ── */
   .score-form { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
   .form-group { display: flex; flex-direction: column; gap: 4px; }
   .form-label { font-size: 10px; color: var(--text2); letter-spacing: 0.08em; text-transform: uppercase; }
@@ -133,10 +123,13 @@
   .btn-primary { background: var(--gold); border: none; border-radius: var(--radius-sm); color: #0b0f1a; font-family: 'IBM Plex Sans KR', sans-serif; font-size: 13px; font-weight: 700; padding: 8px 16px; cursor: pointer; transition: background 0.2s, transform 0.1s; align-self: flex-end; }
   .btn-primary:hover { background: var(--gold2); }
   .btn-primary:active { transform: scale(0.97); }
+  .btn-secondary { background: var(--bg4); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text2); font-family: 'IBM Plex Sans KR', sans-serif; font-size: 13px; font-weight: 600; padding: 8px 14px; cursor: pointer; transition: all 0.2s; align-self: flex-end; }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
   .chart-empty { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 13px; }
-  .chart-legend { display: flex; gap: 16px; margin-top: 8px; flex-wrap: wrap; }
+  .chart-legend { display: flex; gap: 16px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
   .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text2); }
   .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .legend-line { width: 20px; height: 3px; flex-shrink: 0; border-radius: 1px; }
   .score-list { list-style: none; }
   .score-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 6px; }
   .score-date { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text2); flex-shrink: 0; }
@@ -144,8 +137,25 @@
   .score-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; min-width: 36px; text-align: right; }
   .score-del { background: none; border: 1px solid var(--border); border-radius: 4px; color: var(--text3); font-size: 12px; cursor: pointer; padding: 3px 8px; transition: all 0.2s; }
   .score-del:hover { border-color: var(--red); color: var(--red); }
-
-  /* ── 약점노트 ── */
+  .score-lines-row { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
+  .score-lines-row .form-input[type="number"] { width: 64px; }
+  .timer-display { font-family: 'IBM Plex Mono', monospace; font-size: 42px; font-weight: 600; color: var(--gold); text-align: center; letter-spacing: 0.06em; margin: 12px 0; }
+  .timer-display.expired { color: var(--red); animation: blink 1s step-start infinite; }
+  @keyframes blink { 50% { opacity: 0.4; } }
+  .timer-controls { display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; }
+  .timer-expired-msg { text-align: center; font-size: 13px; color: var(--red); font-weight: 600; margin-top: 6px; display: none; }
+  .timer-expired-msg.show { display: block; }
+  .prep-checklist-card { background: var(--bg2); border: 1px solid var(--gold); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+  .prep-checklist-title { font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 12px; }
+  .prep-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 6px; cursor: pointer; transition: border-color 0.2s; }
+  .prep-item:hover { border-color: var(--gold); }
+  .prep-item.checked { border-color: var(--green); background: var(--green-dim); }
+  .prep-checkbox { width: 18px; height: 18px; border: 2px solid var(--border2); border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; font-size: 11px; font-weight: 700; color: transparent; }
+  .prep-item.checked .prep-checkbox { background: var(--green); border-color: var(--green); color: #0b0f1a; }
+  .prep-item-name { font-size: 13px; color: var(--text); }
+  .prep-item.checked .prep-item-name { color: var(--green); }
+  .prep-all-done { text-align: center; font-size: 13px; font-weight: 600; color: var(--green); padding: 8px; background: var(--green-dim); border: 1px solid var(--green); border-radius: var(--radius-sm); margin-top: 8px; display: none; }
+  .prep-all-done.show { display: block; }
   .weak-form { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
   .weak-text-input { flex: 1; min-width: 180px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: 'IBM Plex Sans KR', sans-serif; font-size: 13px; padding: 8px 12px; outline: none; transition: border-color 0.2s; }
   .weak-text-input:focus { border-color: var(--gold); }
@@ -167,12 +177,59 @@
   .weak-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
   .filter-btn { font-size: 11px; background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; color: var(--text3); padding: 3px 10px; cursor: pointer; transition: all 0.15s; }
   .filter-btn:hover, .filter-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
-
-  /* ── 공통 ── */
+  .review-queue-card { background: var(--bg2); border: 2px solid var(--gold); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px; }
+  .review-queue-title { font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+  .review-queue-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 6px; }
+  .review-queue-content { flex: 1; font-size: 12px; line-height: 1.5; color: var(--text); }
+  .review-done-btn { background: none; border: 1px solid var(--gold); border-radius: 4px; font-size: 11px; color: var(--gold); cursor: pointer; padding: 3px 8px; white-space: nowrap; transition: all 0.2s; flex-shrink: 0; }
+  .review-done-btn:hover { background: var(--gold-dim); }
+  .hl { background: rgba(255,230,0,0.25); color: #ffe066; padding: 0 3px; border-radius: 2px; font-weight: 600; }
+  .curr-intro { background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.8; color: var(--text2); }
+  .curr-intro strong { color: var(--gold); }
+  .curr-rule-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+  .curr-rule-title { font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .curr-rule-list { list-style: none; }
+  .curr-rule-list li { font-size: 12px; color: var(--text2); line-height: 1.7; padding: 3px 0; display: flex; gap: 8px; }
+  .curr-rule-list li::before { content: attr(data-n); color: var(--gold); font-weight: 700; font-size: 11px; flex-shrink: 0; padding-top: 1px; min-width: 14px; }
+  .curr-rotation-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+  .curr-rotation-title { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .rotation-item { display: flex; gap: 12px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .rotation-item:last-child { border-bottom: none; }
+  .rotation-time { color: var(--gold); font-weight: 600; font-size: 11px; min-width: 66px; flex-shrink: 0; padding-top: 2px; }
+  .stage-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 14px; }
+  .stage-card-header { border-left: 4px solid var(--gold); padding: 12px 16px; background: var(--bg3); }
+  .stage-card-num { font-size: 10px; color: var(--gold); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 2px; }
+  .stage-card-name { font-family: 'Nanum Myeongjo', serif; font-size: 15px; color: var(--text); font-weight: 700; }
+  .stage-card-period { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .stage-card-body { padding: 14px 16px; }
+  .stage-card-note { font-size: 11px; color: var(--gold); background: var(--gold-dim); border-radius: 4px; padding: 5px 10px; margin-bottom: 10px; display: inline-block; }
+  .stage-card-why { font-size: 12px; color: var(--text2); line-height: 1.7; margin-bottom: 10px; }
+  .stage-card-dir { font-size: 12px; color: var(--text); font-weight: 600; margin-bottom: 10px; }
+  .stage-items { list-style: none; }
+  .stage-items li { font-size: 12px; color: var(--text2); padding: 4px 0; display: flex; gap: 8px; line-height: 1.5; }
+  .stage-items li::before { content: '\25b8'; color: var(--gold); font-size: 10px; flex-shrink: 0; padding-top: 2px; }
+  .stage-tips { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+  .stage-tips-label { font-size: 10px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .stage-tips p { font-size: 11px; color: var(--text3); line-height: 1.7; }
+  .principle-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+  .principle-title { font-size: 12px; font-weight: 700; color: var(--red); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+  .principle-list { display: flex; gap: 10px; flex-wrap: wrap; }
+  .principle-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; flex: 1; min-width: 120px; }
+  .principle-item-num { font-size: 10px; color: var(--red); font-weight: 700; letter-spacing: 0.06em; }
+  .principle-item-text { font-size: 13px; color: var(--text); font-weight: 600; margin-top: 4px; }
+  .tracker-inputs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; align-items: flex-end; }
+  .tracker-inputs .form-group { flex: 1; min-width: 90px; }
+  .tracker-result { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 12px; }
+  .tracker-result-line { font-size: 12px; color: var(--text2); margin-bottom: 4px; line-height: 1.6; }
+  .tracker-result-line strong { color: var(--text); }
+  .tracker-result-verdict { font-size: 13px; font-weight: 700; margin-top: 8px; margin-bottom: 2px; }
+  .tracker-bar { width: 100%; height: 8px; background: var(--bg4); border-radius: 4px; overflow: hidden; margin-top: 10px; }
+  .tracker-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 4px; transition: width 0.4s ease; }
   .tag { font-size: 9px; font-weight: 600; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 10px; flex-shrink: 0; white-space: nowrap; }
   .tag-h { background: rgba(230,180,80,0.18); color: var(--tag-h); }
   .tag-f { background: rgba(110,168,255,0.18); color: var(--tag-f); }
   .tag-p { background: rgba(95,208,160,0.18); color: var(--tag-p); }
+  .tag-s { background: rgba(176,108,255,0.18); color: #b06cff; }
   .tag-x { background: rgba(136,152,170,0.18); color: var(--tag-x); }
   .tag-cat { background: rgba(136,152,170,0.12); color: var(--text3); font-size: 9px; }
   #toast { position: fixed; bottom: 24px; right: 20px; background: var(--bg3); border: 1px solid var(--border2); border-left: 3px solid var(--green); border-radius: var(--radius-sm); color: var(--text); font-size: 12px; padding: 8px 14px; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; pointer-events: none; z-index: 999; }
@@ -193,6 +250,8 @@
     .form-input[type="date"], .form-input[type="number"], .form-select { width: 100%; }
     .cl-btn { width: 34px; height: 26px; font-size: 11px; }
     .weak-form .form-select { width: 100%; }
+    .tracker-inputs { flex-direction: column; }
+    .principle-list { flex-direction: column; }
   }
 </style>
 </head>
@@ -201,7 +260,7 @@
 <header>
   <div class="header-top">
     <div class="header-title">
-      <h1>순경 합격 작전실<span class="sync-dot offline" id="sync-dot" title="동기화 상태"></span></h1>
+      <h1>For Your Goal<span class="sync-dot offline" id="sync-dot" title="동기화 상태"></span></h1>
       <p class="daily-quote" id="daily-quote"></p>
     </div>
     <div class="dday-box">
@@ -220,13 +279,14 @@
     <button class="tab-btn" data-tab="hoedok">회독 진행률</button>
     <button class="tab-btn" data-tab="scores">점수 추이</button>
     <button class="tab-btn" data-tab="weak">약점노트</button>
+    <button class="tab-btn" data-tab="curriculum">커리큘럼</button>
   </nav>
 </header>
 
 <main>
-  <!-- ── 자가진단 Checklist ── -->
   <div class="tab-panel active" id="tab-checklist">
     <div id="stage-badge-wrap"></div>
+    <div id="prep-checklist-wrap"></div>
     <div class="date-nav">
       <button class="date-nav-btn" id="cl-prev">◀</button>
       <span class="date-nav-label" id="cl-date-label"></span>
@@ -239,7 +299,6 @@
     <div id="cl-items-section"></div>
   </div>
 
-  <!-- ── 회독 진행률 ── -->
   <div class="tab-panel" id="tab-hoedok">
     <div class="stage-bar" id="stage-bar"></div>
     <div class="stage-labels" id="stage-labels"></div>
@@ -254,8 +313,21 @@
     <p style="font-size:11px;color:var(--text3);text-align:center;margin-top:8px;">목표 회독수는 숫자를 클릭하여 수정</p>
   </div>
 
-  <!-- ── 점수 추이 ── -->
   <div class="tab-panel" id="tab-scores">
+    <div class="card">
+      <div class="card-title">과락선 / 목표선 설정</div>
+      <div class="score-lines-row">
+        <div class="form-group">
+          <label class="form-label">과락선 (점)</label>
+          <input type="number" class="form-input" id="fail-line-input" min="0" max="40" value="16">
+        </div>
+        <div class="form-group">
+          <label class="form-label">목표선 (점)</label>
+          <input type="number" class="form-input" id="target-line-input" min="0" max="40" value="30">
+        </div>
+        <button class="btn-secondary" id="score-lines-save-btn">저장</button>
+      </div>
+    </div>
     <div class="card">
       <div class="card-title">점수 기록</div>
       <div class="score-form">
@@ -268,6 +340,7 @@
           <select class="form-select" id="score-sub">
             <option value="헌법">헌법</option>
             <option value="형사법">형사법</option>
+            <option value="형사소송법">형사소송법</option>
             <option value="경찰학">경찰학</option>
           </select>
         </div>
@@ -284,15 +357,33 @@
       <div class="chart-legend">
         <div class="legend-item"><div class="legend-dot" style="background:#e6b450"></div>헌법</div>
         <div class="legend-item"><div class="legend-dot" style="background:#6ea8ff"></div>형사법</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#b06cff"></div>형사소송법</div>
         <div class="legend-item"><div class="legend-dot" style="background:#5fd0a0"></div>경찰학</div>
+        <div class="legend-item"><div class="legend-line" style="background:#ff6b6b"></div><span style="font-size:10px;">과락선</span></div>
+        <div class="legend-item"><div class="legend-line" style="background:#e6b450"></div><span style="font-size:10px;">목표선</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">실전 타이머</div>
+      <div style="display:flex;align-items:flex-end;gap:10px;margin-bottom:4px;flex-wrap:wrap;">
+        <div class="form-group">
+          <label class="form-label">시간 (분)</label>
+          <input type="number" class="form-input" id="timer-minutes-input" min="1" max="300" value="75" style="width:80px;">
+        </div>
+      </div>
+      <div class="timer-display" id="timer-display">75:00</div>
+      <div class="timer-expired-msg" id="timer-expired-msg">⏰ 시간 종료!</div>
+      <div class="timer-controls">
+        <button class="btn-primary" id="timer-start-btn">시작</button>
+        <button class="btn-secondary" id="timer-reset-btn">초기화</button>
       </div>
     </div>
     <div class="section-label">기록 목록</div>
     <ul class="score-list" id="score-list"></ul>
   </div>
 
-  <!-- ── 약점노트 ── -->
   <div class="tab-panel" id="tab-weak">
+    <div id="review-queue-wrap"></div>
     <div class="card">
       <div class="card-title">약점 추가</div>
       <div class="weak-form">
@@ -301,6 +392,7 @@
           <select class="form-select" id="weak-sub">
             <option value="헌법">헌법</option>
             <option value="형사법">형사법</option>
+            <option value="형사소송법">형사소송법</option>
             <option value="경찰학">경찰학</option>
           </select>
         </div>
@@ -322,6 +414,155 @@
     <div class="weak-filter" id="weak-filter"></div>
     <ul class="weak-list" id="weak-list"></ul>
     <div class="weak-empty" id="weak-empty" style="display:none">아직 등록된 약점이 없습니다.</div>
+  </div>
+
+  <div class="tab-panel" id="tab-curriculum">
+    <div class="card">
+      <div class="card-title">강의 완강 트래커</div>
+      <div class="tracker-inputs">
+        <div class="form-group">
+          <label class="form-label">총 강의 수</label>
+          <input type="number" class="form-input" id="tracker-total" min="0" placeholder="100">
+        </div>
+        <div class="form-group">
+          <label class="form-label">들은 강의 수</label>
+          <input type="number" class="form-input" id="tracker-done" min="0" placeholder="30">
+        </div>
+        <div class="form-group">
+          <label class="form-label">1강 평균 길이(분)</label>
+          <input type="number" class="form-input" id="tracker-avg" min="1" value="60">
+        </div>
+        <div class="form-group">
+          <label class="form-label">하루 가능 시간(시간)</label>
+          <input type="number" class="form-input" id="tracker-daily" min="0.5" step="0.5" value="3">
+        </div>
+        <button class="btn-primary" id="tracker-calc-btn">계산</button>
+      </div>
+      <div class="tracker-result" id="tracker-result" style="display:none;"></div>
+    </div>
+    <div class="curr-intro">
+      <strong>막바지의 원칙</strong>은 인풋은 줄이고, 이미 아는 것을 점수로 전환하는 것입니다. 4단계로 <strong>압축→체화→실전→점검</strong> 순서로 조여갑니다.<br><br>
+      <strong>시험 구조 메모:</strong> 형사법은 형법＋형사소송법이 한 과목(40문항)으로 묶여 나옵니다. 형법:형소법 문항 비중을 늘 의식하며 양쪽 균형을 맞추세요.
+    </div>
+    <div class="curr-rule-card">
+      <div class="curr-rule-title">강의 운용 원칙</div>
+      <ul class="curr-rule-list">
+        <li data-n="1">완강 가능 여부 먼저 계산 (강의 완강 트래커 활용)</li>
+        <li data-n="2">데드라인: <span class="hl">늦어도 7월 말 완강</span></li>
+        <li data-n="3">빠듯하면 <span class="hl">취사선택</span> — 약한/고빈출 단원만</li>
+        <li data-n="4">배속·스킵 적극 활용</li>
+        <li data-n="5">들었으면 <span class="hl">그날 같은 단원 기출</span> 풀기</li>
+      </ul>
+    </div>
+    <div class="curr-rotation-card">
+      <div class="curr-rotation-title">하루 로테이션</div>
+      <div class="rotation-item"><div class="rotation-time">오전</div><div>가장 약한 과목 기출</div></div>
+      <div class="rotation-item"><div class="rotation-time">강의 시간</div><div>강의 2~3시간 + 바로 복습 (강의 들은 단원 기출 즉시)</div></div>
+      <div class="rotation-item"><div class="rotation-time">오후 전반</div><div>형법 + 형사소송법 (붙여서 감각 유지)</div></div>
+      <div class="rotation-item"><div class="rotation-time">오후 후반</div><div>실전 문제풀이 / 모의고사 (3단계부터 비중↑)</div></div>
+      <div class="rotation-item"><div class="rotation-time">저녁</div><div>헌법 조문·판례, 경찰학 암기, 단권화·오답노트 회독</div></div>
+      <div class="rotation-item"><div class="rotation-time">하루 끝</div><div>10분: 오늘 약점 점검</div></div>
+      <div class="rotation-item"><div class="rotation-time">주 1회</div><div>반나절 휴식</div></div>
+    </div>
+    <div class="stage-card">
+      <div class="stage-card-header">
+        <div class="stage-card-num">STAGE 1</div>
+        <div class="stage-card-name">단권화 &amp; 약점 색출</div>
+        <div class="stage-card-period">1~3주</div>
+      </div>
+      <div class="stage-card-body">
+        <div class="stage-card-why">막바지엔 새로 외울 시간이 없습니다. 이미 본 내용 중 "구멍"을 찾아 단권화 노트로 압축.</div>
+        <div class="stage-card-dir">방향: <span class="hl">"내가 모르는 것만"</span> 모으는 게 목표. 이미 아는 건 과감히 스킵.</div>
+        <ul class="stage-items">
+          <li>헌법 이론 회독 + 단권화 노트 정리</li>
+          <li>형사법 기출 1회독 + 약점 표시</li>
+          <li>형사소송법 절차 흐름 + 핵심 판례 정리</li>
+          <li>경찰학 두문자·암기 정리</li>
+          <li>단권화 노트 10분 점검 (매일)</li>
+        </ul>
+        <div class="stage-tips">
+          <div class="stage-tips-label">Tips</div>
+          <p>단권화는 <span class="hl">한 권</span>에 집중. 여러 교재에 분산하지 말 것. 기출에서 2번 이상 나온 것 중심으로 정리하면 효율이 올라갑니다.</p>
+        </div>
+      </div>
+    </div>
+    <div class="stage-card">
+      <div class="stage-card-header">
+        <div class="stage-card-num">STAGE 2</div>
+        <div class="stage-card-name">기출 회독 가속</div>
+        <div class="stage-card-period">4~5주</div>
+      </div>
+      <div class="stage-card-body">
+        <div class="stage-card-note">이 단계 안에 문제풀이 강의를 완강(또는 취사선택 마무리)</div>
+        <div class="stage-card-why">기출 2~3회독 압축. 정해진 시간 안에 문제를 보는 속도를 높입니다.</div>
+        <div class="stage-card-dir">방향: <span class="hl">틀린·헷갈린 것만 반복.</span> 왜 틀렸나 (개념부족/단순실수/함정) 세 갈래 분류.</div>
+        <ul class="stage-items">
+          <li>헌법·경찰학 기출 2회독</li>
+          <li>형사법+형사소송법 기출 교차 풀이</li>
+          <li>오답 원인 3분류 — 개념부족 / 단순실수 / 함정</li>
+          <li>약점노트에 틀린 이유 한 줄 기록</li>
+          <li>주말 반모의고사 (과목별 20문항 시간 재기)</li>
+        </ul>
+        <div class="stage-tips">
+          <div class="stage-tips-label">Tips</div>
+          <p>오답 분류만 잘해도 다음 회독이 <span class="hl">절반 시간</span>으로 줄어듭니다. 단순실수라고 넘기지 말고 "왜 실수했나"까지 한 줄 메모.</p>
+        </div>
+      </div>
+    </div>
+    <div class="stage-card">
+      <div class="stage-card-header">
+        <div class="stage-card-num">STAGE 3</div>
+        <div class="stage-card-name">실전 전환</div>
+        <div class="stage-card-period">6~7주</div>
+      </div>
+      <div class="stage-card-body">
+        <div class="stage-card-note">이 단계부턴 강의 졸업</div>
+        <div class="stage-card-why">실전 감각이 점수를 만듭니다. 제한 시간 안에 정확히 풀어내는 훈련.</div>
+        <div class="stage-card-dir">방향: <span class="hl">시간 엄수</span>, 중간에 끊지 말고 한 번에 풀기.</div>
+        <ul class="stage-items">
+          <li>실전 모의고사 주 2~3회 (과목당 75분 이하)</li>
+          <li>실전 타이머 활용 — 점수 추이 탭에서 바로 사용</li>
+          <li>채점 후 30분 내 약점 즉시 보강</li>
+          <li>단권화 노트 회독 (빠르게 훑기)</li>
+          <li>형사법·형소법 혼합 40문항 세트 훈련</li>
+        </ul>
+        <div class="stage-tips">
+          <div class="stage-tips-label">Tips</div>
+          <p>모의고사 후 채점만 하고 끝내면 성장이 없습니다. <span class="hl">왜 틀렸는지 → 어떤 개념이 빠졌는지</span> 반드시 짚고 넘어가세요.</p>
+        </div>
+      </div>
+    </div>
+    <div class="stage-card">
+      <div class="stage-card-header">
+        <div class="stage-card-num">STAGE 4</div>
+        <div class="stage-card-name">최종 점검</div>
+        <div class="stage-card-period">8주~D-day</div>
+      </div>
+      <div class="stage-card-body">
+        <div class="stage-card-why">인풋 최소화, 회독·암기 최대화. 새 것을 시작하면 불안만 커집니다.</div>
+        <div class="stage-card-dir">방향: <span class="hl">인풋 최소화, 회독·암기 최대화.</span></div>
+        <ul class="stage-items">
+          <li>전과목 모의고사 하루 1세트 (풀타임)</li>
+          <li>단권화·오답노트 빠른 회독만 반복</li>
+          <li>D-7부터 준비물 체크리스트 시작</li>
+          <li>수면 7시간 이상, 컨디션 관리 최우선</li>
+          <li>시험 전날: 가벼운 복습만, 일찍 취침</li>
+        </ul>
+        <div class="stage-tips">
+          <div class="stage-tips-label">Tips</div>
+          <p>시험 3일 전부터는 <span class="hl">새 기출·새 개념 금지.</span> 아는 것을 확인하는 회독만. 컨디션이 실력입니다.</p>
+        </div>
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-title">막바지 4대 원칙</div>
+      <div class="principle-list">
+        <div class="principle-item"><div class="principle-item-num">원칙 1</div><div class="principle-item-text">새 인풋 금지</div></div>
+        <div class="principle-item"><div class="principle-item-num">원칙 2</div><div class="principle-item-text">약점부터</div></div>
+        <div class="principle-item"><div class="principle-item-num">원칙 3</div><div class="principle-item-text">시간 안에</div></div>
+        <div class="principle-item"><div class="principle-item-num">원칙 4</div><div class="principle-item-text">컨디션이 실력</div></div>
+      </div>
+    </div>
   </div>
 </main>
 
@@ -348,10 +589,9 @@ try {
   dbRef = ref(db, 'appState');
 } catch (e) { console.warn('Firebase 초기화 실패, 로컬 모드로 동작:', e); }
 
-// ── 상수 ────────────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'fyg_data';
-const SUB_COLORS = { '헌법': '#e6b450', '형사법': '#6ea8ff', '경찰학': '#5fd0a0' };
-const SUB_ORDER = ['헌법', '형사법', '경찰학'];
+const SUB_COLORS = { '헌법': '#e6b450', '형사법': '#6ea8ff', '형사소송법': '#b06cff', '경찰학': '#5fd0a0' };
+const SUB_ORDER = ['헌법', '형사법', '형사소송법', '경찰학'];
 
 const DAILY_QUOTES = [
   "포기하면 그 자리에서 끝이다. 오늘도 계속 달린다.",
@@ -388,22 +628,10 @@ const DAILY_QUOTES = [
 ];
 
 const STAGES = [
-  {
-    name: '1단계 · 단권화 & 약점 색출', short: '단권화',
-    desc: '이론서 회독하며 모르는 것만 단권화 노트에 정리. 기출 1회독 병행하며 약점 파트 표시.',
-  },
-  {
-    name: '2단계 · 기출 회독 가속', short: '기출',
-    desc: '기출 2~3회독 압축. 틀린·헷갈린 문제만 반복. 오답은 개념/실수/함정으로 한 줄 분류.',
-  },
-  {
-    name: '3단계 · 실전 전환', short: '실전',
-    desc: '시간 재고 푸는 습관. 실전 모의고사 주 2~3회, 채점 후 약점 즉시 보강.',
-  },
-  {
-    name: '4단계 · 최종 점검', short: '최종',
-    desc: '새 건 안 봄. 전과목 모의고사 + 단권화·오답노트 회독만 반복. 수면·컨디션 집중.',
-  }
+  { name: '1단계 · 단권화 & 약점 색출', short: '단권화', desc: '이론서 회독하며 모르는 것만 단권화 노트에 정리. 기출 1회독 병행하며 약점 파트 표시.' },
+  { name: '2단계 · 기출 회독 가속', short: '기출', desc: '기출 2~3회독 압축. 틀린·헷갈린 문제만 반복. 오답은 개념/실수/함정으로 한 줄 분류.' },
+  { name: '3단계 · 실전 전환', short: '실전', desc: '시간 재고 푸는 습관. 실전 모의고사 주 2~3회, 채점 후 약점 즉시 보강.' },
+  { name: '4단계 · 최종 점검', short: '최종', desc: '새 건 안 봄. 전과목 모의고사 + 단권화·오답노트 회독만 반복. 수면·컨디션 집중.' }
 ];
 const STAGE_STARTS = [0, 3, 5, 7];
 
@@ -419,19 +647,23 @@ const CHECKLIST_ITEMS = [
 ];
 
 const WEAK_CATS = ['개념/이론', '판례/조문', '계산/적용', '암기/용어', '함정/혼동', '절차/순서'];
+const PREP_ITEMS = ['수험표', '신분증', '컴퓨터용 사인펜', '수정테이프', '아날로그 손목시계', '여벌 옷'];
 
-// ── 기본 데이터 ──────────────────────────────────────────────────────────────
 function defaultData() {
   return {
     examDate: '2026-08-29',
     hoedok: {
-      '헌법':   { theory:0, past:0, tTarget:3, pTarget:4 },
-      '형사법': { theory:0, past:0, tTarget:3, pTarget:4 },
-      '경찰학': { theory:0, past:0, tTarget:3, pTarget:4 },
+      '헌법':       { theory:0, past:0, tTarget:3, pTarget:4 },
+      '형사법':     { theory:0, past:0, tTarget:3, pTarget:4 },
+      '형사소송법': { theory:0, past:0, tTarget:3, pTarget:4 },
+      '경찰학':     { theory:0, past:0, tTarget:3, pTarget:4 },
     },
     scores: [],
     weak: [],
     checklist: {},
+    lectureTracker: { total: 0, done: 0, avgMin: 60, dailyHours: 3 },
+    scoreLines: { failLine: 16, targetLine: 30 },
+    prepChecklist: { '수험표': false, '신분증': false, '컴퓨터용 사인펜': false, '수정테이프': false, '아날로그 손목시계': false, '여벌 옷': false },
     _updatedAt: 0,
   };
 }
@@ -440,10 +672,20 @@ let data = (() => {
   try { const r = localStorage.getItem(STORAGE_KEY); if (r) return JSON.parse(r); } catch(e) {}
   return defaultData();
 })();
-if (!data.checklist) data.checklist = {};
-if (typeof data._updatedAt !== 'number') data._updatedAt = 0;
 
-// ── 동기화 ───────────────────────────────────────────────────────────────────
+function migrateData(d) {
+  if (!d.checklist) d.checklist = {};
+  if (typeof d._updatedAt !== 'number') d._updatedAt = 0;
+  if (!d.hoedok) d.hoedok = {};
+  if (!d.hoedok['형사소송법']) d.hoedok['형사소송법'] = { theory:0, past:0, tTarget:3, pTarget:4 };
+  if (!d.lectureTracker) d.lectureTracker = { total: 0, done: 0, avgMin: 60, dailyHours: 3 };
+  if (!d.scoreLines) d.scoreLines = { failLine: 16, targetLine: 30 };
+  if (!d.prepChecklist) d.prepChecklist = { '수험표': false, '신분증': false, '컴퓨터용 사인펜': false, '수정테이프': false, '아날로그 손목시계': false, '여벌 옷': false };
+  return d;
+}
+
+data = migrateData(data);
+
 let applyingRemote = false, saveTimer;
 
 function setSyncDot(state) {
@@ -474,8 +716,7 @@ if (dbRef) {
       const remote = snap.val();
       if ((remote._updatedAt || 0) > (data._updatedAt || 0)) {
         applyingRemote = true;
-        data = remote;
-        if (!data.checklist) data.checklist = {};
+        data = migrateData(remote);
         try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
         renderAll();
         applyingRemote = false;
@@ -486,7 +727,6 @@ if (dbRef) {
   }, (err) => { console.warn('실시간 구독 오류:', err); setSyncDot(false); });
 }
 
-// ── 토스트 ───────────────────────────────────────────────────────────────────
 let toastTimer;
 function showToast() {
   const t = document.getElementById('toast');
@@ -495,7 +735,6 @@ function showToast() {
   toastTimer = setTimeout(() => t.classList.remove('show'), 1500);
 }
 
-// ── 유틸 ─────────────────────────────────────────────────────────────────────
 function todayStr() { return new Date().toISOString().slice(0, 10); }
 function daysBetween(a, b) { return Math.round((new Date(a) - new Date(b)) / 86400000); }
 function addDays(dateStr, n) {
@@ -508,7 +747,7 @@ function fmtDate(dateStr) {
   return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} (${days[d.getDay()]})`;
 }
 function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function getStageIndex(examDate) {
   const rem = daysBetween(examDate, todayStr());
@@ -517,8 +756,13 @@ function getStageIndex(examDate) {
   for (let i = STAGE_STARTS.length - 1; i >= 0; i--) { if (elapsed >= STAGE_STARTS[i]) return i; }
   return 0;
 }
+function subTagClass(sub) {
+  if (sub === '헌법') return 'h';
+  if (sub === '형사법') return 'f';
+  if (sub === '형사소송법') return 's';
+  return 'p';
+}
 
-// ── 헤더 렌더 ────────────────────────────────────────────────────────────────
 function renderHeader() {
   document.getElementById('exam-date-input').value = data.examDate;
   const rem = daysBetween(data.examDate, todayStr());
@@ -526,7 +770,6 @@ function renderHeader() {
   if (rem < 0) el.innerHTML = `+${Math.abs(rem)}<span>일 경과</span>`;
   else if (rem === 0) el.innerHTML = `D-DAY<span></span>`;
   else el.innerHTML = `${rem}<span>일</span>`;
-
   const d = new Date();
   const idx = (d.getMonth() * 31 + d.getDate()) % DAILY_QUOTES.length;
   document.getElementById('daily-quote').textContent = '💬 ' + DAILY_QUOTES[idx];
@@ -534,10 +777,9 @@ function renderHeader() {
 
 document.getElementById('exam-date-input').addEventListener('change', e => {
   data.examDate = e.target.value;
-  save(); renderHeader(); renderStageBadge(); renderHoedokStagebar();
+  save(); renderHeader(); renderStageBadge(); renderHoedokStagebar(); renderPrepChecklist();
 });
 
-// ── 탭 ───────────────────────────────────────────────────────────────────────
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -548,7 +790,29 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// ── 자가진단 Checklist ────────────────────────────────────────────────────────
+function renderPrepChecklist() {
+  const wrap = document.getElementById('prep-checklist-wrap');
+  const rem = daysBetween(data.examDate, todayStr());
+  if (rem > 7 || rem < 0) { wrap.innerHTML = ''; return; }
+  const allChecked = PREP_ITEMS.every(item => data.prepChecklist[item]);
+  let html = `<div class="prep-checklist-card"><div class="prep-checklist-title">D-${rem} 준비물 체크리스트</div>`;
+  PREP_ITEMS.forEach(item => {
+    const checked = data.prepChecklist[item] ? ' checked' : '';
+    html += `<div class="prep-item${checked}" data-item="${escHtml(item)}">
+      <div class="prep-checkbox">${data.prepChecklist[item] ? '✓' : ''}</div>
+      <div class="prep-item-name">${escHtml(item)}</div>
+    </div>`;
+  });
+  html += `<div class="prep-all-done${allChecked ? ' show' : ''}">✓ 준비 완료!</div></div>`;
+  wrap.innerHTML = html;
+  wrap.querySelectorAll('.prep-item').forEach(el => {
+    el.addEventListener('click', () => {
+      data.prepChecklist[el.dataset.item] = !data.prepChecklist[el.dataset.item];
+      save(); renderPrepChecklist();
+    });
+  });
+}
+
 let clViewDate = todayStr();
 
 function renderStageBadge() {
@@ -562,27 +826,14 @@ function renderChecklist() {
   const today = todayStr();
   const isToday = clViewDate === today;
   const prevDate = addDays(clViewDate, -1);
-  const nextDate = addDays(clViewDate, 1);
-
-  // 날짜 네비
   document.getElementById('cl-date-label').textContent = fmtDate(clViewDate);
   document.getElementById('cl-prev').disabled = false;
   document.getElementById('cl-next').disabled = isToday;
-
   const checks = data.checklist[clViewDate] || {};
   const prevChecks = data.checklist[prevDate] || {};
-
-  // 이월 항목 (전날 △ 또는 X)
-  const carryItems = CHECKLIST_ITEMS.filter(item =>
-    prevChecks[item.id] === 'D' || prevChecks[item.id] === 'X'
-  );
-
-  // 진행률 계산 (O + N은 완료로 간주)
+  const carryItems = CHECKLIST_ITEMS.filter(item => prevChecks[item.id] === 'D' || prevChecks[item.id] === 'X');
   const answered = CHECKLIST_ITEMS.filter(item => checks[item.id]).length;
-  const good = CHECKLIST_ITEMS.filter(item => checks[item.id] === 'O').length;
   document.getElementById('cl-progress-fill').style.width = (answered / CHECKLIST_ITEMS.length * 100) + '%';
-
-  // 요약
   const oCount = CHECKLIST_ITEMS.filter(i => checks[i.id] === 'O').length;
   const dCount = CHECKLIST_ITEMS.filter(i => checks[i.id] === 'D').length;
   const xCount = CHECKLIST_ITEMS.filter(i => checks[i.id] === 'X').length;
@@ -594,35 +845,23 @@ function renderChecklist() {
     <div class="cl-summary-item"><div class="cl-dot" style="background:var(--text3)"></div><span style="color:var(--text3)">없음 ${nCount}</span></div>
     <div class="cl-summary-item" style="margin-left:auto;color:var(--text2);font-size:11px;">${answered}/${CHECKLIST_ITEMS.length} 체크</div>
   `;
-
-  // 이월 섹션
   const carrySection = document.getElementById('cl-carryover-section');
   if (carryItems.length > 0) {
     carrySection.innerHTML = `<div class="cl-section-title">⚠ 이월 항목 (${fmtDate(prevDate)} △/X)</div>`;
-    carryItems.forEach(item => {
-      carrySection.appendChild(buildClItem(item, checks, prevChecks[item.id] === 'X' ? 'X' : 'D'));
-    });
+    carryItems.forEach(item => carrySection.appendChild(buildClItem(item, checks, prevChecks[item.id] === 'X' ? 'X' : 'D')));
   } else {
     carrySection.innerHTML = '';
   }
-
-  // 전체 항목 섹션
   const mainSection = document.getElementById('cl-items-section');
   mainSection.innerHTML = `<div class="cl-section-title">오늘의 학습 자가진단</div>`;
-  CHECKLIST_ITEMS.forEach(item => {
-    mainSection.appendChild(buildClItem(item, checks, null));
-  });
+  CHECKLIST_ITEMS.forEach(item => mainSection.appendChild(buildClItem(item, checks, null)));
 }
 
 function buildClItem(item, checks, carryoverFrom) {
   const cur = checks[item.id] || null;
   const div = document.createElement('div');
   div.className = 'cl-item' + (carryoverFrom ? ' carryover' : '');
-
-  const carryTag = carryoverFrom
-    ? `<span class="carryover-tag${carryoverFrom === 'X' ? ' red' : ''}">이월 ${carryoverFrom === 'X' ? 'X' : '△'}</span>`
-    : '';
-
+  const carryTag = carryoverFrom ? `<span class="carryover-tag${carryoverFrom === 'X' ? ' red' : ''}">이월 ${carryoverFrom === 'X' ? 'X' : '△'}</span>` : '';
   div.innerHTML = `
     <div class="cl-text">
       <div class="cl-text-name">${item.text}${carryTag}</div>
@@ -635,39 +874,23 @@ function buildClItem(item, checks, carryoverFrom) {
       <button class="cl-btn${cur==='N'?' sel-N':''}" data-id="${item.id}" data-val="N">없음</button>
     </div>
   `;
-
   div.querySelectorAll('.cl-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const dk = clViewDate;
       if (!data.checklist[dk]) data.checklist[dk] = {};
       const prev = data.checklist[dk][item.id];
-      // 같은 버튼 다시 누르면 해제
       data.checklist[dk][item.id] = prev === btn.dataset.val ? null : btn.dataset.val;
       if (!data.checklist[dk][item.id]) delete data.checklist[dk][item.id];
-      save();
-      renderChecklist();
+      save(); renderChecklist();
     });
   });
-
   return div;
 }
 
-document.getElementById('cl-prev').addEventListener('click', () => {
-  clViewDate = addDays(clViewDate, -1);
-  renderChecklist();
-});
-document.getElementById('cl-next').addEventListener('click', () => {
-  if (clViewDate < todayStr()) {
-    clViewDate = addDays(clViewDate, 1);
-    renderChecklist();
-  }
-});
-document.getElementById('cl-today').addEventListener('click', () => {
-  clViewDate = todayStr();
-  renderChecklist();
-});
+document.getElementById('cl-prev').addEventListener('click', () => { clViewDate = addDays(clViewDate, -1); renderChecklist(); });
+document.getElementById('cl-next').addEventListener('click', () => { if (clViewDate < todayStr()) { clViewDate = addDays(clViewDate, 1); renderChecklist(); } });
+document.getElementById('cl-today').addEventListener('click', () => { clViewDate = todayStr(); renderChecklist(); });
 
-// ── 회독 진행률 ──────────────────────────────────────────────────────────────
 function renderHoedokStagebar() {
   const si = getStageIndex(data.examDate);
   const bar = document.getElementById('stage-bar'), lbels = document.getElementById('stage-labels');
@@ -691,8 +914,9 @@ function renderHoedok() {
 function renderHoedokSection(key, label, targetKey, containerId) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
-  const fc = { '헌법':'fill-h', '형사법':'fill-f', '경찰학':'fill-p' };
+  const fc = { '헌법':'fill-h', '형사법':'fill-f', '형사소송법':'fill-s', '경찰학':'fill-p' };
   SUB_ORDER.forEach(sub => {
+    if (!data.hoedok[sub]) data.hoedok[sub] = { theory:0, past:0, tTarget:3, pTarget:4 };
     const hd = data.hoedok[sub];
     const cur = hd[key], tgt = hd[targetKey];
     const pct = tgt > 0 ? Math.min(cur/tgt*100, 100) : 0;
@@ -702,7 +926,7 @@ function renderHoedokSection(key, label, targetKey, containerId) {
       <div class="hoedok-subject">${sub}</div>
       <div class="hoedok-type">${label}</div>
       <div class="hoedok-progress">
-        <div class="hoedok-bar"><div class="hoedok-fill ${fc[sub]}" style="width:${pct}%"></div></div>
+        <div class="hoedok-bar"><div class="hoedok-fill ${fc[sub]||'fill-p'}" style="width:${pct}%"></div></div>
         <div class="hoedok-nums"><strong>${cur}</strong> / <span class="target-edit" data-sub="${sub}" data-key="${targetKey}">${tgt}회</span></div>
       </div>
       <div class="hoedok-controls">
@@ -727,8 +951,20 @@ function renderHoedokSection(key, label, targetKey, containerId) {
   });
 }
 
-// ── 점수 추이 ────────────────────────────────────────────────────────────────
 document.getElementById('score-date').value = todayStr();
+
+function initScoreLines() {
+  document.getElementById('fail-line-input').value = data.scoreLines.failLine;
+  document.getElementById('target-line-input').value = data.scoreLines.targetLine;
+}
+
+document.getElementById('score-lines-save-btn').addEventListener('click', () => {
+  const fl = parseInt(document.getElementById('fail-line-input').value);
+  const tl = parseInt(document.getElementById('target-line-input').value);
+  if (!isNaN(fl) && fl >= 0 && fl <= 40) data.scoreLines.failLine = fl;
+  if (!isNaN(tl) && tl >= 0 && tl <= 40) data.scoreLines.targetLine = tl;
+  save(); renderScoreChart();
+});
 
 document.getElementById('score-add-btn').addEventListener('click', () => {
   const date = document.getElementById('score-date').value;
@@ -749,32 +985,41 @@ function renderScoreChart() {
     wrap.innerHTML = '<div class="chart-empty">아직 점수 기록이 없습니다.<br>위 폼에서 첫 점수를 기록해보세요.</div>';
     return;
   }
-  const W = wrap.clientWidth || 600, H = 200;
-  const PAD = { top:16, right:20, bottom:30, left:36 };
-  const cW = W-PAD.left-PAD.right, cH = H-PAD.top-PAD.bottom;
+  const W = wrap.clientWidth || 600, H = 220;
+  const PAD = { top: 20, right: 20, bottom: 30, left: 42 };
+  const cW = W - PAD.left - PAD.right, cH = H - PAD.top - PAD.bottom;
   const dates = [...new Set(data.scores.map(s => s.date))].sort();
-  const xS = i => dates.length > 1 ? PAD.left+(i/(dates.length-1))*cW : PAD.left+cW/2;
-  const yS = v => PAD.top+cH-(v/40)*cH;
+  const xS = i => dates.length > 1 ? PAD.left + (i / (dates.length - 1)) * cW : PAD.left + cW / 2;
+  const yS = v => PAD.top + cH - (v / 40) * cH;
+  const failLine = data.scoreLines ? (isNaN(data.scoreLines.failLine) ? 16 : data.scoreLines.failLine) : 16;
+  const targetLine = data.scoreLines ? (isNaN(data.scoreLines.targetLine) ? 30 : data.scoreLines.targetLine) : 30;
   let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
-  [0,10,20,30,40].forEach(v => {
+  [0, 10, 20, 30, 40].forEach(v => {
     const y = yS(v);
-    svg += `<line x1="${PAD.left}" y1="${y}" x2="${W-PAD.right}" y2="${y}" stroke="#2a3a52" stroke-width="1"/>`;
-    svg += `<text x="${PAD.left-6}" y="${y+4}" fill="#556070" font-size="10" text-anchor="end" font-family="IBM Plex Mono,monospace">${v}</text>`;
+    svg += `<line x1="${PAD.left}" y1="${y}" x2="${W - PAD.right}" y2="${y}" stroke="#2a3a52" stroke-width="1"/>`;
+    svg += `<text x="${PAD.left - 6}" y="${y + 4}" fill="#556070" font-size="10" text-anchor="end" font-family="IBM Plex Mono,monospace">${v}</text>`;
   });
-  const step = Math.max(1, Math.floor(dates.length/6));
-  dates.forEach((d,i) => {
-    if (i%step===0 || i===dates.length-1)
-      svg += `<text x="${xS(i)}" y="${H-4}" fill="#556070" font-size="9" text-anchor="middle" font-family="IBM Plex Mono,monospace">${d.slice(5)}</text>`;
+  const yFail = yS(failLine);
+  svg += `<line x1="${PAD.left}" y1="${yFail}" x2="${W - PAD.right}" y2="${yFail}" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.9"/>`;
+  svg += `<text x="${PAD.left + 4}" y="${yFail - 4}" fill="#ff6b6b" font-size="9" font-family="IBM Plex Mono,monospace">과락(${failLine})</text>`;
+  const yTarget = yS(targetLine);
+  svg += `<line x1="${PAD.left}" y1="${yTarget}" x2="${W - PAD.right}" y2="${yTarget}" stroke="#e6b450" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.9"/>`;
+  svg += `<text x="${PAD.left + 4}" y="${yTarget - 4}" fill="#e6b450" font-size="9" font-family="IBM Plex Mono,monospace">목표(${targetLine})</text>`;
+  const step = Math.max(1, Math.floor(dates.length / 6));
+  dates.forEach((d, i) => {
+    if (i % step === 0 || i === dates.length - 1)
+      svg += `<text x="${xS(i)}" y="${H - 4}" fill="#556070" font-size="9" text-anchor="middle" font-family="IBM Plex Mono,monospace">${d.slice(5)}</text>`;
   });
   SUB_ORDER.forEach(sub => {
-    const pts = data.scores.filter(s => s.sub===sub).map(s => ({x:xS(dates.indexOf(s.date)),y:yS(s.val),val:s.val}));
+    const pts = data.scores.filter(s => s.sub === sub).map(s => ({ x: xS(dates.indexOf(s.date)), y: yS(s.val), val: s.val }));
     if (!pts.length) return;
-    const color = SUB_COLORS[sub];
+    const color = SUB_COLORS[sub] || '#8898aa';
     if (pts.length > 1)
-      svg += `<path d="${pts.map((p,i)=>(i===0?'M':'L')+p.x+','+p.y).join(' ')}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="0.85"/>`;
+      svg += `<path d="${pts.map((p, i) => (i === 0 ? 'M' : 'L') + p.x + ',' + p.y).join(' ')}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="0.85"/>`;
     pts.forEach(p => {
-      svg += `<circle cx="${p.x}" cy="${p.y}" r="4" fill="${color}" stroke="#0b0f1a" stroke-width="2"/>`;
-      svg += `<text x="${p.x}" y="${p.y-8}" fill="${color}" font-size="9" text-anchor="middle" font-family="IBM Plex Mono,monospace">${p.val}</text>`;
+      const dotColor = p.val < failLine ? '#ff6b6b' : color;
+      svg += `<circle cx="${p.x}" cy="${p.y}" r="4" fill="${dotColor}" stroke="#0b0f1a" stroke-width="2"/>`;
+      svg += `<text x="${p.x}" y="${p.y - 8}" fill="${dotColor}" font-size="9" text-anchor="middle" font-family="IBM Plex Mono,monospace">${p.val}</text>`;
     });
   });
   svg += '</svg>';
@@ -786,27 +1031,85 @@ function renderScoreList() {
   list.innerHTML = '';
   if (!data.scores.length) { list.innerHTML = '<div class="no-data">기록이 없습니다.</div>'; return; }
   [...data.scores].reverse().forEach((s, ri) => {
-    const realIdx = data.scores.length-1-ri;
+    const realIdx = data.scores.length - 1 - ri;
     const li = document.createElement('li');
     li.className = 'score-item';
     li.innerHTML = `
       <span class="score-date">${s.date}</span>
-      <span class="tag tag-${s.sub==='헌법'?'h':s.sub==='형사법'?'f':'p'}">${s.sub}</span>
+      <span class="tag tag-${subTagClass(s.sub)}">${escHtml(s.sub)}</span>
       <span class="score-sub"></span>
-      <span class="score-val" style="color:${SUB_COLORS[s.sub]}">${s.val}</span>
+      <span class="score-val" style="color:${SUB_COLORS[s.sub] || 'var(--text)'}">${s.val}</span>
       <button class="score-del">삭제</button>
     `;
-    li.querySelector('.score-del').addEventListener('click', () => { data.scores.splice(realIdx,1); save(); renderScores(); });
+    li.querySelector('.score-del').addEventListener('click', () => { data.scores.splice(realIdx, 1); save(); renderScores(); });
     list.appendChild(li);
   });
 }
 
-// ── 약점노트 ─────────────────────────────────────────────────────────────────
+let timerInterval = null;
+let timerRemaining = 75 * 60;
+let timerRunning = false;
+
+function fmtTimer(secs) {
+  const m = Math.floor(secs / 60), s = secs % 60;
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+function updateTimerDisplay() {
+  const el = document.getElementById('timer-display');
+  el.textContent = fmtTimer(timerRemaining);
+  el.classList.toggle('expired', timerRemaining === 0);
+}
+function playBeep() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator(), gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 880; osc.type = 'sine';
+    gain.gain.setValueAtTime(0.6, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 1.2);
+  } catch(e) {}
+}
+
+document.getElementById('timer-start-btn').addEventListener('click', () => {
+  if (timerRunning) {
+    clearInterval(timerInterval); timerRunning = false;
+    document.getElementById('timer-start-btn').textContent = '시작';
+  } else {
+    if (timerRemaining === 0) return;
+    timerRunning = true;
+    document.getElementById('timer-start-btn').textContent = '일시정지';
+    document.getElementById('timer-expired-msg').classList.remove('show');
+    timerInterval = setInterval(() => {
+      if (timerRemaining > 0) { timerRemaining--; updateTimerDisplay(); }
+      if (timerRemaining === 0) {
+        clearInterval(timerInterval); timerRunning = false;
+        document.getElementById('timer-start-btn').textContent = '시작';
+        document.getElementById('timer-expired-msg').classList.add('show');
+        playBeep();
+      }
+    }, 1000);
+  }
+});
+document.getElementById('timer-reset-btn').addEventListener('click', () => {
+  clearInterval(timerInterval); timerRunning = false;
+  document.getElementById('timer-start-btn').textContent = '시작';
+  document.getElementById('timer-expired-msg').classList.remove('show');
+  const mins = parseInt(document.getElementById('timer-minutes-input').value) || 75;
+  timerRemaining = mins * 60; updateTimerDisplay();
+});
+document.getElementById('timer-minutes-input').addEventListener('change', () => {
+  if (!timerRunning) {
+    timerRemaining = (parseInt(document.getElementById('timer-minutes-input').value) || 75) * 60;
+    updateTimerDisplay();
+  }
+});
+
 let weakFilter = 'all';
 
 function buildWeakFilter() {
   const wrap = document.getElementById('weak-filter');
-  const filters = [['all','전체'], ['헌법','헌법'], ['형사법','형사법'], ['경찰학','경찰학'], ...WEAK_CATS.map(c=>[c,c])];
+  const filters = [['all','전체'], ...SUB_ORDER.map(s => [s, s]), ...WEAK_CATS.map(c => [c, c])];
   wrap.innerHTML = '';
   filters.forEach(([val, label]) => {
     const btn = document.createElement('button');
@@ -822,41 +1125,60 @@ function addWeak() {
   const cat = document.getElementById('weak-cat').value;
   const tx = document.getElementById('weak-text').value.trim();
   if (!tx) return;
-  data.weak.push({ sub, cat, tx, done: false });
+  data.weak.push({ sub, cat, tx, done: false, createdAt: Date.now() });
   document.getElementById('weak-text').value = '';
   save(); renderWeak();
 }
 
 document.getElementById('weak-add-btn').addEventListener('click', addWeak);
-document.getElementById('weak-text').addEventListener('keydown', e => { if (e.key==='Enter') addWeak(); });
+document.getElementById('weak-text').addEventListener('keydown', e => { if (e.key === 'Enter') addWeak(); });
+
+function renderReviewQueue() {
+  const wrap = document.getElementById('review-queue-wrap');
+  const now = Date.now();
+  const reviewItems = data.weak.map((w, i) => ({...w, _i: i}))
+    .filter(w => !w.done && w.createdAt && (now - w.createdAt) >= 3 * 86400000);
+  if (!reviewItems.length) { wrap.innerHTML = ''; return; }
+  let html = `<div class="review-queue-card"><div class="review-queue-title">오늘 복습할 약점 (${reviewItems.length})</div>`;
+  reviewItems.forEach(w => {
+    html += `<div class="review-queue-item">
+      <div class="weak-tags">
+        <span class="tag tag-${subTagClass(w.sub)}">${escHtml(w.sub)}</span>
+        <span class="tag tag-cat">${escHtml(w.cat || '기타')}</span>
+      </div>
+      <div class="review-queue-content">${escHtml(w.tx)}</div>
+      <button class="review-done-btn" data-idx="${w._i}">복습 완료</button>
+    </div>`;
+  });
+  html += '</div>';
+  wrap.innerHTML = html;
+  wrap.querySelectorAll('.review-done-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      data.weak[parseInt(btn.dataset.idx)].createdAt = Date.now();
+      save(); renderReviewQueue(); renderWeak();
+    });
+  });
+}
 
 function renderWeak() {
+  renderReviewQueue();
   const list = document.getElementById('weak-list');
   const empty = document.getElementById('weak-empty');
   list.innerHTML = '';
-
-  let items = data.weak.map((w,i) => ({...w, _i:i}));
-
-  // 필터
-  if (weakFilter !== 'all') {
-    items = items.filter(w => w.sub === weakFilter || w.cat === weakFilter);
-  }
-
-  const sorted = items.sort((a,b) => {
+  let items = data.weak.map((w, i) => ({...w, _i: i}));
+  if (weakFilter !== 'all') items = items.filter(w => w.sub === weakFilter || w.cat === weakFilter);
+  const sorted = items.sort((a, b) => {
     if (a.done !== b.done) return a.done ? 1 : -1;
     return SUB_ORDER.indexOf(a.sub) - SUB_ORDER.indexOf(b.sub);
   });
-
   empty.style.display = sorted.length ? 'none' : 'block';
-
   sorted.forEach(w => {
-    const tm = {'헌법':'h','형사법':'f','경찰학':'p'};
     const li = document.createElement('li');
     li.className = 'weak-item' + (w.done ? ' done' : '');
     li.innerHTML = `
       <div class="weak-tags">
-        <span class="tag tag-${tm[w.sub]}">${w.sub}</span>
-        <span class="tag tag-cat">${w.cat || '기타'}</span>
+        <span class="tag tag-${subTagClass(w.sub)}">${escHtml(w.sub)}</span>
+        <span class="tag tag-cat">${escHtml(w.cat || '기타')}</span>
       </div>
       <span class="weak-content">${escHtml(w.tx)}</span>
       <div class="weak-actions">
@@ -864,21 +1186,70 @@ function renderWeak() {
         <button class="weak-del-btn">삭제</button>
       </div>
     `;
-    li.querySelector('.weak-resolve-btn').addEventListener('click', () => { data.weak[w._i].done=!data.weak[w._i].done; save(); renderWeak(); });
-    li.querySelector('.weak-del-btn').addEventListener('click', () => { data.weak.splice(w._i,1); save(); renderWeak(); });
+    li.querySelector('.weak-resolve-btn').addEventListener('click', () => { data.weak[w._i].done = !data.weak[w._i].done; save(); renderWeak(); });
+    li.querySelector('.weak-del-btn').addEventListener('click', () => { data.weak.splice(w._i, 1); save(); renderWeak(); });
     list.appendChild(li);
   });
 }
 
-// ── 전체 렌더 ────────────────────────────────────────────────────────────────
+function initTrackerInputs() {
+  const lt = data.lectureTracker;
+  if (lt.total) document.getElementById('tracker-total').value = lt.total;
+  if (lt.done) document.getElementById('tracker-done').value = lt.done;
+  document.getElementById('tracker-avg').value = lt.avgMin || 60;
+  document.getElementById('tracker-daily').value = lt.dailyHours || 3;
+}
+
+document.getElementById('tracker-calc-btn').addEventListener('click', () => {
+  const total = parseInt(document.getElementById('tracker-total').value) || 0;
+  const done = parseInt(document.getElementById('tracker-done').value) || 0;
+  const avgMin = parseFloat(document.getElementById('tracker-avg').value) || 60;
+  const dailyHours = parseFloat(document.getElementById('tracker-daily').value) || 3;
+  data.lectureTracker = { total, done, avgMin, dailyHours };
+  save();
+  const resultEl = document.getElementById('tracker-result');
+  if (total <= 0) { resultEl.style.display = 'none'; return; }
+  const remaining = Math.max(0, total - done);
+  const dailyLectures = avgMin > 0 ? dailyHours * 60 / avgMin : 0;
+  const daysNeeded = dailyLectures > 0 ? Math.ceil(remaining / dailyLectures) : Infinity;
+  const today = new Date();
+  const completionDate = new Date(today);
+  if (isFinite(daysNeeded)) completionDate.setDate(today.getDate() + daysNeeded);
+  const completionStr = completionDate.toISOString().slice(0, 10);
+  const deadline = new Date('2026-07-31');
+  const diffDays = isFinite(daysNeeded) ? Math.round((deadline - completionDate) / 86400000) : -9999;
+  const pct = total > 0 ? Math.min(done / total * 100, 100) : 0;
+  let verdictHtml = '';
+  if (!isFinite(daysNeeded)) {
+    verdictHtml = `<div class="tracker-result-verdict" style="color:var(--red)">하루 강의 수가 0입니다. 설정을 확인하세요.</div>`;
+  } else if (diffDays >= 0) {
+    verdictHtml = `<div class="tracker-result-verdict" style="color:var(--green)">7월 31일 전 완강 가능 (+${diffDays}일 여유)</div>`;
+  } else {
+    verdictHtml = `<div class="tracker-result-verdict" style="color:var(--red)">7월 31일 초과 (${Math.abs(diffDays)}일 지연)</div>`;
+  }
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = `
+    <div class="tracker-result-line">남은 강의: <strong>${remaining}강</strong></div>
+    <div class="tracker-result-line">필요 일수: <strong>${isFinite(daysNeeded) ? daysNeeded + '일' : '—'}</strong></div>
+    <div class="tracker-result-line">예상 완강일: <strong>${isFinite(daysNeeded) ? completionStr : '—'}</strong></div>
+    ${verdictHtml}
+    <div class="tracker-bar"><div class="tracker-bar-fill" style="width:${pct.toFixed(1)}%"></div></div>
+    <div style="font-size:10px;color:var(--text3);margin-top:4px;text-align:right;">${done} / ${total} 강 (${pct.toFixed(0)}%)</div>
+  `;
+});
+
 function renderAll() {
   renderHeader();
   renderStageBadge();
+  renderPrepChecklist();
   renderChecklist();
   renderHoedok();
+  initScoreLines();
   renderScores();
   buildWeakFilter();
   renderWeak();
+  initTrackerInputs();
+  updateTimerDisplay();
 }
 
 renderAll();
