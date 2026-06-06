@@ -271,7 +271,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBYMyARMkz6hIQOfdkzOdXVVtKCPu6yH04",
@@ -279,14 +279,15 @@ const firebaseConfig = {
   projectId: "foryourgoal-7f49e",
   storageBucket: "foryourgoal-7f49e.firebasestorage.app",
   messagingSenderId: "562549074144",
-  appId: "1:562549074144:web:744218ca41785a60524885"
+  appId: "1:562549074144:web:744218ca41785a60524885",
+  databaseURL: "https://foryourgoal-7f49e-default-rtdb.firebaseio.com"
 };
 
-let db = null, stateRef = null;
+let dbRef = null;
 try {
   const app = initializeApp(firebaseConfig);
-  db = getFirestore(app);
-  stateRef = doc(db, 'app', 'state');
+  const db = getDatabase(app);
+  dbRef = ref(db, 'appState');
 } catch (e) { console.warn('Firebase 초기화 실패, 로컬 모드로 동작:', e); }
 
 const STORAGE_KEY = 'fyg_data';
@@ -371,8 +372,8 @@ function setSyncDot(state) {
 }
 
 function pushCloud() {
-  if (!stateRef) return;
-  setDoc(stateRef, JSON.parse(JSON.stringify(data)))
+  if (!dbRef) return;
+  set(dbRef, JSON.parse(JSON.stringify(data)))
     .then(() => setSyncDot(true))
     .catch(e => { console.warn('클라우드 저장 실패:', e); setSyncDot(false); });
 }
@@ -384,11 +385,11 @@ function save() {
   saveTimer = setTimeout(() => { pushCloud(); showToast(); }, 300);
 }
 
-if (stateRef) {
-  onSnapshot(stateRef, (snap) => {
+if (dbRef) {
+  onValue(dbRef, (snap) => {
     setSyncDot(true);
     if (snap.exists()) {
-      const remote = snap.data();
+      const remote = snap.val();
       if ((remote._updatedAt || 0) > (data._updatedAt || 0)) {
         applyingRemote = true;
         data = remote;
@@ -397,7 +398,6 @@ if (stateRef) {
         applyingRemote = false;
       }
     } else {
-      // 클라우드에 아직 문서 없음 → 현재 로컬 데이터로 최초 생성
       pushCloud();
     }
   }, (err) => { console.warn('실시간 구독 오류:', err); setSyncDot(false); });
