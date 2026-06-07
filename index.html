@@ -9,34 +9,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0b0f1a;
-    --bg2: #111827;
-    --bg3: #1a2235;
-    --bg4: #1f2d44;
-    --border: #2a3a52;
-    --border2: #3a4f6a;
-    --gold: #e6b450;
-    --gold2: #f5c842;
-    --gold-dim: rgba(230,180,80,0.15);
-    --blue: #6ea8ff;
-    --green: #5fd0a0;
-    --green-dim: rgba(95,208,160,0.15);
-    --red: #ff6b6b;
-    --red-dim: rgba(255,107,107,0.15);
-    --text: #d4dce8;
-    --text2: #8898aa;
-    --text3: #556070;
-    --tag-h: #e6b450;
-    --tag-f: #6ea8ff;
-    --tag-p: #5fd0a0;
-    --tag-s: #b06cff;
-    --tag-x: #8898aa;
-    --radius: 10px;
-    --radius-sm: 6px;
+    --bg: #f0f5ff;
+    --bg2: #ffffff;
+    --bg3: #e8f0fe;
+    --bg4: #d6e4fb;
+    --border: #c4d9f8;
+    --border2: #93b8f3;
+    --gold: #5b9cf6;
+    --gold2: #7bb3f8;
+    --gold-dim: rgba(91,156,246,0.12);
+    --blue: #818cf8;
+    --green: #10b981;
+    --green-dim: rgba(16,185,129,0.12);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.12);
+    --text: #1e3a5f;
+    --text2: #4a6fa5;
+    --text3: #8aaad4;
+    --tag-h: #f59e0b;
+    --tag-f: #5b9cf6;
+    --tag-p: #10b981;
+    --tag-s: #a78bfa;
+    --tag-x: #94a3b8;
+    --radius: 14px;
+    --radius-sm: 9px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'IBM Plex Sans KR', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
-  header { background: linear-gradient(180deg, #0d1520 0%, var(--bg2) 100%); border-bottom: 1px solid var(--border); padding: 16px 20px 0; position: sticky; top: 0; z-index: 100; }
+  header { background: linear-gradient(180deg, #dbeafe 0%, #ffffff 100%); border-bottom: 1px solid var(--border); padding: 16px 20px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(91,156,246,0.08); }
   .header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
   .header-title h1 { font-family: 'Nanum Myeongjo', serif; font-size: 20px; font-weight: 800; color: var(--gold); letter-spacing: 0.02em; line-height: 1.2; }
   .daily-quote { font-size: 11px; color: var(--green); margin-top: 4px; font-style: italic; letter-spacing: 0.01em; line-height: 1.4; max-width: 260px; }
@@ -54,7 +54,7 @@
   .tab-panel { display: none; animation: fadeIn 0.2s ease; }
   .tab-panel.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(91,156,246,0.07); }
   .card-title { font-size: 11px; font-weight: 600; color: var(--text2); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
   .stage-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 16px; }
   .stage-badge-name { font-family: 'Nanum Myeongjo', serif; font-size: 13px; color: var(--gold); font-weight: 700; }
@@ -120,7 +120,7 @@
   .form-input[type="number"] { width: 80px; }
   .form-input[type="date"] { width: 140px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
   .form-select { min-width: 90px; }
-  .btn-primary { background: var(--gold); border: none; border-radius: var(--radius-sm); color: #0b0f1a; font-family: 'IBM Plex Sans KR', sans-serif; font-size: 13px; font-weight: 700; padding: 8px 16px; cursor: pointer; transition: background 0.2s, transform 0.1s; align-self: flex-end; }
+  .btn-primary { background: var(--gold); border: none; border-radius: var(--radius-sm); color: #ffffff; font-family: 'IBM Plex Sans KR', sans-serif; font-size: 13px; font-weight: 700; padding: 8px 16px; cursor: pointer; transition: background 0.2s, transform 0.1s; align-self: flex-end; box-shadow: 0 2px 8px rgba(91,156,246,0.25); }
   .btn-primary:hover { background: var(--gold2); }
   .btn-primary:active { transform: scale(0.97); }
   .btn-secondary { background: var(--bg4); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text2); font-family: 'IBM Plex Sans KR', sans-serif; font-size: 13px; font-weight: 600; padding: 8px 14px; cursor: pointer; transition: all 0.2s; align-self: flex-end; }
@@ -229,7 +229,7 @@
   .tag-h { background: rgba(230,180,80,0.18); color: var(--tag-h); }
   .tag-f { background: rgba(110,168,255,0.18); color: var(--tag-f); }
   .tag-p { background: rgba(95,208,160,0.18); color: var(--tag-p); }
-  .tag-s { background: rgba(176,108,255,0.18); color: #b06cff; }
+  .tag-s { background: rgba(167,139,250,0.18); color: #a78bfa; }
   .tag-x { background: rgba(136,152,170,0.18); color: var(--tag-x); }
   .tag-cat { background: rgba(136,152,170,0.12); color: var(--text3); font-size: 9px; }
   #toast { position: fixed; bottom: 24px; right: 20px; background: var(--bg3); border: 1px solid var(--border2); border-left: 3px solid var(--green); border-radius: var(--radius-sm); color: var(--text); font-size: 12px; padding: 8px 14px; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; pointer-events: none; z-index: 999; }
@@ -239,8 +239,42 @@
   .sync-dot.offline { background: var(--text3); }
   .section-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
   .no-data { text-align: center; padding: 20px; color: var(--text3); font-size: 13px; }
-  input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.5); cursor: pointer; }
+  input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.5; }
   option { background: var(--bg2); }
+  /* ── 공부 일지 ── */
+  .journal-date-summary { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+  .journal-ring { width: 80px; height: 80px; flex-shrink: 0; }
+  .journal-ring-track { fill: none; stroke: var(--bg4); stroke-width: 8; }
+  .journal-ring-fill { fill: none; stroke: var(--gold); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; transform: rotate(-90deg); transform-origin: 50% 50%; }
+  .journal-ring-text { font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 700; fill: var(--gold); }
+  .journal-ring-sub { font-size: 9px; fill: var(--text2); }
+  .journal-summary-right { flex: 1; min-width: 160px; }
+  .journal-rating { display: flex; gap: 6px; margin-top: 8px; }
+  .star-btn { font-size: 22px; background: none; border: none; cursor: pointer; transition: transform 0.15s; padding: 0; line-height: 1; }
+  .star-btn:hover { transform: scale(1.2); }
+  .journal-cl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 7px; margin-bottom: 16px; }
+  .journal-cl-cell { padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 11px; display: flex; align-items: center; gap: 6px; background: var(--bg3); }
+  .journal-cl-badge { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 8px; flex-shrink: 0; }
+  .badge-O { background: rgba(16,185,129,0.15); color: var(--green); }
+  .badge-D { background: rgba(91,156,246,0.15); color: var(--gold); }
+  .badge-X { background: rgba(248,113,113,0.15); color: var(--red); }
+  .badge-N { background: rgba(148,163,184,0.15); color: var(--text3); }
+  .journal-section-title { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; margin: 14px 0 8px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
+  .journal-score-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 6px; font-size: 12px; }
+  .journal-weak-row { padding: 8px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 6px; font-size: 12px; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
+  .journal-memo-area { width: 100%; min-height: 90px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: 'IBM Plex Sans KR', sans-serif; font-size: 13px; padding: 10px 12px; outline: none; resize: vertical; transition: border-color 0.2s; line-height: 1.7; }
+  .journal-memo-area:focus { border-color: var(--gold); }
+  .journal-memo-area::placeholder { color: var(--text3); }
+  .journal-heatmap { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
+  .heatmap-cell { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .heatmap-dot { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; cursor: pointer; transition: transform 0.15s; border: 1px solid var(--border); }
+  .heatmap-dot:hover { transform: scale(1.1); }
+  .heatmap-label { font-size: 9px; color: var(--text3); font-family: 'IBM Plex Mono', monospace; }
+  .heatmap-dot.pct-0  { background: var(--bg4); color: var(--text3); }
+  .heatmap-dot.pct-low  { background: rgba(91,156,246,0.2); color: var(--gold); }
+  .heatmap-dot.pct-mid  { background: rgba(91,156,246,0.45); color: var(--gold); }
+  .heatmap-dot.pct-high { background: var(--gold); color: #fff; }
+  .journal-empty { text-align: center; padding: 20px; color: var(--text3); font-size: 12px; }
   @media (max-width: 600px) {
     .header-top { flex-direction: column; gap: 8px; }
     .dday-box { justify-content: space-between; }
@@ -280,6 +314,7 @@
     <button class="tab-btn" data-tab="scores">점수 추이</button>
     <button class="tab-btn" data-tab="weak">약점노트</button>
     <button class="tab-btn" data-tab="curriculum">커리큘럼</button>
+    <button class="tab-btn" data-tab="journal">공부 일지</button>
   </nav>
 </header>
 
@@ -562,7 +597,25 @@
         <div class="principle-item"><div class="principle-item-num">원칙 4</div><div class="principle-item-text">컨디션이 실력</div></div>
       </div>
     </div>
+  
+  <!-- ── 공부 일지 ── -->
+  <div class="tab-panel" id="tab-journal">
+    <div class="card">
+      <div class="card-title">최근 14일 완성도</div>
+      <div class="journal-heatmap" id="journal-heatmap"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">날짜별 공부 일지</div>
+      <div class="date-nav" style="margin-bottom:12px;">
+        <button class="date-nav-btn" id="jn-prev">◀</button>
+        <span class="date-nav-label" id="jn-date-label"></span>
+        <button class="date-nav-btn" id="jn-next" disabled>▶</button>
+        <button class="date-today-btn" id="jn-today">오늘</button>
+      </div>
+      <div id="journal-day-content"></div>
+    </div>
   </div>
+</div>
 </main>
 
 <div id="toast">저장됨</div>
@@ -663,6 +716,7 @@ function defaultData() {
     lectureTracker: { total: 0, done: 0, avgMin: 60, dailyHours: 3 },
     scoreLines: { failLine: 16, targetLine: 30 },
     prepChecklist: { '수험표': false, '신분증': false, '컴퓨터용 사인펜': false, '수정테이프': false, '아날로그 손목시계': false, '여벌 옷': false },
+    studyLog: {},
     _updatedAt: 0,
   };
 }
@@ -680,6 +734,7 @@ function migrateData(d) {
   if (!d.lectureTracker) d.lectureTracker = { total: 0, done: 0, avgMin: 60, dailyHours: 3 };
   if (!d.scoreLines) d.scoreLines = { failLine: 16, targetLine: 30 };
   if (!d.prepChecklist) d.prepChecklist = { '수험표': false, '신분증': false, '컴퓨터용 사인펜': false, '수정테이프': false, '아날로그 손목시계': false, '여벌 옷': false };
+  if (!d.studyLog) d.studyLog = {};
   return d;
 }
 
@@ -995,19 +1050,19 @@ function renderScoreChart() {
   let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
   [0, 10, 20, 30, 40].forEach(v => {
     const y = yS(v);
-    svg += `<line x1="${PAD.left}" y1="${y}" x2="${W - PAD.right}" y2="${y}" stroke="#2a3a52" stroke-width="1"/>`;
-    svg += `<text x="${PAD.left - 6}" y="${y + 4}" fill="#556070" font-size="10" text-anchor="end" font-family="IBM Plex Mono,monospace">${v}</text>`;
+    svg += `<line x1="${PAD.left}" y1="${y}" x2="${W - PAD.right}" y2="${y}" stroke="#c4d9f8" stroke-width="1"/>`;
+    svg += `<text x="${PAD.left - 6}" y="${y + 4}" fill="#8aaad4" font-size="10" text-anchor="end" font-family="IBM Plex Mono,monospace">${v}</text>`;
   });
   const yFail = yS(failLine);
-  svg += `<line x1="${PAD.left}" y1="${yFail}" x2="${W - PAD.right}" y2="${yFail}" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.9"/>`;
-  svg += `<text x="${PAD.left + 4}" y="${yFail - 4}" fill="#ff6b6b" font-size="9" font-family="IBM Plex Mono,monospace">과락(${failLine})</text>`;
+  svg += `<line x1="${PAD.left}" y1="${yFail}" x2="${W - PAD.right}" y2="${yFail}" stroke="#f87171" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.9"/>`;
+  svg += `<text x="${PAD.left + 4}" y="${yFail - 4}" fill="#f87171" font-size="9" font-family="IBM Plex Mono,monospace">과락(${failLine})</text>`;
   const yTarget = yS(targetLine);
-  svg += `<line x1="${PAD.left}" y1="${yTarget}" x2="${W - PAD.right}" y2="${yTarget}" stroke="#e6b450" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.9"/>`;
-  svg += `<text x="${PAD.left + 4}" y="${yTarget - 4}" fill="#e6b450" font-size="9" font-family="IBM Plex Mono,monospace">목표(${targetLine})</text>`;
+  svg += `<line x1="${PAD.left}" y1="${yTarget}" x2="${W - PAD.right}" y2="${yTarget}" stroke="#5b9cf6" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.9"/>`;
+  svg += `<text x="${PAD.left + 4}" y="${yTarget - 4}" fill="#5b9cf6" font-size="9" font-family="IBM Plex Mono,monospace">목표(${targetLine})</text>`;
   const step = Math.max(1, Math.floor(dates.length / 6));
   dates.forEach((d, i) => {
     if (i % step === 0 || i === dates.length - 1)
-      svg += `<text x="${xS(i)}" y="${H - 4}" fill="#556070" font-size="9" text-anchor="middle" font-family="IBM Plex Mono,monospace">${d.slice(5)}</text>`;
+      svg += `<text x="${xS(i)}" y="${H - 4}" fill="#8aaad4" font-size="9" text-anchor="middle" font-family="IBM Plex Mono,monospace">${d.slice(5)}</text>`;
   });
   SUB_ORDER.forEach(sub => {
     const pts = data.scores.filter(s => s.sub === sub).map(s => ({ x: xS(dates.indexOf(s.date)), y: yS(s.val), val: s.val }));
@@ -1237,6 +1292,136 @@ document.getElementById('tracker-calc-btn').addEventListener('click', () => {
   `;
 });
 
+// ── 공부 일지 ─────────────────────────────────────────────────────────────────
+let jnViewDate = todayStr();
+
+function clDayPct(dateStr) {
+  const checks = data.checklist[dateStr] || {};
+  const o = CHECKLIST_ITEMS.filter(i => checks[i.id] === 'O').length;
+  const answered = CHECKLIST_ITEMS.filter(i => checks[i.id]).length;
+  return answered === 0 ? null : Math.round(o / CHECKLIST_ITEMS.length * 100);
+}
+
+function renderJournalHeatmap() {
+  const wrap = document.getElementById('journal-heatmap');
+  if (!wrap) return;
+  const days = [];
+  for (let i = 13; i >= 0; i--) days.push(addDays(todayStr(), -i));
+  const DAY_KO = ['일','월','화','수','목','금','토'];
+  wrap.innerHTML = days.map(d => {
+    const pct = clDayPct(d);
+    const cls = pct === null ? 'pct-0' : pct >= 75 ? 'pct-high' : pct >= 40 ? 'pct-mid' : 'pct-low';
+    const label = pct === null ? '·' : pct + '%';
+    const dow = DAY_KO[new Date(d).getDay()];
+    return `<div class="heatmap-cell">
+      <div class="heatmap-dot ${cls}" title="${d}" data-date="${d}">${label}</div>
+      <div class="heatmap-label">${d.slice(8)} ${dow}</div>
+    </div>`;
+  }).join('');
+  wrap.querySelectorAll('.heatmap-dot').forEach(el => {
+    el.addEventListener('click', () => {
+      jnViewDate = el.dataset.date;
+      renderJournalDay();
+      document.querySelector('[data-tab="journal"]').click();
+    });
+  });
+}
+
+function renderJournalDay() {
+  document.getElementById('jn-date-label').textContent = fmtDate(jnViewDate);
+  document.getElementById('jn-next').disabled = jnViewDate >= todayStr();
+  const wrap = document.getElementById('journal-day-content');
+
+  const checks = data.checklist[jnViewDate] || {};
+  const oCount = CHECKLIST_ITEMS.filter(i => checks[i.id] === 'O').length;
+  const answeredCount = CHECKLIST_ITEMS.filter(i => checks[i.id]).length;
+  const pct = answeredCount > 0 ? Math.round(oCount / CHECKLIST_ITEMS.length * 100) : 0;
+  const R = 30, C = 40;
+  const circ = 2 * Math.PI * R;
+  const offset = circ - (pct / 100) * circ;
+
+  const log = data.studyLog[jnViewDate] || { memo: '', rating: 0 };
+  const EMOJIS = ['', '😫', '😕', '😐', '😊', '🔥'];
+  const stars = [1,2,3,4,5].map(n =>
+    `<button class="star-btn" data-rating="${n}" title="${['','힘들었어요','아쉬워요','보통이에요','잘했어요','완벽해요!'][n]}">${n <= (log.rating||0) ? '⭐' : '☆'}</button>`
+  ).join('');
+
+  const dayScores = data.scores.filter(s => s.date === jnViewDate);
+  const dayWeak = data.weak.filter(w => {
+    if (!w.createdAt) return false;
+    const d = new Date(w.createdAt);
+    return d.toISOString().slice(0,10) === jnViewDate;
+  });
+
+  const clGrid = CHECKLIST_ITEMS.map(item => {
+    const v = checks[item.id];
+    const cls = v ? `badge-${v}` : 'badge-N';
+    const label = v || '·';
+    return `<div class="journal-cl-cell"><span class="journal-cl-badge ${cls}">${label}</span><span>${item.text}</span></div>`;
+  }).join('');
+
+  const scoresHtml = dayScores.length ? dayScores.map(s => {
+    const color = {'헌법':'#f59e0b','형사법':'#5b9cf6','형사소송법':'#a78bfa','경찰학':'#10b981'}[s.sub] || '#8aaad4';
+    return `<div class="journal-score-row"><span class="tag tag-${subTagClass(s.sub)}">${s.sub}</span><span style="flex:1"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:${color}">${s.val}</span><span style="font-size:11px;color:var(--text3)">점</span></div>`;
+  }).join('') : `<div class="journal-empty">이 날 기록된 점수가 없습니다.</div>`;
+
+  const weakHtml = dayWeak.length ? dayWeak.map(w =>
+    `<div class="journal-weak-row"><span class="tag tag-${subTagClass(w.sub)}">${w.sub}</span><span style="flex:1">${escHtml(w.tx)}</span></div>`
+  ).join('') : `<div class="journal-empty">이 날 등록된 약점이 없습니다.</div>`;
+
+  wrap.innerHTML = `
+    <div class="journal-date-summary">
+      <svg class="journal-ring" viewBox="0 0 80 80">
+        <circle class="journal-ring-track" cx="${C}" cy="${C}" r="${R}"/>
+        <circle class="journal-ring-fill" cx="${C}" cy="${C}" r="${R}"
+          stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+        <text class="journal-ring-text" x="${C}" y="${C+5}" text-anchor="middle">${pct}%</text>
+        <text class="journal-ring-sub" x="${C}" y="${C+17}" text-anchor="middle">완성도</text>
+      </svg>
+      <div class="journal-summary-right">
+        <div style="font-size:12px;color:var(--text2);">O ${oCount} / ${CHECKLIST_ITEMS.length} 항목 완료</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:3px;">오늘의 만족도</div>
+        <div class="journal-rating" id="jn-stars">${stars}</div>
+      </div>
+    </div>
+    <div class="journal-section-title">체크리스트 현황</div>
+    <div class="journal-cl-grid">${clGrid}</div>
+    <div class="journal-section-title">점수 기록</div>
+    ${scoresHtml}
+    <div class="journal-section-title">등록한 약점</div>
+    ${weakHtml}
+    <div class="journal-section-title">부족했던 부분 / 보완할 점</div>
+    <textarea class="journal-memo-area" id="jn-memo" placeholder="오늘 공부하면서 부족했던 부분, 내일 보완할 점을 적어두세요…">${escHtml(log.memo || '')}</textarea>
+    <div style="text-align:right;margin-top:6px;">
+      <button class="btn-primary" id="jn-save-btn" style="font-size:12px;padding:6px 14px;">일지 저장</button>
+    </div>
+  `;
+
+  // star rating
+  wrap.querySelectorAll('.star-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const r = parseInt(btn.dataset.rating);
+      if (!data.studyLog[jnViewDate]) data.studyLog[jnViewDate] = { memo: '', rating: 0 };
+      data.studyLog[jnViewDate].rating = r;
+      save();
+      renderJournalDay();
+    });
+  });
+
+  // memo save
+  document.getElementById('jn-save-btn').addEventListener('click', () => {
+    const memo = document.getElementById('jn-memo').value;
+    if (!data.studyLog[jnViewDate]) data.studyLog[jnViewDate] = { memo: '', rating: 0 };
+    data.studyLog[jnViewDate].memo = memo;
+    save();
+    showToast();
+  });
+}
+
+document.getElementById('jn-prev').addEventListener('click', () => { jnViewDate = addDays(jnViewDate, -1); renderJournalDay(); });
+document.getElementById('jn-next').addEventListener('click', () => { if (jnViewDate < todayStr()) { jnViewDate = addDays(jnViewDate, 1); renderJournalDay(); } });
+document.getElementById('jn-today').addEventListener('click', () => { jnViewDate = todayStr(); renderJournalDay(); });
+
 function renderAll() {
   renderHeader();
   renderStageBadge();
@@ -1249,6 +1434,8 @@ function renderAll() {
   renderWeak();
   initTrackerInputs();
   updateTimerDisplay();
+  renderJournalHeatmap();
+  renderJournalDay();
 }
 
 renderAll();
