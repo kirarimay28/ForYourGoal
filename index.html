@@ -293,6 +293,27 @@
     .tracker-inputs { flex-direction: column; }
     .principle-list { flex-direction: column; }
   }
+
+  /* ── 튜토리얼 ── */
+  .tutorial-piece { position:fixed; background:rgba(15,30,60,0.55); z-index:9000; pointer-events:all; transition:all 0.25s ease; }
+  .tutorial-ring { position:fixed; z-index:9001; pointer-events:none; border-radius:10px; border:2.5px solid #3aa3d8; box-shadow:0 0 0 3px rgba(58,163,216,0.25); transition:all 0.25s ease; }
+  .tutorial-card { position:fixed; z-index:9002; background:#fff; border-radius:16px; padding:20px 22px 16px; width:300px; box-shadow:0 8px 32px rgba(0,0,0,0.18); }
+  .tutorial-step-label { font-size:11px; font-weight:700; color:var(--gold); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+  .tutorial-title { font-size:15px; font-weight:700; color:var(--text); margin-bottom:8px; line-height:1.3; }
+  .tutorial-desc { font-size:13px; color:var(--text2); line-height:1.75; }
+  .tutorial-dots { display:flex; gap:5px; justify-content:center; margin:14px 0 12px; }
+  .tutorial-dot { width:7px; height:7px; border-radius:50%; background:var(--border2); transition:background 0.2s; flex-shrink:0; }
+  .tutorial-dot.active { background:var(--gold); width:18px; border-radius:4px; }
+  .tutorial-btns { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .tut-prev { background:var(--bg3); border:1px solid var(--border); border-radius:8px; color:var(--text2); font-size:12px; font-weight:600; padding:7px 14px; cursor:pointer; transition:all 0.15s; font-family:'IBM Plex Sans KR',sans-serif; }
+  .tut-prev:hover { border-color:var(--gold); color:var(--gold); }
+  .tut-prev:disabled { opacity:0.35; cursor:default; }
+  .tut-next { background:var(--gold); border:none; border-radius:8px; color:#fff; font-size:13px; font-weight:700; padding:8px 20px; cursor:pointer; transition:background 0.15s; font-family:'IBM Plex Sans KR',sans-serif; box-shadow:0 2px 8px rgba(58,163,216,0.3); }
+  .tut-next:hover { background:var(--gold2); }
+  .tut-close { position:absolute; top:12px; right:14px; background:none; border:none; font-size:16px; color:var(--text3); cursor:pointer; padding:2px 4px; line-height:1; }
+  .tut-close:hover { color:var(--text); }
+  .tut-open-btn { font-size:11px; color:var(--gold); background:var(--gold-dim); border:1px solid var(--border2); border-radius:10px; padding:3px 10px; cursor:pointer; font-family:'IBM Plex Sans KR',sans-serif; font-weight:600; transition:all 0.15s; margin-top:5px; display:inline-block; }
+  .tut-open-btn:hover { background:var(--gold); color:#fff; }
 </style>
 </head>
 <body>
@@ -302,6 +323,7 @@
     <div class="header-title">
       <h1>For Your Goal<span class="sync-dot offline" id="sync-dot" title="동기화 상태"></span></h1>
       <p class="daily-quote" id="daily-quote"></p>
+      <button class="tut-open-btn" id="tut-open-btn">📖 튜토리얼</button>
     </div>
     <div class="dday-box">
       <div>
@@ -1448,7 +1470,192 @@ renderAll();
 
 window.addEventListener('resize', () => {
   if (document.getElementById('tab-scores').classList.contains('active')) renderScoreChart();
+  if (tutorialActive) positionTutorial(tutStep);
 });
+
+// ── 튜토리얼 ─────────────────────────────────────────────────────────────────
+const TUTORIAL_STEPS = [
+  {
+    title: '🎉 For Your Goal에 오신 걸 환영해요!',
+    desc: '경찰 시험 합격까지 함께할 공부 대시보드예요. 주요 기능을 빠르게 둘러볼게요. (약 1분)',
+    el: null,
+  },
+  {
+    title: 'D-Day 카운터',
+    desc: '시험일을 입력하면 남은 날짜를 자동 계산해요. 날짜 칸을 클릭해서 변경할 수 있어요.',
+    el: '.dday-box',
+  },
+  {
+    title: '자가진단 체크리스트',
+    desc: '매일 공부 항목을 O / △ / X / 없음으로 체크하세요. 전날 △·X 항목은 다음 날 이월로 표시돼요.',
+    el: '[data-tab="checklist"]',
+    tabTo: 'checklist',
+  },
+  {
+    title: '회독 진행률',
+    desc: '과목별 이론·기출 회독 수를 + / − 버튼으로 기록하세요. 목표 회독수는 숫자를 클릭하면 수정 가능해요.',
+    el: '[data-tab="hoedok"]',
+    tabTo: 'hoedok',
+  },
+  {
+    title: '점수 추이 차트',
+    desc: '모의고사 점수를 날짜별로 기록하면 과목별 추이 차트가 그려져요. 과락선(기본 16점)·목표선도 설정할 수 있어요.',
+    el: '[data-tab="scores"]',
+    tabTo: 'scores',
+  },
+  {
+    title: '실전 타이머',
+    desc: '점수 추이 탭 하단에 있어요. 기본 75분으로 설정된 카운트다운 타이머로 모의고사 시간 감각을 익혀요.',
+    el: '#timer-display',
+    tabTo: 'scores',
+  },
+  {
+    title: '약점노트',
+    desc: '틀린 개념·판례를 등록하세요. 등록 후 3일이 지난 미해결 항목은 "오늘 복습할 약점"으로 자동 표시돼요.',
+    el: '[data-tab="weak"]',
+    tabTo: 'weak',
+  },
+  {
+    title: '커리큘럼 & 강의 트래커',
+    desc: '4단계 막바지 커리큘럼과 강의 완강 트래커가 여기 있어요. 총 강의 수와 하루 가능 시간으로 완강일을 예측해줘요.',
+    el: '[data-tab="curriculum"]',
+    tabTo: 'curriculum',
+  },
+  {
+    title: '공부 일지',
+    desc: '날짜별 완성도 링, 별점, 메모를 남겨요. 최근 14일 히트맵으로 꾸준함을 한눈에 확인할 수 있어요.',
+    el: '[data-tab="journal"]',
+    tabTo: 'journal',
+  },
+  {
+    title: '☁️ 자동 저장 & 동기화',
+    desc: '모든 데이터는 자동 저장되고 Firebase 클라우드로 동기화돼요. 모바일과 PC 어디서든 같은 데이터를 사용할 수 있어요.',
+    el: '#sync-dot',
+  },
+];
+
+const TUTORIAL_KEY = 'fyg_tutorial_seen';
+let tutorialActive = false, tutStep = 0;
+
+// overlay pieces: top / bottom / left / right + ring + card
+const tutPieces = ['tut-top','tut-bottom','tut-left','tut-right'].map(id => {
+  const d = document.createElement('div');
+  d.id = id; d.className = 'tutorial-piece'; d.style.display = 'none';
+  document.body.appendChild(d);
+  return d;
+});
+const tutRing = document.createElement('div');
+tutRing.className = 'tutorial-ring'; tutRing.style.display = 'none';
+document.body.appendChild(tutRing);
+
+const tutCard = document.createElement('div');
+tutCard.className = 'tutorial-card'; tutCard.style.display = 'none'; tutCard.style.position = 'fixed';
+document.body.appendChild(tutCard);
+
+function positionTutorial(stepIdx) {
+  const step = TUTORIAL_STEPS[stepIdx];
+  const PAD = 7;
+
+  // switch tab if needed
+  if (step.tabTo) {
+    const btn = document.querySelector(`[data-tab="${step.tabTo}"]`);
+    if (btn && !btn.classList.contains('active')) btn.click();
+  }
+
+  const targetEl = step.el ? document.querySelector(step.el) : null;
+
+  if (!targetEl) {
+    // full overlay, centered card
+    tutPieces[0].style.cssText = 'position:fixed;inset:0;display:block;';
+    tutPieces[1].style.display = tutPieces[2].style.display = tutPieces[3].style.display = 'none';
+    tutRing.style.display = 'none';
+  } else {
+    targetEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    setTimeout(() => {
+      const r = targetEl.getBoundingClientRect();
+      const t = Math.max(r.top - PAD, 0);
+      const b = Math.min(r.bottom + PAD, window.innerHeight);
+      const l = Math.max(r.left - PAD, 0);
+      const ri = Math.min(r.right + PAD, window.innerWidth);
+      const H = window.innerHeight, W = window.innerWidth;
+
+      tutPieces[0].style.cssText = `position:fixed;top:0;left:0;right:0;height:${t}px;display:block;`;
+      tutPieces[1].style.cssText = `position:fixed;top:${b}px;left:0;right:0;bottom:0;display:block;`;
+      tutPieces[2].style.cssText = `position:fixed;top:${t}px;left:0;width:${l}px;height:${b-t}px;display:block;`;
+      tutPieces[3].style.cssText = `position:fixed;top:${t}px;left:${ri}px;right:0;height:${b-t}px;display:block;`;
+
+      tutRing.style.cssText = `display:block;top:${t}px;left:${l}px;width:${ri-l}px;height:${b-t}px;`;
+
+      // position card: below target if space, else above
+      const cardH = 230, cardW = 300;
+      let cy = b + 12;
+      if (cy + cardH > H - 10) cy = t - cardH - 12;
+      if (cy < 10) cy = Math.min(t + 10, H - cardH - 10);
+      let cx = l;
+      if (cx + cardW > W - 10) cx = W - cardW - 10;
+      if (cx < 10) cx = 10;
+      tutCard.style.top = cy + 'px';
+      tutCard.style.left = cx + 'px';
+    }, step.tabTo ? 120 : 0);
+  }
+
+  if (!targetEl) {
+    tutCard.style.top = '50%';
+    tutCard.style.left = '50%';
+    tutCard.style.transform = 'translate(-50%,-50%)';
+  } else {
+    tutCard.style.transform = '';
+  }
+
+  // render card content
+  const total = TUTORIAL_STEPS.length;
+  const isLast = stepIdx === total - 1;
+  const dots = TUTORIAL_STEPS.map((_,i) =>
+    `<div class="tutorial-dot${i===stepIdx?' active':''}"></div>`).join('');
+
+  tutCard.style.display = 'block';
+  tutCard.innerHTML = `
+    <button class="tut-close" id="tut-close">✕</button>
+    <div class="tutorial-step-label">✦ STEP ${stepIdx+1} / ${total}</div>
+    <div class="tutorial-title">${step.title}</div>
+    <div class="tutorial-desc">${step.desc}</div>
+    <div class="tutorial-dots">${dots}</div>
+    <div class="tutorial-btns">
+      <button class="tut-prev" id="tut-prev" ${stepIdx===0?'disabled':''}>◀ 이전</button>
+      <button class="tut-next" id="tut-next">${isLast ? '완료 🎉' : '다음 ▶'}</button>
+    </div>
+  `;
+
+  document.getElementById('tut-close').onclick = hideTutorial;
+  document.getElementById('tut-prev').onclick = () => { if (tutStep > 0) { tutStep--; positionTutorial(tutStep); } };
+  document.getElementById('tut-next').onclick = () => {
+    if (isLast) { hideTutorial(); }
+    else { tutStep++; positionTutorial(tutStep); }
+  };
+
+  // close on overlay click
+  tutPieces.forEach(p => { p.onclick = hideTutorial; });
+}
+
+function showTutorial() {
+  tutorialActive = true; tutStep = 0;
+  positionTutorial(0);
+  localStorage.setItem(TUTORIAL_KEY, '1');
+}
+
+function hideTutorial() {
+  tutorialActive = false;
+  tutPieces.forEach(p => { p.style.display = 'none'; });
+  tutRing.style.display = 'none';
+  tutCard.style.display = 'none';
+}
+
+document.getElementById('tut-open-btn').addEventListener('click', showTutorial);
+
+// 첫 방문 시 자동 실행
+if (!localStorage.getItem(TUTORIAL_KEY)) {
+  setTimeout(showTutorial, 800);
+}
 </script>
 </body>
 </html>
