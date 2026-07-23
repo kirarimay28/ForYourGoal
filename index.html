@@ -379,10 +379,14 @@ main{padding:18px 16px 0;}
 
         <!-- 기출 풀이 입력 -->
         <div id="bank-past-form" style="display:none;">
-          <p class="bank-desc">문제와 답지가 담긴 기출 PDF를 올리면, 문제를 뽑아 풀 수 있게 만들어줘요.</p>
-          <label class="bank-file" id="past-file-label">
-            <input type="file" accept="application/pdf" id="past-file" onchange="onFilePick('past')" hidden>
-            <span id="past-file-name">📎 기출+답지 PDF 선택하기</span>
+          <p class="bank-desc">문제 PDF와 답지 PDF를 각각 올리면, 문제를 뽑아 풀 수 있게 만들어줘요.</p>
+          <label class="bank-file" id="pastq-file-label">
+            <input type="file" accept="application/pdf" id="pastq-file" onchange="onFilePick('pastq')" hidden>
+            <span id="pastq-file-name">📎 ① 문제 PDF 선택하기</span>
+          </label>
+          <label class="bank-file" id="pasta-file-label">
+            <input type="file" accept="application/pdf" id="pasta-file" onchange="onFilePick('pasta')" hidden>
+            <span id="pasta-file-name">📎 ② 답지 PDF 선택하기</span>
           </label>
           <button class="btn" onclick="makePast()">문제 불러오기 📄</button>
         </div>
@@ -444,10 +448,10 @@ main{padding:18px 16px 0;}
       <div class="card">
         <div class="set-group">
           <h3>🤖 AI 문제은행 설정</h3>
-          <p class="bank-desc" style="margin-bottom:10px;">문제은행 기능은 Claude(Anthropic) API 키가 필요해요. <br>키는 이 기기 브라우저에만 저장돼요.</p>
-          <div class="field"><input id="set-apikey" type="password" placeholder="sk-ant-... API 키 입력" autocapitalize="off"></div>
+          <p class="bank-desc" style="margin-bottom:10px;">문제은행은 Google Gemini API 키가 필요해요 (무료!). <br>키는 이 기기 브라우저에만 저장돼요.</p>
+          <div class="field"><input id="set-apikey" type="password" placeholder="AIza... API 키 입력" autocapitalize="off"></div>
           <button class="btn" onclick="saveApiKey()">API 키 저장</button>
-          <p style="font-size:11px; color:var(--text3); margin:9px 0 0; line-height:1.5;">키 발급: console.anthropic.com → API Keys. 사용량에 따라 요금이 부과돼요.</p>
+          <p style="font-size:11px; color:var(--text3); margin:9px 0 0; line-height:1.5;">키 발급: aistudio.google.com → "Get API key". 무료 티어로 카드 등록 없이 쓸 수 있어요.</p>
         </div>
       </div>
       <div class="card">
@@ -843,19 +847,20 @@ window.deleteAccount=async()=>{
   }catch(e){console.error(e);$('#set-msg').textContent='탈퇴 중 오류가 발생했어요';}
 };
 
-// ══════════ 문제은행 (Claude AI) ══════════
+// ══════════ 문제은행 (Google Gemini · 무료) ══════════
 let bankMode='variant';
-let bankFiles={variant:null, past:null};
+let bankFiles={variant:null, pastq:null, pasta:null};
 let currentQuiz=null, userAnswers=[], quizGraded=false;
+const FILE_LABELS={variant:'📎 개념 PDF 선택하기', pastq:'📎 ① 문제 PDF 선택하기', pasta:'📎 ② 답지 PDF 선택하기'};
 
 window.saveApiKey=()=>{
   const k=$('#set-apikey').value.trim();
   if(!k){toast('API 키를 입력해주세요');return;}
-  localStorage.setItem('mymo_anthropic_key',k);
+  localStorage.setItem('mymo_gemini_key',k);
   $('#set-apikey').value='';
   toast('API 키가 저장됐어요 🤖');
 };
-function hasKey(){return !!localStorage.getItem('mymo_anthropic_key');}
+function hasKey(){return !!localStorage.getItem('mymo_gemini_key');}
 
 window.setBankMode=(m)=>{
   bankMode=m;
@@ -870,24 +875,31 @@ window.onFilePick=(which)=>{
   bankFiles[which]=f||null;
   const lbl=$('#'+which+'-file-label'); const nm=$('#'+which+'-file-name');
   if(f){ lbl.classList.add('has'); nm.textContent='✅ '+f.name; }
-  else{ lbl.classList.remove('has'); nm.textContent=which==='variant'?'📎 개념 PDF 선택하기':'📎 기출+답지 PDF 선택하기'; }
+  else{ lbl.classList.remove('has'); nm.textContent=FILE_LABELS[which]; }
 };
 function fileToB64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});}
 
-async function callClaude(system, userText, pdfB64){
-  const key=localStorage.getItem('mymo_anthropic_key');
+// pdfs: array of base64 strings
+async function callAI(system, userText, pdfs){
+  const key=localStorage.getItem('mymo_gemini_key');
   if(!key) throw new Error('NO_KEY');
-  const content=[];
-  if(pdfB64) content.push({type:'document', source:{type:'base64', media_type:'application/pdf', data:pdfB64}});
-  content.push({type:'text', text:userText});
-  const res=await fetch('https://api.anthropic.com/v1/messages',{
+  const parts=[];
+  (pdfs||[]).forEach(b64=>parts.push({inline_data:{mime_type:'application/pdf', data:b64}}));
+  parts.push({text:userText});
+  const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key),{
     method:'POST',
-    headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-opus-4-8', max_tokens:8000, system, messages:[{role:'user', content}]})
+    headers:{'content-type':'application/json'},
+    body:JSON.stringify({
+      system_instruction:{parts:[{text:system}]},
+      contents:[{parts}],
+      generationConfig:{maxOutputTokens:8000, responseMimeType:'application/json'}
+    })
   });
   if(!res.ok){ const t=await res.text(); throw new Error('API '+res.status+': '+t.slice(0,200)); }
   const data=await res.json();
-  return (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+  const cand=data.candidates&&data.candidates[0];
+  if(!cand) throw new Error('AI 응답이 비어있어요');
+  return (cand.content&&cand.content.parts||[]).map(p=>p.text||'').join('');
 }
 function parseQuizJSON(txt){
   try{ return JSON.parse(txt); }
@@ -898,40 +910,42 @@ function bankLoading(on){
   document.querySelectorAll('#p-bank .btn').forEach(b=>b.disabled=on);
 }
 
-async function runBank(which, buildPrompt){
+async function runBank(fileKeys, buildPrompt){
   const msg=$('#bank-msg'); msg.textContent='';
   if(!hasKey()){ msg.textContent='먼저 설정 탭에서 API 키를 입력해주세요 🤖'; nav('set'); return; }
-  const f=bankFiles[which];
-  if(!f){ msg.textContent='PDF 파일을 먼저 선택해주세요'; return; }
+  for(const k of fileKeys){ if(!bankFiles[k]){ msg.textContent='PDF 파일을 모두 선택해주세요'; return; } }
   bankLoading(true); $('#quiz-card').style.display='none';
   try{
-    const b64=await fileToB64(f);
-    const {system, user}=buildPrompt();
-    const out=await callClaude(system, user, b64);
+    const pdfs=await Promise.all(fileKeys.map(k=>fileToB64(bankFiles[k])));
+    const {system, user, type}=buildPrompt();
+    const out=await callAI(system, user, pdfs);
     const parsed=parseQuizJSON(out);
     const items=(parsed.questions||[]).filter(q=>q&&q.q&&Array.isArray(q.choices)&&q.choices.length);
     if(!items.length) throw new Error('문제를 만들지 못했어요. 다른 PDF로 시도해보세요');
-    currentQuiz={items, type:which}; userAnswers=new Array(items.length).fill(-1); quizGraded=false;
+    currentQuiz={items, type}; userAnswers=new Array(items.length).fill(-1); quizGraded=false;
     renderQuiz();
   }catch(e){
     console.error(e);
-    if(String(e.message).includes('NO_KEY')) msg.textContent='API 키가 없어요. 설정 탭에서 입력해주세요';
-    else if(String(e.message).includes('401')) msg.textContent='API 키가 올바르지 않아요 🔑';
-    else if(String(e.message).includes('429')) msg.textContent='요청이 많아요. 잠시 후 다시 시도해주세요';
-    else msg.textContent='오류: '+e.message;
+    const m=String(e.message);
+    if(m.includes('NO_KEY')) msg.textContent='API 키가 없어요. 설정 탭에서 입력해주세요';
+    else if(m.includes('400')||m.includes('403')) msg.textContent='API 키가 올바르지 않아요 🔑';
+    else if(m.includes('429')) msg.textContent='무료 사용량을 초과했어요. 잠시 후 다시 시도해주세요';
+    else msg.textContent='오류: '+m;
   }finally{ bankLoading(false); }
 }
 
-window.makeVariant=()=>runBank('variant',()=>{
+window.makeVariant=()=>runBank(['variant'],()=>{
   const n=$('#variant-count').value, diff=$('#variant-diff').value;
   return {
+    type:'variant',
     system:'너는 한국 경찰공무원·자격증 수험 전문 출제자야. 첨부된 개념 자료를 정확히 이해하고, 핵심을 묻는 질 높은 5지선다 변형문제를 출제해. 반드시 유효한 JSON만 출력하고 그 외 텍스트는 절대 넣지 마.',
-    user:`첨부한 개념 PDF 내용을 바탕으로 5지선다 객관식 변형문제 ${n}개를 만들어줘. 난이도: ${diff}. \n아래 JSON 형식으로만 출력(코드블록·설명 없이):\n{"questions":[{"q":"문제 지문","choices":["① 선택지","② 선택지","③ 선택지","④ 선택지","⑤ 선택지"],"answer":2,"explanation":"정답 해설"}]}\nanswer는 정답 선택지의 0부터 시작하는 인덱스야. choices에는 번호(①~⑤)를 포함해줘.`
+    user:`첨부한 개념 PDF 내용을 바탕으로 5지선다 객관식 변형문제 ${n}개를 만들어줘. 난이도: ${diff}. \n아래 JSON 형식으로만 출력:\n{"questions":[{"q":"문제 지문","choices":["① 선택지","② 선택지","③ 선택지","④ 선택지","⑤ 선택지"],"answer":2,"explanation":"정답 해설"}]}\nanswer는 정답 선택지의 0부터 시작하는 인덱스야. choices에는 번호(①~⑤)를 포함해줘.`
   };
 });
-window.makePast=()=>runBank('past',()=>({
-  system:'너는 한국 수험 문제 정리 도우미야. 첨부된 기출문제 PDF에서 문제와 (답지의) 정답을 정확히 추출해. 반드시 유효한 JSON만 출력하고 그 외 텍스트는 절대 넣지 마.',
-  user:`첨부한 PDF는 기출문제와 답지야. 문제와 정답을 추출해서 아래 JSON 형식으로만 출력(코드블록·설명 없이):\n{"questions":[{"q":"문제 지문","choices":["① 선택지","② 선택지","③ 선택지","④ 선택지"],"answer":0,"explanation":"해설(있으면)"}]}\n답지에 표기된 정답을 answer(0부터 시작하는 인덱스)로 넣어줘. 최대 20문제까지. 선택지가 없는 주관식은 제외해.`
+window.makePast=()=>runBank(['pastq','pasta'],()=>({
+  type:'past',
+  system:'너는 한국 수험 문제 정리 도우미야. 첫 번째 PDF는 문제지, 두 번째 PDF는 답지야. 문제지의 각 문제를 답지의 정답과 정확히 매칭해서 추출해. 반드시 유효한 JSON만 출력하고 그 외 텍스트는 절대 넣지 마.',
+  user:`첨부한 두 PDF 중 첫 번째는 문제지, 두 번째는 답지야. 문제지의 문제를 답지의 정답과 맞춰서 아래 JSON 형식으로만 출력:\n{"questions":[{"q":"문제 지문","choices":["① 선택지","② 선택지","③ 선택지","④ 선택지"],"answer":0,"explanation":"해설(있으면)"}]}\n답지에 표기된 정답 번호를 answer(0부터 시작하는 인덱스)로 넣어줘. 최대 20문제까지. 선택지가 없는 주관식은 제외해.`
 }));
 
 function renderQuiz(){
