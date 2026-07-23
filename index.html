@@ -199,6 +199,16 @@ main{padding:18px 16px 0;}
 .quiz-score{text-align:center; padding:20px; margin-top:16px; border-radius:18px; background:linear-gradient(135deg,#fff0f6,#fff7fb); border:2px solid var(--pink-soft);}
 .quiz-score .big{font-size:34px; font-weight:900; color:var(--pink);}
 .quiz-score .lbl{font-size:13px; color:var(--text2); font-weight:700; margin-top:2px;}
+.hist-list{display:flex; flex-direction:column; gap:9px;}
+.hist-row{display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:15px; background:var(--pink-bg); border:2px solid var(--pink-soft); cursor:pointer; transition:all .2s;}
+.hist-row:active{transform:scale(.99);}
+.hist-badge{font-size:12px; font-weight:800; padding:6px 10px; border-radius:12px; flex-shrink:0;}
+.hist-badge.variant{background:#ffe1ec; color:var(--pink);}
+.hist-badge.past{background:#e3f0ff; color:#4a9fe0;}
+.hist-info{flex:1; min-width:0;}
+.hist-score{font-weight:900; font-size:15px; color:var(--text);}
+.hist-date{font-size:11px; color:var(--text3); font-weight:600; margin-top:1px;}
+.hist-del{color:var(--text3); font-size:18px; padding:2px 6px; flex-shrink:0;}
 
 /* ranking */
 .rank-toggle{display:flex; gap:5px; background:var(--pink-soft); padding:5px; border-radius:14px; margin-bottom:14px;}
@@ -414,6 +424,13 @@ main{padding:18px 16px 0;}
         <button class="btn" id="quiz-submit" onclick="gradeQuiz()">채점하기 ✅</button>
         <div id="quiz-result"></div>
       </div>
+
+      <!-- 풀이 기록 -->
+      <div class="card">
+        <h2>📋 지난 풀이 기록</h2>
+        <p class="sub">저장한 풀이를 눌러 다시 볼 수 있어요</p>
+        <div class="hist-list" id="history-list"></div>
+      </div>
     </div>
 
     <!-- 랭킹 -->
@@ -603,6 +620,7 @@ function bindData(){
   onValue(ref(db,'app/posts'),s=>{ posts=s.val()||{}; renderPosts(); });
   onValue(ref(db,'app/config/geminiKey'),s=>{ sharedKey=s.val()||''; renderKeyStatus(); });
   onValue(ref(db,'app/users/'+me+'/exam'),s=>{ myExam=s.val()||null; renderDday(); });
+  onValue(ref(db,'app/users/'+me+'/quizHistory'),s=>{ quizHistory=s.val()||{}; renderHistory(); });
 }
 
 // ══════════ 디데이 ══════════
@@ -1033,9 +1051,7 @@ window.pickChoice=(qi,ci)=>{
   const q=currentQuiz.items[qi];
   q.choices.forEach((_,c)=>$('#qc-'+qi+'-'+c).classList.toggle('sel',c===ci));
 };
-window.gradeQuiz=()=>{
-  if(quizGraded)return;
-  if(userAnswers.includes(-1)){ if(!confirm('아직 안 푼 문제가 있어요. 채점할까요?'))return; }
+function applyGrading(canSave){
   quizGraded=true; let correct=0;
   currentQuiz.items.forEach((q,i)=>{
     const box=$('#qq-'+i); const ans=q.answer; const my=userAnswers[i];
@@ -1053,10 +1069,51 @@ window.gradeQuiz=()=>{
     }
   });
   const total=currentQuiz.items.length; const pct=Math.round(correct/total*100);
+  currentQuiz.correct=correct; currentQuiz.total=total;
   $('#quiz-submit').style.display='none';
-  $('#quiz-result').innerHTML=`<div class="quiz-score"><div class="big">${correct} / ${total}</div><div class="lbl">정답률 ${pct}% ${pct>=80?'🎉 훌륭해요!':pct>=50?'💪 조금만 더!':'📖 복습이 필요해요'}</div></div>`;
+  let html=`<div class="quiz-score"><div class="big">${correct} / ${total}</div><div class="lbl">정답률 ${pct}% ${pct>=80?'🎉 훌륭해요!':pct>=50?'💪 조금만 더!':'📖 복습이 필요해요'}</div></div>`;
+  if(canSave) html+=`<button class="btn" style="margin-top:12px;" id="save-rec-btn" onclick="saveQuizRecord()">📋 이 풀이 기록 저장</button>`;
+  $('#quiz-result').innerHTML=html;
   $('#quiz-result').scrollIntoView({behavior:'smooth'});
+}
+window.gradeQuiz=()=>{
+  if(quizGraded)return;
+  if(userAnswers.includes(-1)){ if(!confirm('아직 안 푼 문제가 있어요. 채점할까요?'))return; }
+  applyGrading(true);
 };
+
+// ── 풀이 기록 ──
+let quizHistory={};
+window.saveQuizRecord=()=>{
+  const id='q_'+Date.now()+'_'+Math.floor(Math.random()*999);
+  set(ref(db,'app/users/'+me+'/quizHistory/'+id),{
+    at:Date.now(), type:currentQuiz.type, total:currentQuiz.total, correct:currentQuiz.correct,
+    items:currentQuiz.items, answers:userAnswers
+  });
+  const b=$('#save-rec-btn'); if(b){b.textContent='✅ 저장됨'; b.disabled=true;}
+  toast('풀이 기록을 저장했어요 📋');
+};
+function histDate(ts){const d=new Date(ts);return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+function renderHistory(){
+  const box=$('#history-list'); if(!box)return;
+  const arr=Object.entries(quizHistory).map(([id,r])=>({id,...r})).sort((a,b)=>b.at-a.at);
+  if(!arr.length){box.innerHTML='<div class="empty">아직 저장한 풀이 기록이 없어요 📋</div>';return;}
+  box.innerHTML=arr.map(r=>{
+    const pct=Math.round(r.correct/r.total*100);
+    return `<div class="hist-row" onclick="openRecord('${r.id}')">
+      <div class="hist-badge ${r.type}">${r.type==='variant'?'✏️ 변형':'📄 기출'}</div>
+      <div class="hist-info"><div class="hist-score">${r.correct}/${r.total} · ${pct}%</div><div class="hist-date">${histDate(r.at)}</div></div>
+      <div class="hist-del" onclick="delRecord(event,'${r.id}')">×</div>
+    </div>`;
+  }).join('');
+}
+window.openRecord=(id)=>{
+  const r=quizHistory[id]; if(!r)return;
+  currentQuiz={items:r.items, type:r.type, total:r.total, correct:r.correct};
+  userAnswers=r.answers||new Array(r.items.length).fill(-1); quizGraded=false;
+  renderQuiz(); applyGrading(false);
+};
+window.delRecord=(e,id)=>{ e.stopPropagation(); if(!confirm('이 기록을 삭제할까요?'))return; remove(ref(db,'app/users/'+me+'/quizHistory/'+id)); };
 
 // ══════════ NAV ══════════
 window.nav=(p)=>{
