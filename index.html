@@ -120,10 +120,17 @@ main{padding:18px 16px 0;}
 .actual-box .val{font-size:18px; font-weight:900; color:#4a9fe0;}
 .progress-line{height:8px; border-radius:8px; background:var(--pink-soft); overflow:hidden; margin:2px 0 16px;}
 .progress-line i{display:block; height:100%; border-radius:8px; background:linear-gradient(90deg,var(--mint),#5fd0a0); transition:width .6s cubic-bezier(.34,1.56,.64,1);}
-.plan-add{display:flex; gap:8px; margin-bottom:14px;}
-.plan-add input{flex:1; padding:12px 14px; border-radius:14px; border:2px solid var(--pink-line); background:var(--pink-bg); font-size:14px; outline:none; transition:all .2s;}
-.plan-add input:focus{border-color:var(--pink2); background:#fff;}
-.plan-add button{width:48px; border-radius:14px; background:linear-gradient(135deg,var(--pink),var(--pink2)); color:#fff; font-size:22px; font-weight:700; box-shadow:var(--shadow-sm);}
+.plan-form{margin-bottom:14px; padding:12px; border-radius:16px; background:linear-gradient(135deg,#fff6fa,#fffafc); border:2px solid var(--pink-soft);}
+.pf-row{display:flex; gap:8px;}
+.plan-form input,.plan-form select{flex:1; min-width:0; padding:11px 13px; border-radius:12px; border:2px solid var(--pink-line); background:#fff; font-size:14px; outline:none; transition:all .2s; color:var(--text);}
+.plan-form input:focus,.plan-form select:focus{border-color:var(--pink2);}
+.plan-form select{flex:0 0 auto; width:130px; font-weight:700;}
+.pf-add{flex:0 0 auto; width:48px; border-radius:12px; background:linear-gradient(135deg,var(--pink),var(--pink2)); color:#fff; font-size:22px; font-weight:700; box-shadow:var(--shadow-sm);}
+.plan-tags{display:flex; gap:5px; flex-wrap:wrap; margin-bottom:3px;}
+.ptag{font-size:10px; font-weight:800; padding:2px 8px; border-radius:8px;}
+.ptag.sub{background:#ffe1ec; color:var(--pink);}
+.ptag.type{background:#e3f0ff; color:#4a9fe0;}
+.plan-body{flex:1; min-width:0;}
 .plan-list{display:flex; flex-direction:column; gap:8px;}
 .plan-item{display:flex; align-items:center; gap:11px; padding:12px 13px; border-radius:15px; background:var(--pink-bg); border:2px solid var(--pink-soft); transition:all .25s; animation:slidein .3s;}
 @keyframes slidein{from{opacity:0; transform:translateX(-12px);}to{opacity:1; transform:translateX(0);}}
@@ -271,9 +278,23 @@ main{padding:18px 16px 0;}
           <span class="val" id="actual-val">0분</span>
         </div>
         <div class="progress-line"><i id="goal-progress" style="width:0%"></i></div>
-        <div class="plan-add">
-          <input id="plan-in" type="text" placeholder="할 일을 적어보세요" maxlength="40" onkeydown="if(event.key==='Enter')addPlan()">
-          <button onclick="addPlan()">+</button>
+        <div class="plan-form">
+          <div class="pf-row">
+            <input id="plan-sub" type="text" placeholder="과목 (예: 한능검)" maxlength="14">
+            <select id="plan-type" onchange="onTypeChange()">
+              <option value="강의 수강">강의 수강</option>
+              <option value="회독">회독</option>
+              <option value="단권화">단권화</option>
+              <option value="문제풀이">문제풀이</option>
+              <option value="오답정리">오답정리</option>
+              <option value="__etc">기타(직접입력)</option>
+            </select>
+          </div>
+          <input id="plan-type-etc" type="text" placeholder="공부 유형 직접 입력" maxlength="14" style="display:none; margin-top:8px;">
+          <div class="pf-row" style="margin-top:8px;">
+            <input id="plan-in" type="text" placeholder="내용 (예: 1강 수강하기)" maxlength="40" onkeydown="if(event.key==='Enter')addPlan()">
+            <button class="pf-add" onclick="addPlan()">+</button>
+          </div>
         </div>
         <div class="plan-list" id="plan-list"></div>
         <div class="st-legend"><span>⭕ 완료</span><span>🔺 부분</span><span>❌ 못함</span></div>
@@ -518,9 +539,18 @@ window.saveGoal=()=>{
   const h=parseInt($('#goal-h').value)||0, m=parseInt($('#goal-m').value)||0;
   planData.goalMin=h*60+m; savePlan(); refreshActual();
 };
+window.onTypeChange=()=>{
+  const etc=$('#plan-type').value==='__etc';
+  $('#plan-type-etc').style.display=etc?'block':'none';
+  if(etc)$('#plan-type-etc').focus();
+};
 window.addPlan=()=>{
-  const inp=$('#plan-in'); const tx=inp.value.trim(); if(!tx)return;
-  planData.items.push({tx, st:''}); inp.value=''; savePlan(); renderPlanItems();
+  const inp=$('#plan-in'); const tx=inp.value.trim(); if(!tx){toast('내용을 입력해주세요');return;}
+  const sub=$('#plan-sub').value.trim();
+  let type=$('#plan-type').value;
+  if(type==='__etc') type=$('#plan-type-etc').value.trim()||'기타';
+  planData.items.push({sub, tx, type, st:''}); inp.value='';
+  savePlan(); renderPlanItems();
 };
 window.cyclePlan=(i)=>{
   const seq=['','O','T','X']; const cur=planData.items[i].st||'';
@@ -535,7 +565,10 @@ function renderPlanItems(){
   box.innerHTML=planData.items.map((t,i)=>`
     <div class="plan-item ${t.st==='X'?'X':''}">
       <div class="plan-st ${t.st}" onclick="cyclePlan(${i})">${stChar(t.st)}</div>
-      <div class="plan-tx">${esc(t.tx)}</div>
+      <div class="plan-body">
+        ${(t.sub||t.type)?`<div class="plan-tags">${t.sub?`<span class="ptag sub">${esc(t.sub)}</span>`:''}${t.type?`<span class="ptag type">${esc(t.type)}</span>`:''}</div>`:''}
+        <div class="plan-tx">${esc(t.tx)}</div>
+      </div>
       <div class="plan-del" onclick="delPlan(${i})">×</div>
     </div>`).join('');
 }
