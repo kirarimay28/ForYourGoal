@@ -447,11 +447,13 @@ main{padding:18px 16px 0;}
       </div>
       <div class="card">
         <div class="set-group">
-          <h3>🤖 AI 문제은행 설정</h3>
-          <p class="bank-desc" style="margin-bottom:10px;">문제은행은 Google Gemini API 키가 필요해요 (무료!). <br>키는 이 기기 브라우저에만 저장돼요.</p>
-          <div class="field"><input id="set-apikey" type="password" placeholder="AIza... API 키 입력" autocapitalize="off"></div>
-          <button class="btn" onclick="saveApiKey()">API 키 저장</button>
-          <p style="font-size:11px; color:var(--text3); margin:9px 0 0; line-height:1.5;">키 발급: aistudio.google.com → "Get API key". 무료 티어로 카드 등록 없이 쓸 수 있어요.</p>
+          <h3>🤖 AI 문제은행 설정 (공유)</h3>
+          <p class="bank-desc" style="margin-bottom:10px;">한 명이 Google Gemini 키를 등록하면 <b>모든 멤버가 함께 사용</b>해요 (무료!). 다른 멤버는 아무것도 안 해도 돼요.</p>
+          <p id="key-status" style="font-size:12px; font-weight:800; margin:0 0 10px;"></p>
+          <div class="field"><input id="set-apikey" type="password" placeholder="AIza... 키 입력 (등록/교체)" autocapitalize="off"></div>
+          <button class="btn" onclick="saveApiKey()">공유 키 등록</button>
+          <button class="btn ghost" style="margin-top:8px; font-size:13px;" onclick="clearApiKey()">공유 키 삭제</button>
+          <p style="font-size:11px; color:var(--text3); margin:9px 0 0; line-height:1.5;">키 발급: aistudio.google.com → "Get API key" (무료·카드 등록 없음). ⚠️ 공유 키는 스터디 멤버가 함께 쓰는 무료 한도예요. 악용이 걱정되면 각자 키를 발급해 쓰는 게 안전해요.</p>
         </div>
       </div>
       <div class="card">
@@ -580,6 +582,7 @@ function bindData(){
   onValue(ref(db,'app/live'),s=>{ liveAll=s.val()||{}; renderLive(); updateLobbyChip(); });
   onValue(ref(db,'app/study'),s=>{ studyAll=s.val()||{}; renderRank(); refreshActual(); });
   onValue(ref(db,'app/posts'),s=>{ posts=s.val()||{}; renderPosts(); });
+  onValue(ref(db,'app/config/geminiKey'),s=>{ sharedKey=s.val()||''; renderKeyStatus(); });
 }
 function updateLobbyChip(){
   const n=Object.values(liveAll).filter(l=>l.running&&l.at&&Date.now()-l.at<70000).length;
@@ -851,16 +854,27 @@ window.deleteAccount=async()=>{
 let bankMode='variant';
 let bankFiles={variant:null, pastq:null, pasta:null};
 let currentQuiz=null, userAnswers=[], quizGraded=false;
+let sharedKey='';
 const FILE_LABELS={variant:'📎 개념 PDF 선택하기', pastq:'📎 ① 문제 PDF 선택하기', pasta:'📎 ② 답지 PDF 선택하기'};
 
+function renderKeyStatus(){
+  const el=$('#key-status'); if(!el)return;
+  if(sharedKey){ el.textContent='✅ 공유 키가 등록되어 있어요 — 바로 사용 가능!'; el.style.color='#1f9d6c'; }
+  else{ el.textContent='⚠️ 아직 공유 키가 없어요 — 등록해주세요'; el.style.color='var(--pink)'; }
+}
 window.saveApiKey=()=>{
   const k=$('#set-apikey').value.trim();
   if(!k){toast('API 키를 입력해주세요');return;}
-  localStorage.setItem('mymo_gemini_key',k);
+  set(ref(db,'app/config/geminiKey'),k);
   $('#set-apikey').value='';
-  toast('API 키가 저장됐어요 🤖');
+  toast('공유 키가 등록됐어요 🤖 모두가 쓸 수 있어요');
 };
-function hasKey(){return !!localStorage.getItem('mymo_gemini_key');}
+window.clearApiKey=()=>{
+  if(!confirm('공유 키를 삭제할까요? 모든 멤버가 문제은행을 못 쓰게 돼요.'))return;
+  remove(ref(db,'app/config/geminiKey'));
+  toast('공유 키를 삭제했어요');
+};
+function hasKey(){return !!sharedKey;}
 
 window.setBankMode=(m)=>{
   bankMode=m;
@@ -881,7 +895,7 @@ function fileToB64(file){return new Promise((res,rej)=>{const r=new FileReader()
 
 // pdfs: array of base64 strings
 async function callAI(system, userText, pdfs){
-  const key=localStorage.getItem('mymo_gemini_key');
+  const key=sharedKey;
   if(!key) throw new Error('NO_KEY');
   const parts=[];
   (pdfs||[]).forEach(b64=>parts.push({inline_data:{mime_type:'application/pdf', data:b64}}));
