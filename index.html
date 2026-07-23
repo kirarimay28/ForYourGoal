@@ -121,6 +121,11 @@ main{padding:18px 16px 0;}
 .progress-line{height:8px; border-radius:8px; background:var(--pink-soft); overflow:hidden; margin:2px 0 16px;}
 .progress-line i{display:block; height:100%; border-radius:8px; background:linear-gradient(90deg,var(--mint),#5fd0a0); transition:width .6s cubic-bezier(.34,1.56,.64,1);}
 .plan-form{margin-bottom:14px; padding:12px; border-radius:16px; background:linear-gradient(135deg,#fff6fa,#fffafc); border:2px solid var(--pink-soft);}
+.sub-chips{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:9px;}
+.sub-chips .sc{font-size:12px; font-weight:800; padding:5px 11px; border-radius:12px; background:#ffe1ec; color:var(--pink); cursor:pointer; transition:all .15s;}
+.sub-chips .sc:active{transform:scale(.92);}
+.sub-chips .sc.on{background:linear-gradient(135deg,var(--pink),var(--pink2)); color:#fff;}
+.sub-chips .sc-x{opacity:.5; margin-left:3px; font-weight:900;}
 .pf-row{display:flex; gap:8px;}
 .plan-form input,.plan-form select{flex:1; min-width:0; padding:11px 13px; border-radius:12px; border:2px solid var(--pink-line); background:#fff; font-size:14px; outline:none; transition:all .2s; color:var(--text);}
 .plan-form input:focus,.plan-form select:focus{border-color:var(--pink2);}
@@ -279,6 +284,7 @@ main{padding:18px 16px 0;}
         </div>
         <div class="progress-line"><i id="goal-progress" style="width:0%"></i></div>
         <div class="plan-form">
+          <div class="sub-chips" id="sub-chips"></div>
           <div class="pf-row">
             <input id="plan-sub" type="text" placeholder="과목 (예: 한능검)" maxlength="14">
             <select id="plan-type" onchange="onTypeChange()">
@@ -530,7 +536,7 @@ function renderPlanner(){
     if(!planData.items)planData.items=[];
     $('#goal-h').value=planData.goalMin?Math.floor(planData.goalMin/60)||'':'';
     $('#goal-m').value=planData.goalMin?planData.goalMin%60||'':'';
-    renderPlanItems(); refreshActual();
+    renderPlanItems(); refreshActual(); renderSubChips();
   });
 }
 function planRef(){return ref(db,'app/planner/'+me+'/'+dstr(planDate));}
@@ -544,12 +550,30 @@ window.onTypeChange=()=>{
   $('#plan-type-etc').style.display=etc?'block':'none';
   if(etc)$('#plan-type-etc').focus();
 };
+function loadSubjects(){return JSON.parse(localStorage.getItem('mymo_subjects_'+me)||'[]');}
+function rememberSubject(s){
+  if(!s)return;
+  let list=loadSubjects().filter(x=>x!==s); list.unshift(s); list=list.slice(0,8);
+  localStorage.setItem('mymo_subjects_'+me,JSON.stringify(list)); renderSubChips();
+}
+window.pickSubject=(s)=>{ $('#plan-sub').value=s; renderSubChips(); };
+window.forgetSubject=(e,s)=>{
+  e.stopPropagation();
+  const list=loadSubjects().filter(x=>x!==s);
+  localStorage.setItem('mymo_subjects_'+me,JSON.stringify(list)); renderSubChips();
+};
+function renderSubChips(){
+  const box=$('#sub-chips'); const list=loadSubjects(); const cur=$('#plan-sub').value.trim();
+  if(!list.length){box.innerHTML='';return;}
+  box.innerHTML=list.map(s=>`<span class="sc ${s===cur?'on':''}" onclick="pickSubject('${esc(s).replace(/'/g,"\\'")}')">${esc(s)}<span class="sc-x" onclick="forgetSubject(event,'${esc(s).replace(/'/g,"\\'")}')">×</span></span>`).join('');
+}
 window.addPlan=()=>{
   const inp=$('#plan-in'); const tx=inp.value.trim(); if(!tx){toast('내용을 입력해주세요');return;}
   const sub=$('#plan-sub').value.trim();
   let type=$('#plan-type').value;
   if(type==='__etc') type=$('#plan-type-etc').value.trim()||'기타';
   planData.items.push({sub, tx, type, st:''}); inp.value='';
+  rememberSubject(sub);
   savePlan(); renderPlanItems();
 };
 window.cyclePlan=(i)=>{
