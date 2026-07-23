@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#ffd7e6">
+<title>모여모여 스터디 🍓</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%93%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --pink:#ff8fb3; --pink2:#ffb0c8; --pink-soft:#ffe1ec; --pink-bg:#fff5f8;
+  --pink-bg2:#ffffff; --pink-line:#ffd0df; --pink-line2:#ffb8cd;
+  --lav:#c9b6ff; --mint:#9ee6c8; --sky:#a9d5ff; --lemon:#ffe08a;
+  --text:#4a2b38; --text2:#9a7080; --text3:#c9a8b6;
+  --white:#fff; --radius:22px; --radius-sm:14px;
+  --shadow:0 8px 24px rgba(255,143,179,.22);
+  --shadow-sm:0 4px 12px rgba(255,143,179,.16);
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0; padding:0;}
+body{
+  font-family:'Apple SD Gothic Neo','Malgun Gothic',system-ui,-apple-system,sans-serif;
+  background:
+    radial-gradient(circle at 12% 8%, #ffe6f0 0, transparent 42%),
+    radial-gradient(circle at 88% 4%, #f0e6ff 0, transparent 40%),
+    radial-gradient(circle at 50% 100%, #e6f6ff 0, transparent 45%),
+    var(--pink-bg);
+  color:var(--text); min-height:100vh; overflow-x:hidden;
+}
+button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+input,textarea{font-family:inherit;}
+::selection{background:var(--pink2); color:#fff;}
+
+/* floating deco */
+.deco{position:fixed; pointer-events:none; z-index:0; opacity:.5; animation:float 6s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0);}50%{transform:translateY(-16px) rotate(8deg);}}
+.deco.d1{top:14%; left:6%; font-size:34px; animation-delay:0s;}
+.deco.d2{top:30%; right:8%; font-size:28px; animation-delay:1.2s;}
+.deco.d3{bottom:16%; left:10%; font-size:30px; animation-delay:2.1s;}
+.deco.d4{bottom:26%; right:12%; font-size:24px; animation-delay:.6s;}
+
+/* ============ AUTH ============ */
+#auth{
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:24px; position:relative; z-index:2;
+}
+.auth-card{
+  width:100%; max-width:380px; background:var(--pink-bg2);
+  border-radius:32px; padding:36px 28px 30px; box-shadow:var(--shadow);
+  border:2px solid var(--pink-soft); position:relative;
+  animation:pop .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes pop{from{opacity:0; transform:scale(.85) translateY(20px);}to{opacity:1; transform:scale(1) translateY(0);}}
+.auth-logo{text-align:center; margin-bottom:8px;}
+.auth-logo .emoji{font-size:52px; display:block; animation:bob 3s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.auth-logo h1{margin:8px 0 2px; font-size:24px; letter-spacing:-.5px;}
+.auth-logo p{margin:0; color:var(--text2); font-size:13px;}
+.auth-tabs{display:flex; gap:6px; background:var(--pink-soft); padding:5px; border-radius:16px; margin:22px 0 18px;}
+.auth-tabs button{flex:1; padding:10px; border-radius:12px; font-size:14px; font-weight:700; color:var(--text2); transition:all .3s cubic-bezier(.34,1.56,.64,1);}
+.auth-tabs button.on{background:var(--white); color:var(--pink); box-shadow:var(--shadow-sm); transform:scale(1.02);}
+.field{margin-bottom:12px;}
+.field label{display:block; font-size:12px; font-weight:700; color:var(--text2); margin:0 0 5px 4px;}
+.field input{
+  width:100%; padding:13px 15px; border-radius:14px; font-size:15px;
+  border:2px solid var(--pink-line); background:var(--pink-bg); color:var(--text);
+  transition:all .25s; outline:none;
+}
+.field input:focus{border-color:var(--pink2); background:#fff; box-shadow:0 0 0 4px rgba(255,143,179,.15);}
+.btn{
+  display:block; width:100%; padding:14px; border-radius:16px; font-size:15px; font-weight:800;
+  background:linear-gradient(135deg,var(--pink) 0%,var(--pink2) 100%); color:#fff;
+  box-shadow:var(--shadow); transition:all .2s; margin-top:6px;
+}
+.btn:active{transform:scale(.96);}
+.btn.ghost{background:var(--pink-soft); color:var(--pink); box-shadow:none;}
+.auth-msg{text-align:center; font-size:13px; margin:14px 0 0; min-height:18px; color:var(--pink); font-weight:700;}
+
+/* ============ APP ============ */
+#app{display:none; position:relative; z-index:2; padding-bottom:96px; max-width:620px; margin:0 auto;}
+header{
+  position:sticky; top:0; z-index:50; padding:16px 18px 14px;
+  background:rgba(255,245,248,.86); backdrop-filter:blur(12px);
+  border-bottom:2px solid var(--pink-soft);
+  display:flex; align-items:center; gap:12px;
+}
+header .brand{font-size:19px; font-weight:900; letter-spacing:-.5px; flex:1;}
+header .brand span{font-size:22px;}
+.room-chip{background:var(--pink-soft); color:var(--pink); font-size:12px; font-weight:800; padding:6px 12px; border-radius:20px; white-space:nowrap; cursor:pointer;}
+.me-chip{width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--lav),var(--pink2)); display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:var(--shadow-sm);}
+
+main{padding:18px 16px 0;}
+.panel{display:none; animation:fade .4s ease;}
+.panel.on{display:block;}
+@keyframes fade{from{opacity:0; transform:translateY(10px);}to{opacity:1; transform:translateY(0);}}
+
+.card{background:var(--pink-bg2); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow-sm); border:2px solid var(--pink-soft); margin-bottom:16px;}
+.card h2{margin:0 0 4px; font-size:16px; display:flex; align-items:center; gap:7px;}
+.card .sub{color:var(--text2); font-size:12px; margin:0 0 14px;}
+
+/* timer */
+.timer-wrap{text-align:center; padding:8px 0 4px;}
+.timer-ring{position:relative; width:210px; height:210px; margin:6px auto 16px;}
+.timer-ring svg{transform:rotate(-90deg);}
+.timer-ring .time{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+.timer-ring .time .big{font-size:36px; font-weight:900; letter-spacing:1px; font-variant-numeric:tabular-nums;}
+.timer-ring .time .lbl{font-size:12px; color:var(--text2); font-weight:700; margin-top:2px;}
+.timer-btns{display:flex; gap:10px; justify-content:center;}
+.tbtn{padding:13px 30px; border-radius:18px; font-size:15px; font-weight:800; box-shadow:var(--shadow-sm); transition:transform .15s;}
+.tbtn:active{transform:scale(.94);}
+.tbtn.go{background:linear-gradient(135deg,var(--mint),#7ed6b0); color:#fff;}
+.tbtn.stop{background:linear-gradient(135deg,#ff9a9a,#ff7a8a); color:#fff;}
+.today-total{margin-top:14px; font-size:13px; color:var(--text2); font-weight:700;}
+.today-total b{color:var(--pink); font-size:16px;}
+
+/* live members */
+.live-list{display:flex; flex-direction:column; gap:9px;}
+.live-row{display:flex; align-items:center; gap:11px; padding:11px 13px; border-radius:16px; background:var(--pink-bg); border:2px solid var(--pink-soft); transition:all .3s;}
+.live-row.studying{background:linear-gradient(135deg,#eafff6,#f4fffb); border-color:#b6f0d8;}
+.live-av{width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:17px; background:linear-gradient(135deg,var(--sky),var(--lav)); flex-shrink:0;}
+.live-name{flex:1; font-weight:800; font-size:14px;}
+.live-name small{font-weight:700; font-size:11px; color:var(--pink); background:var(--pink-soft); padding:1px 6px; border-radius:8px; margin-left:4px;}
+.live-badge{font-size:11px; font-weight:800; padding:5px 11px; border-radius:14px;}
+.live-badge.on{background:#c6f5e0; color:#1f9d6c;}
+.live-badge.off{background:var(--pink-soft); color:var(--text3);}
+.pulse{width:8px; height:8px; border-radius:50%; background:#25c789; animation:pulse 1.4s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,199,137,.5);}70%{box-shadow:0 0 0 9px rgba(37,199,137,0);}100%{box-shadow:0 0 0 0 rgba(37,199,137,0);}}
+
+/* todos */
+.todo-add{display:flex; gap:8px; margin-bottom:14px;}
+.todo-add input{flex:1; padding:12px 14px; border-radius:14px; border:2px solid var(--pink-line); background:var(--pink-bg); font-size:14px; outline:none; transition:all .2s;}
+.todo-add input:focus{border-color:var(--pink2); background:#fff;}
+.todo-add button{width:48px; border-radius:14px; background:linear-gradient(135deg,var(--pink),var(--pink2)); color:#fff; font-size:22px; font-weight:700; box-shadow:var(--shadow-sm);}
+.todo-list{display:flex; flex-direction:column; gap:8px;}
+.todo-item{display:flex; align-items:center; gap:11px; padding:12px 13px; border-radius:15px; background:var(--pink-bg); border:2px solid var(--pink-soft); transition:all .25s; animation:slidein .3s;}
+@keyframes slidein{from{opacity:0; transform:translateX(-12px);}to{opacity:1; transform:translateX(0);}}
+.todo-check{width:26px; height:26px; border-radius:9px; border:2.5px solid var(--pink-line2); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:15px; color:#fff; transition:all .25s; cursor:pointer;}
+.todo-item.done .todo-check{background:linear-gradient(135deg,var(--mint),#6fd0a8); border-color:#6fd0a8;}
+.todo-item.done .todo-tx{text-decoration:line-through; color:var(--text3);}
+.todo-tx{flex:1; font-size:14px; font-weight:600;}
+.todo-del{color:var(--text3); font-size:18px; padding:2px 6px; cursor:pointer;}
+.empty{text-align:center; color:var(--text3); font-size:13px; padding:26px 0; font-weight:600;}
+
+/* ranking */
+.rank-toggle{display:flex; gap:5px; background:var(--pink-soft); padding:5px; border-radius:14px; margin-bottom:14px;}
+.rank-toggle button{flex:1; padding:9px; border-radius:10px; font-size:13px; font-weight:800; color:var(--text2); transition:all .25s;}
+.rank-toggle button.on{background:#fff; color:var(--pink); box-shadow:var(--shadow-sm);}
+.rank-list{display:flex; flex-direction:column; gap:9px;}
+.rank-row{display:flex; align-items:center; gap:12px; padding:13px 15px; border-radius:17px; background:var(--pink-bg); border:2px solid var(--pink-soft); transition:all .3s;}
+.rank-row.me{background:linear-gradient(135deg,#fff0f5,#ffe6ef); border-color:var(--pink-line2);}
+.rank-medal{width:34px; text-align:center; font-size:20px; font-weight:900; color:var(--text3); flex-shrink:0;}
+.rank-av{width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:17px; background:linear-gradient(135deg,var(--lemon),var(--pink2)); flex-shrink:0;}
+.rank-info{flex:1; min-width:0;}
+.rank-info .n{font-weight:800; font-size:14px;}
+.rank-bar{height:6px; border-radius:6px; background:var(--pink-soft); margin-top:5px; overflow:hidden;}
+.rank-bar i{display:block; height:100%; border-radius:6px; background:linear-gradient(90deg,var(--pink),var(--pink2)); transition:width .6s cubic-bezier(.34,1.56,.64,1);}
+.rank-time{font-size:14px; font-weight:900; color:var(--pink); flex-shrink:0;}
+
+/* board */
+.post-add{margin-bottom:16px;}
+.post-add textarea{width:100%; padding:13px 15px; border-radius:16px; border:2px solid var(--pink-line); background:var(--pink-bg); font-size:14px; resize:none; outline:none; min-height:60px; transition:all .2s;}
+.post-add textarea:focus{border-color:var(--pink2); background:#fff;}
+.post-add button{margin-top:8px;}
+.post-list{display:flex; flex-direction:column; gap:11px;}
+.post{padding:14px 15px; border-radius:18px; background:var(--pink-bg); border:2px solid var(--pink-soft); animation:slidein .35s;}
+.post-head{display:flex; align-items:center; gap:9px; margin-bottom:7px;}
+.post-av{width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; background:linear-gradient(135deg,var(--sky),var(--mint));}
+.post-name{font-weight:800; font-size:13px; flex:1;}
+.post-time{font-size:11px; color:var(--text3);}
+.post-body{font-size:14px; line-height:1.5; white-space:pre-wrap; word-break:break-word;}
+.post-foot{display:flex; gap:14px; margin-top:9px; align-items:center;}
+.post-like{font-size:13px; font-weight:700; color:var(--text2); display:flex; align-items:center; gap:4px; transition:transform .15s; cursor:pointer;}
+.post-like:active{transform:scale(.85);}
+.post-like.liked{color:var(--pink);}
+.post-del{font-size:12px; color:var(--text3); margin-left:auto; cursor:pointer;}
+
+/* bottom nav */
+.nav{
+  position:fixed; bottom:0; left:0; right:0; z-index:60;
+  background:rgba(255,255,255,.9); backdrop-filter:blur(14px);
+  border-top:2px solid var(--pink-soft);
+  display:flex; padding:8px 8px calc(8px + env(safe-area-inset-bottom,0)); max-width:620px; margin:0 auto;
+}
+.nav button{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:7px 0; border-radius:16px; color:var(--text3); transition:all .3s cubic-bezier(.34,1.56,.64,1);}
+.nav button .ico{font-size:22px; transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+.nav button .lbl{font-size:10px; font-weight:800;}
+.nav button.on{color:var(--pink); background:var(--pink-soft);}
+.nav button.on .ico{transform:translateY(-3px) scale(1.18);}
+
+/* room setup screen */
+#roomsetup{display:none; min-height:100vh; align-items:center; justify-content:center; padding:24px; position:relative; z-index:2;}
+.setup-card{width:100%; max-width:380px; background:var(--pink-bg2); border-radius:32px; padding:32px 26px; box-shadow:var(--shadow); border:2px solid var(--pink-soft); animation:pop .5s cubic-bezier(.34,1.56,.64,1);}
+.setup-card h2{text-align:center; margin:0 0 4px; font-size:20px;}
+.setup-card p.hint{text-align:center; color:var(--text2); font-size:13px; margin:0 0 20px;}
+.setup-section{margin-bottom:18px; padding-bottom:18px; border-bottom:2px dashed var(--pink-soft);}
+.setup-section:last-child{border:none; margin:0; padding:0;}
+.setup-section h3{margin:0 0 10px; font-size:14px; color:var(--pink);}
+
+.toast{position:fixed; bottom:110px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--text); color:#fff; padding:11px 20px; border-radius:20px; font-size:13px; font-weight:700; opacity:0; transition:all .3s; z-index:200; pointer-events:none; box-shadow:0 6px 20px rgba(0,0,0,.2);}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<span class="deco d1">🌸</span>
+<span class="deco d2">🍓</span>
+<span class="deco d3">🎀</span>
+<span class="deco d4">☁️</span>
+
+<!-- ══════════ AUTH ══════════ -->
+<div id="auth">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <span class="emoji">🍓</span>
+      <h1>모여모여 스터디</h1>
+      <p>친구들과 함께 공부해요!</p>
+    </div>
+    <div class="auth-tabs">
+      <button id="tab-login" class="on" onclick="switchAuth('login')">로그인</button>
+      <button id="tab-signup" onclick="switchAuth('signup')">회원가입</button>
+    </div>
+    <div class="field" id="f-name" style="display:none;">
+      <label>닉네임</label>
+      <input id="in-name" type="text" placeholder="공부하는 딸기" maxlength="12" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>아이디</label>
+      <input id="in-id" type="text" placeholder="아이디 (영문/숫자)" autocomplete="off" autocapitalize="off">
+    </div>
+    <div class="field">
+      <label>비밀번호</label>
+      <input id="in-pw" type="password" placeholder="비밀번호 (4자 이상)" autocomplete="off">
+    </div>
+    <button class="btn" id="auth-submit" onclick="doAuth()">로그인 🎀</button>
+    <p class="auth-msg" id="auth-msg"></p>
+  </div>
+</div>
+
+<!-- ══════════ ROOM SETUP ══════════ -->
+<div id="roomsetup">
+  <div class="setup-card">
+    <h2>🏠 스터디룸</h2>
+    <p class="hint">방을 만들거나 코드로 참여하세요</p>
+    <div class="setup-section">
+      <h3>✨ 새 방 만들기</h3>
+      <div class="field"><input id="room-newname" type="text" placeholder="방 이름 (예: 새벽반 화이팅)" maxlength="16"></div>
+      <button class="btn" onclick="createRoom()">방 만들기</button>
+    </div>
+    <div class="setup-section">
+      <h3>🔑 코드로 참여하기</h3>
+      <div class="field"><input id="room-code" type="text" placeholder="참여 코드 6자리" maxlength="6" autocapitalize="characters" style="text-transform:uppercase; letter-spacing:3px; text-align:center; font-weight:800;"></div>
+      <button class="btn ghost" onclick="joinRoom()">참여하기</button>
+    </div>
+    <p class="auth-msg" id="room-msg"></p>
+    <button class="btn ghost" style="margin-top:14px; font-size:13px;" onclick="logout()">로그아웃</button>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="app">
+  <header>
+    <div class="brand"><span>🍓</span> 모여모여</div>
+    <div class="room-chip" id="room-chip" onclick="showRoomInfo()">🏠 방</div>
+    <div class="me-chip" id="me-chip">🍓</div>
+  </header>
+  <main>
+    <!-- 스터디룸 / 타이머 -->
+    <div class="panel on" id="p-room">
+      <div class="card">
+        <div class="timer-wrap">
+          <div class="timer-ring">
+            <svg width="210" height="210">
+              <circle cx="105" cy="105" r="94" fill="none" stroke="#ffe1ec" stroke-width="15"/>
+              <circle id="ring-fg" cx="105" cy="105" r="94" fill="none" stroke="url(#grad)" stroke-width="15" stroke-linecap="round" stroke-dasharray="590.6" stroke-dashoffset="590.6"/>
+              <defs><linearGradient id="grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8fb3"/><stop offset="1" stop-color="#c9b6ff"/></linearGradient></defs>
+            </svg>
+            <div class="time"><span class="big" id="timer-disp">00:00:00</span><span class="lbl" id="timer-lbl">오늘 공부 시간</span></div>
+          </div>
+          <div class="timer-btns">
+            <button class="tbtn go" id="timer-btn" onclick="toggleTimer()">시작하기 ▶</button>
+          </div>
+          <div class="today-total" id="today-total">오늘 누적 <b>0분</b></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>👀 지금 공부 중</h2>
+        <p class="sub">우리 방 멤버들의 실시간 현황이에요</p>
+        <div class="live-list" id="live-list"><div class="empty">멤버를 불러오는 중...</div></div>
+      </div>
+    </div>
+
+    <!-- 투두 -->
+    <div class="panel" id="p-todo">
+      <div class="card">
+        <h2>✅ 오늘의 목표</h2>
+        <p class="sub" id="todo-date"></p>
+        <div class="todo-add">
+          <input id="todo-in" type="text" placeholder="오늘 할 일을 적어보세요" maxlength="40" onkeydown="if(event.key==='Enter')addTodo()">
+          <button onclick="addTodo()">+</button>
+        </div>
+        <div class="todo-list" id="todo-list"></div>
+      </div>
+    </div>
+
+    <!-- 랭킹 -->
+    <div class="panel" id="p-rank">
+      <div class="card">
+        <h2>🏆 랭킹</h2>
+        <p class="sub">공부 시간으로 겨뤄봐요!</p>
+        <div class="rank-toggle">
+          <button class="on" id="rt-today" onclick="setRankMode('today')">오늘</button>
+          <button id="rt-total" onclick="setRankMode('total')">전체</button>
+        </div>
+        <div class="rank-list" id="rank-list"></div>
+      </div>
+    </div>
+
+    <!-- 게시판 -->
+    <div class="panel" id="p-board">
+      <div class="card">
+        <h2>💬 게시판</h2>
+        <p class="sub">응원하고 소통해요</p>
+        <div class="post-add">
+          <textarea id="post-in" placeholder="한마디 남겨보세요! 오늘도 화이팅 🎀" maxlength="200"></textarea>
+          <button class="btn" onclick="addPost()">남기기 ✏️</button>
+        </div>
+        <div class="post-list" id="post-list"></div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="nav">
+    <button class="on" data-p="room" onclick="nav('room')"><span class="ico">⏱️</span><span class="lbl">스터디룸</span></button>
+    <button data-p="todo" onclick="nav('todo')"><span class="ico">✅</span><span class="lbl">투두</span></button>
+    <button data-p="rank" onclick="nav('rank')"><span class="ico">🏆</span><span class="lbl">랭킹</span></button>
+    <button data-p="board" onclick="nav('board')"><span class="ico">💬</span><span class="lbl">게시판</span></button>
+  </nav>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, onValue, set, update, get, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBYMyARMkz6hIQOfdkzOdXVVtKCPu6yH04",
+  authDomain: "foryourgoal-7f49e.firebaseapp.com",
+  projectId: "foryourgoal-7f49e",
+  storageBucket: "foryourgoal-7f49e.firebasestorage.app",
+  messagingSenderId: "562549074144",
+  appId: "1:562549074144:web:744218ca41785a60524885",
+  databaseURL: "https://foryourgoal-7f49e-default-rtdb.firebaseio.com"
+};
+
+let db=null;
+try{ const app=initializeApp(firebaseConfig); db=getDatabase(app); }
+catch(e){ console.error('Firebase 초기화 실패',e); }
+
+// ---------- helpers ----------
+const $=s=>document.querySelector(s);
+const AVATARS=['🍓','🐰','🐻','🐱','🐶','🦊','🐨','🐼','🦄','🌸','🎀','🌟','🍑','🍒','🧁','🌷'];
+const todayStr=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1900);}
+async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+function fmtHMS(sec){sec=Math.max(0,Math.floor(sec));const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
+function fmtMin(sec){const m=Math.floor(sec/60);if(m<60)return m+'분';return Math.floor(m/60)+'시간 '+(m%60)+'분';}
+function avatarFor(uid){return AVATARS[Math.abs([...(uid||'x')].reduce((a,c)=>a+c.charCodeAt(0),0))%AVATARS.length];}
+function timeAgo(ts){if(!ts)return'';const s=Math.floor((Date.now()-ts)/1000);if(s<60)return'방금';if(s<3600)return Math.floor(s/60)+'분 전';if(s<86400)return Math.floor(s/3600)+'시간 전';return Math.floor(s/86400)+'일 전';}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+// ---------- session state ----------
+let me=null;      // {uid, name}
+let roomId=null;
+let roomData=null;
+let rankMode='today';
+let timerRunning=false, timerStart=0, tickInt=null, todayBaseSec=0;
+const RING_LEN=590.6;
+
+// ══════════ AUTH ══════════
+window.switchAuth=(mode)=>{
+  const login=mode==='login';
+  $('#tab-login').classList.toggle('on',login);
+  $('#tab-signup').classList.toggle('on',!login);
+  $('#f-name').style.display=login?'none':'block';
+  $('#auth-submit').textContent=login?'로그인 🎀':'가입하기 🎀';
+  $('#auth-msg').textContent='';
+  $('#auth-submit').dataset.mode=mode;
+};
+$('#auth-submit').dataset.mode='login';
+
+window.doAuth=async()=>{
+  if(!db){$('#auth-msg').textContent='연결 실패. 새로고침 해주세요';return;}
+  const mode=$('#auth-submit').dataset.mode;
+  const id=$('#in-id').value.trim().toLowerCase();
+  const pw=$('#in-pw').value;
+  const name=$('#in-name').value.trim();
+  const msg=$('#auth-msg');
+  if(!/^[a-z0-9_]{3,16}$/.test(id)){msg.textContent='아이디는 영문/숫자 3~16자예요';return;}
+  if(pw.length<4){msg.textContent='비밀번호는 4자 이상이에요';return;}
+  const uref=ref(db,'app/users/'+id);
+  try{
+    const snap=await get(uref);
+    if(mode==='signup'){
+      if(!name){msg.textContent='닉네임을 입력해주세요';return;}
+      if(snap.exists()){msg.textContent='이미 있는 아이디예요 😢';return;}
+      await set(uref,{name, pw:await sha256(pw), createdAt:Date.now()});
+      me={uid:id,name}; saveSession();
+      toast('환영해요! '+name+'님 🎉'); afterLogin();
+    }else{
+      if(!snap.exists()){msg.textContent='없는 아이디예요';return;}
+      const u=snap.val();
+      if(u.pw!==await sha256(pw)){msg.textContent='비밀번호가 틀렸어요 😢';return;}
+      me={uid:id,name:u.name}; saveSession();
+      afterLogin();
+    }
+  }catch(e){console.error(e);msg.textContent='오류가 발생했어요';}
+};
+
+function saveSession(){localStorage.setItem('mymo_session',JSON.stringify({uid:me.uid,name:me.name}));}
+window.logout=()=>{localStorage.removeItem('mymo_session');location.reload();};
+
+async function afterLogin(){
+  $('#auth').style.display='none';
+  const snap=await get(ref(db,'app/users/'+me.uid));
+  roomId=snap.exists()?(snap.val().roomId||null):null;
+  if(roomId){ enterApp(); }
+  else{ $('#roomsetup').style.display='flex'; }
+}
+
+// ══════════ ROOM ══════════
+function genCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return s;}
+
+window.createRoom=async()=>{
+  const nm=$('#room-newname').value.trim();
+  if(!nm){$('#room-msg').textContent='방 이름을 입력해주세요';return;}
+  const code=genCode();
+  const rid='r_'+code;
+  await set(ref(db,'app/rooms/'+rid),{name:nm, code, owner:me.uid, createdAt:Date.now(), members:{[me.uid]:{name:me.name, joinedAt:Date.now()}}});
+  await update(ref(db,'app/users/'+me.uid),{roomId:rid});
+  roomId=rid; toast('방이 만들어졌어요! 🎉'); enterApp();
+};
+
+window.joinRoom=async()=>{
+  const code=$('#room-code').value.trim().toUpperCase();
+  if(code.length!==6){$('#room-msg').textContent='코드 6자리를 입력해주세요';return;}
+  const rid='r_'+code;
+  const snap=await get(ref(db,'app/rooms/'+rid));
+  if(!snap.exists()){$('#room-msg').textContent='그런 방이 없어요 😢';return;}
+  await update(ref(db,'app/rooms/'+rid+'/members/'+me.uid),{name:me.name, joinedAt:Date.now()});
+  await update(ref(db,'app/users/'+me.uid),{roomId:rid});
+  roomId=rid; toast('방에 참여했어요! 🎀'); enterApp();
+};
+
+window.showRoomInfo=()=>{
+  if(!roomData)return;
+  navigator.clipboard?.writeText(roomData.code).catch(()=>{});
+  toast('참여 코드 '+roomData.code+' 복사됨 📋');
+};
+
+// ══════════ APP INIT ══════════
+function enterApp(){
+  $('#roomsetup').style.display='none';
+  $('#auth').style.display='none';
+  $('#app').style.display='block';
+  $('#me-chip').textContent=avatarFor(me.uid);
+  bindRoom();
+  restoreTimer();
+}
+
+let roomBound=false;
+function bindRoom(){
+  if(roomBound)return; roomBound=true;
+  onValue(ref(db,'app/rooms/'+roomId),(snap)=>{
+    roomData=snap.val();
+    if(!roomData)return;
+    $('#room-chip').textContent='🏠 '+roomData.name;
+    renderLive(); renderRank();
+  });
+  onValue(ref(db,'app/rooms/'+roomId+'/todos/'+me.uid+'/'+todayStr()),(snap)=>{
+    myTodos=snap.val()?.items||[]; renderTodos();
+  });
+  onValue(ref(db,'app/rooms/'+roomId+'/posts'),(snap)=>{
+    posts=snap.val()||{}; renderPosts();
+  });
+  $('#todo-date').textContent=todayStr()+' 오늘의 할 일';
+}
+
+// ══════════ TIMER ══════════
+function restoreTimer(){
+  const saved=JSON.parse(localStorage.getItem('mymo_timer_'+me.uid)||'null');
+  if(saved && saved.date===todayStr()){
+    todayBaseSec=saved.base||0;
+    if(saved.running){ timerRunning=true; timerStart=saved.start; startTick(); setBtn(true); }
+    else updateTimerDisp();
+  }else{ todayBaseSec=0; updateTimerDisp(); }
+  get(ref(db,'app/rooms/'+roomId+'/study/'+me.uid+'/'+todayStr())).then(s=>{
+    if(s.exists() && !timerRunning){ todayBaseSec=Math.max(todayBaseSec,s.val()); updateTimerDisp(); }
+  });
+}
+function persistTimer(){localStorage.setItem('mymo_timer_'+me.uid,JSON.stringify({date:todayStr(),base:todayBaseSec,running:timerRunning,start:timerStart}));}
+function curSec(){return todayBaseSec+(timerRunning?(Date.now()-timerStart)/1000:0);}
+function updateTimerDisp(){
+  const s=curSec();
+  $('#timer-disp').textContent=fmtHMS(s);
+  $('#today-total').innerHTML='오늘 누적 <b>'+fmtMin(s)+'</b>';
+  const frac=Math.min(1,(s%3600)/3600);
+  $('#ring-fg').style.strokeDashoffset=RING_LEN*(1-frac);
+}
+function startTick(){clearInterval(tickInt);tickInt=setInterval(()=>{updateTimerDisp(); if(Math.floor(curSec())%5===0)pushLive();},1000);}
+function setBtn(on){const b=$('#timer-btn');b.textContent=on?'그만하기 ⏸':'시작하기 ▶';b.className='tbtn '+(on?'stop':'go');$('#timer-lbl').textContent=on?'열공 중이에요 🔥':'오늘 공부 시간';}
+
+window.toggleTimer=()=>{
+  if(!timerRunning){
+    timerRunning=true; timerStart=Date.now(); startTick(); setBtn(true); persistTimer(); pushLive();
+  }else{
+    todayBaseSec=curSec(); timerRunning=false; clearInterval(tickInt); setBtn(false);
+    persistTimer(); updateTimerDisp(); saveStudy(); pushLive();
+  }
+};
+function saveStudy(){
+  set(ref(db,'app/rooms/'+roomId+'/study/'+me.uid+'/'+todayStr()),Math.floor(curSec()));
+}
+function pushLive(){
+  update(ref(db,'app/rooms/'+roomId+'/live/'+me.uid),{
+    name:me.name, running:timerRunning, sec:Math.floor(curSec()), at:Date.now()
+  });
+  if(timerRunning) saveStudy();
+}
+setInterval(()=>{ if(timerRunning){ saveStudy(); persistTimer(); } },20000);
+
+// ══════════ LIVE ══════════
+function renderLive(){
+  const box=$('#live-list'); if(!roomData){return;}
+  const live=roomData.live||{};
+  const members=roomData.members||{};
+  const rows=Object.keys(members).map(uid=>{
+    const l=live[uid]||{};
+    const active=l.running && l.at && (Date.now()-l.at<70000);
+    return {uid, name:members[uid].name, active, sec:l.sec||0};
+  }).sort((a,b)=>(b.active-a.active)||(b.sec-a.sec));
+  if(!rows.length){box.innerHTML='<div class="empty">아직 멤버가 없어요</div>';return;}
+  box.innerHTML=rows.map(r=>`
+    <div class="live-row ${r.active?'studying':''}">
+      <div class="live-av">${avatarFor(r.uid)}</div>
+      <div class="live-name">${esc(r.name)}${r.uid===me.uid?'<small>나</small>':''}</div>
+      ${r.active?'<span class="pulse"></span><span class="live-badge on">공부중</span>':'<span class="live-badge off">쉬는중</span>'}
+    </div>`).join('');
+}
+
+// ══════════ TODOS ══════════
+let myTodos=[];
+window.addTodo=()=>{
+  const inp=$('#todo-in'); const tx=inp.value.trim(); if(!tx)return;
+  myTodos.push({tx,done:false}); inp.value=''; saveTodos();
+};
+function saveTodos(){set(ref(db,'app/rooms/'+roomId+'/todos/'+me.uid+'/'+todayStr()),{items:myTodos});}
+window.toggleTodo=(i)=>{myTodos[i].done=!myTodos[i].done; saveTodos();};
+window.delTodo=(i)=>{myTodos.splice(i,1); saveTodos();};
+function renderTodos(){
+  const box=$('#todo-list');
+  if(!myTodos.length){box.innerHTML='<div class="empty">할 일을 추가해보세요 🌱</div>';return;}
+  box.innerHTML=myTodos.map((t,i)=>`
+    <div class="todo-item ${t.done?'done':''}">
+      <div class="todo-check" onclick="toggleTodo(${i})">${t.done?'✓':''}</div>
+      <div class="todo-tx">${esc(t.tx)}</div>
+      <div class="todo-del" onclick="delTodo(${i})">×</div>
+    </div>`).join('');
+}
+
+// ══════════ RANK ══════════
+window.setRankMode=(m)=>{rankMode=m;$('#rt-today').classList.toggle('on',m==='today');$('#rt-total').classList.toggle('on',m==='total');renderRank();};
+function renderRank(){
+  const box=$('#rank-list'); if(!roomData)return;
+  const members=roomData.members||{};
+  const study=roomData.study||{};
+  const rows=Object.keys(members).map(uid=>{
+    const us=study[uid]||{};
+    let sec=0;
+    if(rankMode==='today') sec=us[todayStr()]||0;
+    else sec=Object.values(us).reduce((a,b)=>a+(typeof b==='number'?b:0),0);
+    return {uid,name:members[uid].name,sec};
+  }).sort((a,b)=>b.sec-a.sec);
+  const max=Math.max(1,...rows.map(r=>r.sec));
+  const medals=['🥇','🥈','🥉'];
+  if(!rows.length){box.innerHTML='<div class="empty">아직 기록이 없어요</div>';return;}
+  box.innerHTML=rows.map((r,i)=>`
+    <div class="rank-row ${r.uid===me.uid?'me':''}">
+      <div class="rank-medal">${medals[i]||(i+1)}</div>
+      <div class="rank-av">${avatarFor(r.uid)}</div>
+      <div class="rank-info">
+        <div class="n">${esc(r.name)}${r.uid===me.uid?' 💗':''}</div>
+        <div class="rank-bar"><i style="width:${Math.round(r.sec/max*100)}%"></i></div>
+      </div>
+      <div class="rank-time">${r.sec?fmtMin(r.sec):'0분'}</div>
+    </div>`).join('');
+}
+
+// ══════════ BOARD ══════════
+let posts={};
+window.addPost=()=>{
+  const inp=$('#post-in'); const tx=inp.value.trim(); if(!tx)return;
+  const id='p_'+Date.now()+'_'+Math.floor(Math.random()*999);
+  set(ref(db,'app/rooms/'+roomId+'/posts/'+id),{uid:me.uid,name:me.name,tx,at:Date.now(),likes:{}});
+  inp.value='';
+};
+window.likePost=(id)=>{
+  const p=posts[id]; if(!p)return;
+  const likes=p.likes||{};
+  if(likes[me.uid]) remove(ref(db,'app/rooms/'+roomId+'/posts/'+id+'/likes/'+me.uid));
+  else set(ref(db,'app/rooms/'+roomId+'/posts/'+id+'/likes/'+me.uid),true);
+};
+window.delPost=(id)=>{ if(posts[id]?.uid===me.uid) remove(ref(db,'app/rooms/'+roomId+'/posts/'+id)); };
+function renderPosts(){
+  const box=$('#post-list');
+  const arr=Object.entries(posts).map(([id,p])=>({id,...p})).sort((a,b)=>b.at-a.at);
+  if(!arr.length){box.innerHTML='<div class="empty">첫 글을 남겨보세요 ✏️</div>';return;}
+  box.innerHTML=arr.map(p=>{
+    const likes=p.likes||{}; const cnt=Object.keys(likes).length; const liked=!!likes[me.uid];
+    return `<div class="post">
+      <div class="post-head">
+        <div class="post-av">${avatarFor(p.uid)}</div>
+        <div class="post-name">${esc(p.name)}</div>
+        <div class="post-time">${timeAgo(p.at)}</div>
+      </div>
+      <div class="post-body">${esc(p.tx)}</div>
+      <div class="post-foot">
+        <div class="post-like ${liked?'liked':''}" onclick="likePost('${p.id}')">${liked?'💗':'🤍'} ${cnt||''}</div>
+        ${p.uid===me.uid?`<div class="post-del" onclick="delPost('${p.id}')">삭제</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════ NAV ══════════
+window.nav=(p)=>{
+  document.querySelectorAll('.panel').forEach(el=>el.classList.remove('on'));
+  $('#p-'+p).classList.add('on');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
+};
+
+window.addEventListener('beforeunload',()=>{ if(roomId&&me)pushLive(); });
+document.addEventListener('visibilitychange',()=>{ if(document.hidden&&timerRunning)saveStudy(); });
+
+// ══════════ BOOT ══════════
+(function boot(){
+  const s=JSON.parse(localStorage.getItem('mymo_session')||'null');
+  if(s&&s.uid){ me=s; afterLogin(); }
+})();
+</script>
+</body>
+</html>
