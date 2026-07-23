@@ -145,6 +145,10 @@ main{padding:18px 16px 0;}
 .plan-st.X{background:linear-gradient(135deg,#ffb0b0,#ff8f8f); border-color:#ff8f8f; color:#fff;}
 .plan-tx{flex:1; font-size:14px; font-weight:600;}
 .plan-item.X .plan-tx{color:var(--text3); text-decoration:line-through;}
+.plan-item.pri{border-color:#ffd98a; background:linear-gradient(135deg,#fffaf0,#fffdf8);}
+.ptag.pri{background:#fff0cc; color:#c9930a;}
+.plan-tmr{flex:0 0 auto; font-size:9px; font-weight:800; line-height:1.15; color:var(--pink); background:var(--pink-soft); border-radius:10px; padding:5px 7px; text-align:center; cursor:pointer; transition:transform .15s;}
+.plan-tmr:active{transform:scale(.9);}
 .plan-del{color:var(--text3); font-size:18px; padding:2px 6px; cursor:pointer;}
 .st-legend{display:flex; gap:14px; justify-content:center; margin-top:14px; font-size:12px; color:var(--text2); font-weight:700;}
 .st-legend span{display:flex; align-items:center; gap:4px;}
@@ -582,17 +586,33 @@ window.cyclePlan=(i)=>{
   savePlan(); renderPlanItems();
 };
 window.delPlan=(i)=>{ planData.items.splice(i,1); savePlan(); renderPlanItems(); };
+window.moveTomorrow=async(i)=>{
+  const it=planData.items[i]; if(!it)return;
+  if(it.st!=='O'){
+    if(!confirm('⚠️ 아직 완료하지 않은 할 일이에요!\n\n「'+it.tx+'」\n\n내일로 미룰까요? (내일 플래너 맨 위에 우선순위로 올라가요)'))return;
+  }
+  const nd=new Date(planDate); nd.setDate(nd.getDate()+1); const nds=dstr(nd);
+  try{
+    const snap=await get(ref(db,'app/planner/'+me+'/'+nds));
+    const nData=snap.val()||{goalMin:0, items:[]}; if(!nData.items)nData.items=[];
+    nData.items.unshift({sub:it.sub||'', tx:it.tx, type:it.type||'', st:'', pri:true});
+    await set(ref(db,'app/planner/'+me+'/'+nds),nData);
+    planData.items.splice(i,1); savePlan(); renderPlanItems();
+    toast('📦 내일로 옮겼어요! (우선순위)');
+  }catch(e){console.error(e);toast('이월 중 오류가 났어요');}
+};
 function stChar(st){return st==='O'?'⭕':st==='T'?'🔺':st==='X'?'❌':'·';}
 function renderPlanItems(){
   const box=$('#plan-list');
   if(!planData.items.length){box.innerHTML='<div class="empty">할 일을 추가해보세요 🌱</div>';return;}
   box.innerHTML=planData.items.map((t,i)=>`
-    <div class="plan-item ${t.st==='X'?'X':''}">
+    <div class="plan-item ${t.st==='X'?'X':''} ${t.pri?'pri':''}">
       <div class="plan-st ${t.st}" onclick="cyclePlan(${i})">${stChar(t.st)}</div>
       <div class="plan-body">
-        ${(t.sub||t.type)?`<div class="plan-tags">${t.sub?`<span class="ptag sub">${esc(t.sub)}</span>`:''}${t.type?`<span class="ptag type">${esc(t.type)}</span>`:''}</div>`:''}
+        ${(t.sub||t.type||t.pri)?`<div class="plan-tags">${t.pri?'<span class="ptag pri">⭐ 미룬 일</span>':''}${t.sub?`<span class="ptag sub">${esc(t.sub)}</span>`:''}${t.type?`<span class="ptag type">${esc(t.type)}</span>`:''}</div>`:''}
         <div class="plan-tx">${esc(t.tx)}</div>
       </div>
+      <button class="plan-tmr" onclick="moveTomorrow(${i})" title="내일 할래요">내일<br>➡️</button>
       <div class="plan-del" onclick="delPlan(${i})">×</div>
     </div>`).join('');
 }
