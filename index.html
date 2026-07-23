@@ -900,7 +900,7 @@ async function callAI(system, userText, pdfs){
   const parts=[];
   (pdfs||[]).forEach(b64=>parts.push({inline_data:{mime_type:'application/pdf', data:b64}}));
   parts.push({text:userText});
-  const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key),{
+  const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+encodeURIComponent(key),{
     method:'POST',
     headers:{'content-type':'application/json'},
     body:JSON.stringify({
