@@ -154,6 +154,14 @@ main{padding:18px 16px 0;}
 .st-legend span{display:flex; align-items:center; gap:4px;}
 .empty{text-align:center; color:var(--text3); font-size:13px; padding:26px 0; font-weight:600;}
 
+/* 디데이 */
+.dday-banner{background:linear-gradient(135deg,var(--pink),var(--lav)); color:#fff; border-radius:var(--radius); padding:18px 20px; margin-bottom:16px; box-shadow:var(--shadow); cursor:pointer; display:flex; align-items:center; gap:14px; transition:transform .15s;}
+.dday-banner:active{transform:scale(.98);}
+.dday-banner .dday-num{font-size:30px; font-weight:900; letter-spacing:-.5px; line-height:1; white-space:nowrap;}
+.dday-banner .dday-info{flex:1; min-width:0;}
+.dday-banner .dday-name{font-size:15px; font-weight:800; margin-bottom:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.dday-banner .dday-date{font-size:12px; font-weight:600; opacity:.9;}
+
 /* 문제은행 */
 .bank-desc{font-size:13px; color:var(--text2); line-height:1.5; margin:0 0 14px;}
 .bank-file{display:block; padding:18px; border-radius:16px; border:2px dashed var(--pink-line2); background:var(--pink-bg); text-align:center; font-size:14px; font-weight:800; color:var(--pink); cursor:pointer; transition:all .2s; margin-bottom:14px;}
@@ -283,6 +291,7 @@ main{padding:18px 16px 0;}
   <main>
     <!-- 로비 / 타이머 -->
     <div class="panel on" id="p-room">
+      <div class="dday-banner" id="dday-banner" style="display:none;" onclick="nav('set')"></div>
       <div class="card">
         <div class="timer-wrap">
           <div class="timer-ring">
@@ -447,6 +456,16 @@ main{padding:18px 16px 0;}
       </div>
       <div class="card">
         <div class="set-group">
+          <h3>🎯 시험 디데이</h3>
+          <p class="bank-desc" style="margin-bottom:10px;">내 시험 날짜를 설정하면 로비에 D-day가 표시돼요.</p>
+          <div class="field"><input id="set-examname" type="text" placeholder="시험 이름 (예: 순경 공채)" maxlength="20"></div>
+          <div class="field"><input id="set-examdate" type="date"></div>
+          <button class="btn" onclick="saveExam()">디데이 저장</button>
+          <button class="btn ghost" style="margin-top:8px; font-size:13px;" onclick="clearExam()">디데이 삭제</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="set-group">
           <h3>🤖 AI 문제은행 설정 (공유)</h3>
           <p class="bank-desc" style="margin-bottom:10px;">한 명이 Google Gemini 키를 등록하면 <b>모든 멤버가 함께 사용</b>해요 (무료!). 다른 멤버는 아무것도 안 해도 돼요.</p>
           <p id="key-status" style="font-size:12px; font-weight:800; margin:0 0 10px;"></p>
@@ -583,7 +602,38 @@ function bindData(){
   onValue(ref(db,'app/study'),s=>{ studyAll=s.val()||{}; renderRank(); refreshActual(); });
   onValue(ref(db,'app/posts'),s=>{ posts=s.val()||{}; renderPosts(); });
   onValue(ref(db,'app/config/geminiKey'),s=>{ sharedKey=s.val()||''; renderKeyStatus(); });
+  onValue(ref(db,'app/users/'+me+'/exam'),s=>{ myExam=s.val()||null; renderDday(); });
 }
+
+// ══════════ 디데이 ══════════
+let myExam=null;
+function daysUntil(dateStr){
+  const [y,m,d]=dateStr.split('-').map(Number);
+  const target=new Date(y,m-1,d), n=new Date();
+  const t0=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+  return Math.round((target-t0)/86400000);
+}
+function renderDday(){
+  const el=$('#dday-banner');
+  if(!myExam||!myExam.date){ el.style.display='none'; if($('#set-examname'))$('#set-examname').value=''; if($('#set-examdate'))$('#set-examdate').value=''; return; }
+  const n=daysUntil(myExam.date);
+  const label=n>0?('D-'+n):(n===0?'D-DAY 🔥':('D+'+(-n)));
+  const nm=myExam.name||'내 시험';
+  el.innerHTML=`<div class="dday-num">${label}</div><div class="dday-info"><div class="dday-name">🎯 ${esc(nm)}</div><div class="dday-date">${myExam.date}${n>0?' · '+n+'일 남았어요!':n===0?' · 오늘이에요!':' · 수고했어요'}</div></div>`;
+  el.style.display='flex';
+  if($('#set-examname'))$('#set-examname').value=myExam.name||'';
+  if($('#set-examdate'))$('#set-examdate').value=myExam.date;
+}
+window.saveExam=()=>{
+  const date=$('#set-examdate').value, name=$('#set-examname').value.trim();
+  if(!date){toast('시험 날짜를 선택해주세요');return;}
+  set(ref(db,'app/users/'+me+'/exam'),{date, name});
+  toast('디데이가 저장됐어요 🎯');
+};
+window.clearExam=()=>{
+  remove(ref(db,'app/users/'+me+'/exam'));
+  toast('디데이를 삭제했어요');
+};
 function updateLobbyChip(){
   const n=Object.values(liveAll).filter(l=>l.running&&l.at&&Date.now()-l.at<70000).length;
   $('#lobby-chip').textContent='👥 공부중 '+n+'명';
