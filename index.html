@@ -28,10 +28,9 @@ body{
   color:var(--text); min-height:100vh; overflow-x:hidden;
 }
 button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
-input,textarea{font-family:inherit;}
+input,textarea,select{font-family:inherit;}
 ::selection{background:var(--pink2); color:#fff;}
 
-/* floating deco */
 .deco{position:fixed; pointer-events:none; z-index:0; opacity:.5; animation:float 6s ease-in-out infinite;}
 @keyframes float{0%,100%{transform:translateY(0) rotate(0);}50%{transform:translateY(-16px) rotate(8deg);}}
 .deco.d1{top:14%; left:6%; font-size:34px; animation-delay:0s;}
@@ -40,16 +39,8 @@ input,textarea{font-family:inherit;}
 .deco.d4{bottom:26%; right:12%; font-size:24px; animation-delay:.6s;}
 
 /* ============ AUTH ============ */
-#auth{
-  min-height:100vh; display:flex; align-items:center; justify-content:center;
-  padding:24px; position:relative; z-index:2;
-}
-.auth-card{
-  width:100%; max-width:380px; background:var(--pink-bg2);
-  border-radius:32px; padding:36px 28px 30px; box-shadow:var(--shadow);
-  border:2px solid var(--pink-soft); position:relative;
-  animation:pop .5s cubic-bezier(.34,1.56,.64,1);
-}
+#auth{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; position:relative; z-index:2;}
+.auth-card{width:100%; max-width:380px; background:var(--pink-bg2); border-radius:32px; padding:36px 28px 30px; box-shadow:var(--shadow); border:2px solid var(--pink-soft); animation:pop .5s cubic-bezier(.34,1.56,.64,1);}
 @keyframes pop{from{opacity:0; transform:scale(.85) translateY(20px);}to{opacity:1; transform:scale(1) translateY(0);}}
 .auth-logo{text-align:center; margin-bottom:8px;}
 .auth-logo .emoji{font-size:52px; display:block; animation:bob 3s ease-in-out infinite;}
@@ -61,32 +52,20 @@ input,textarea{font-family:inherit;}
 .auth-tabs button.on{background:var(--white); color:var(--pink); box-shadow:var(--shadow-sm); transform:scale(1.02);}
 .field{margin-bottom:12px;}
 .field label{display:block; font-size:12px; font-weight:700; color:var(--text2); margin:0 0 5px 4px;}
-.field input{
-  width:100%; padding:13px 15px; border-radius:14px; font-size:15px;
-  border:2px solid var(--pink-line); background:var(--pink-bg); color:var(--text);
-  transition:all .25s; outline:none;
-}
+.field input,.field select{width:100%; padding:13px 15px; border-radius:14px; font-size:15px; border:2px solid var(--pink-line); background:var(--pink-bg); color:var(--text); transition:all .25s; outline:none;}
 .field input:focus{border-color:var(--pink2); background:#fff; box-shadow:0 0 0 4px rgba(255,143,179,.15);}
-.btn{
-  display:block; width:100%; padding:14px; border-radius:16px; font-size:15px; font-weight:800;
-  background:linear-gradient(135deg,var(--pink) 0%,var(--pink2) 100%); color:#fff;
-  box-shadow:var(--shadow); transition:all .2s; margin-top:6px;
-}
+.btn{display:block; width:100%; padding:14px; border-radius:16px; font-size:15px; font-weight:800; background:linear-gradient(135deg,var(--pink) 0%,var(--pink2) 100%); color:#fff; box-shadow:var(--shadow); transition:all .2s; margin-top:6px;}
 .btn:active{transform:scale(.96);}
 .btn.ghost{background:var(--pink-soft); color:var(--pink); box-shadow:none;}
+.btn.danger{background:linear-gradient(135deg,#ff8080,#ff6b6b);}
 .auth-msg{text-align:center; font-size:13px; margin:14px 0 0; min-height:18px; color:var(--pink); font-weight:700;}
 
 /* ============ APP ============ */
 #app{display:none; position:relative; z-index:2; padding-bottom:96px; max-width:620px; margin:0 auto;}
-header{
-  position:sticky; top:0; z-index:50; padding:16px 18px 14px;
-  background:rgba(255,245,248,.86); backdrop-filter:blur(12px);
-  border-bottom:2px solid var(--pink-soft);
-  display:flex; align-items:center; gap:12px;
-}
+header{position:sticky; top:0; z-index:50; padding:16px 18px 14px; background:rgba(255,245,248,.86); backdrop-filter:blur(12px); border-bottom:2px solid var(--pink-soft); display:flex; align-items:center; gap:12px;}
 header .brand{font-size:19px; font-weight:900; letter-spacing:-.5px; flex:1;}
 header .brand span{font-size:22px;}
-.room-chip{background:var(--pink-soft); color:var(--pink); font-size:12px; font-weight:800; padding:6px 12px; border-radius:20px; white-space:nowrap; cursor:pointer;}
+.lobby-chip{background:var(--pink-soft); color:var(--pink); font-size:12px; font-weight:800; padding:6px 12px; border-radius:20px; white-space:nowrap;}
 .me-chip{width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--lav),var(--pink2)); display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:var(--shadow-sm);}
 
 main{padding:18px 16px 0;}
@@ -113,7 +92,7 @@ main{padding:18px 16px 0;}
 .today-total{margin-top:14px; font-size:13px; color:var(--text2); font-weight:700;}
 .today-total b{color:var(--pink); font-size:16px;}
 
-/* live members */
+/* live */
 .live-list{display:flex; flex-direction:column; gap:9px;}
 .live-row{display:flex; align-items:center; gap:11px; padding:11px 13px; border-radius:16px; background:var(--pink-bg); border:2px solid var(--pink-soft); transition:all .3s;}
 .live-row.studying{background:linear-gradient(135deg,#eafff6,#f4fffb); border-color:#b6f0d8;}
@@ -126,19 +105,37 @@ main{padding:18px 16px 0;}
 .pulse{width:8px; height:8px; border-radius:50%; background:#25c789; animation:pulse 1.4s infinite;}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,199,137,.5);}70%{box-shadow:0 0 0 9px rgba(37,199,137,0);}100%{box-shadow:0 0 0 0 rgba(37,199,137,0);}}
 
-/* todos */
-.todo-add{display:flex; gap:8px; margin-bottom:14px;}
-.todo-add input{flex:1; padding:12px 14px; border-radius:14px; border:2px solid var(--pink-line); background:var(--pink-bg); font-size:14px; outline:none; transition:all .2s;}
-.todo-add input:focus{border-color:var(--pink2); background:#fff;}
-.todo-add button{width:48px; border-radius:14px; background:linear-gradient(135deg,var(--pink),var(--pink2)); color:#fff; font-size:22px; font-weight:700; box-shadow:var(--shadow-sm);}
-.todo-list{display:flex; flex-direction:column; gap:8px;}
-.todo-item{display:flex; align-items:center; gap:11px; padding:12px 13px; border-radius:15px; background:var(--pink-bg); border:2px solid var(--pink-soft); transition:all .25s; animation:slidein .3s;}
+/* planner */
+.date-nav{display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:16px;}
+.date-nav button{width:38px; height:38px; border-radius:12px; background:var(--pink-soft); color:var(--pink); font-size:18px; font-weight:900; box-shadow:var(--shadow-sm);}
+.date-nav .cur{font-weight:900; font-size:16px; text-align:center; min-width:130px;}
+.date-nav .cur small{display:block; font-size:11px; color:var(--text2); font-weight:700; margin-top:1px;}
+.goal-box{display:flex; align-items:center; gap:10px; padding:14px; border-radius:16px; background:linear-gradient(135deg,#fff0f6,#fff7fb); border:2px solid var(--pink-soft); margin-bottom:14px;}
+.goal-box .gl{font-size:13px; font-weight:800; color:var(--text2); flex-shrink:0;}
+.goal-box input{width:56px; padding:8px; border-radius:10px; border:2px solid var(--pink-line); background:#fff; text-align:center; font-weight:800; font-size:15px; outline:none;}
+.goal-box input:focus{border-color:var(--pink2);}
+.goal-box .u{font-size:13px; font-weight:800; color:var(--text2);}
+.actual-box{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-radius:16px; background:linear-gradient(135deg,#eef7ff,#f5fbff); border:2px solid #d6ecff; margin-bottom:8px;}
+.actual-box .lbl{font-size:13px; font-weight:800; color:var(--text2);}
+.actual-box .val{font-size:18px; font-weight:900; color:#4a9fe0;}
+.progress-line{height:8px; border-radius:8px; background:var(--pink-soft); overflow:hidden; margin:2px 0 16px;}
+.progress-line i{display:block; height:100%; border-radius:8px; background:linear-gradient(90deg,var(--mint),#5fd0a0); transition:width .6s cubic-bezier(.34,1.56,.64,1);}
+.plan-add{display:flex; gap:8px; margin-bottom:14px;}
+.plan-add input{flex:1; padding:12px 14px; border-radius:14px; border:2px solid var(--pink-line); background:var(--pink-bg); font-size:14px; outline:none; transition:all .2s;}
+.plan-add input:focus{border-color:var(--pink2); background:#fff;}
+.plan-add button{width:48px; border-radius:14px; background:linear-gradient(135deg,var(--pink),var(--pink2)); color:#fff; font-size:22px; font-weight:700; box-shadow:var(--shadow-sm);}
+.plan-list{display:flex; flex-direction:column; gap:8px;}
+.plan-item{display:flex; align-items:center; gap:11px; padding:12px 13px; border-radius:15px; background:var(--pink-bg); border:2px solid var(--pink-soft); transition:all .25s; animation:slidein .3s;}
 @keyframes slidein{from{opacity:0; transform:translateX(-12px);}to{opacity:1; transform:translateX(0);}}
-.todo-check{width:26px; height:26px; border-radius:9px; border:2.5px solid var(--pink-line2); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:15px; color:#fff; transition:all .25s; cursor:pointer;}
-.todo-item.done .todo-check{background:linear-gradient(135deg,var(--mint),#6fd0a8); border-color:#6fd0a8;}
-.todo-item.done .todo-tx{text-decoration:line-through; color:var(--text3);}
-.todo-tx{flex:1; font-size:14px; font-weight:600;}
-.todo-del{color:var(--text3); font-size:18px; padding:2px 6px; cursor:pointer;}
+.plan-st{width:34px; height:34px; border-radius:11px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:900; border:2px solid var(--pink-line2); background:#fff; color:var(--text3); cursor:pointer; transition:all .2s;}
+.plan-st.O{background:linear-gradient(135deg,var(--mint),#6fd0a8); border-color:#6fd0a8; color:#fff;}
+.plan-st.T{background:linear-gradient(135deg,var(--lemon),#f5c95a); border-color:#f5c95a; color:#fff;}
+.plan-st.X{background:linear-gradient(135deg,#ffb0b0,#ff8f8f); border-color:#ff8f8f; color:#fff;}
+.plan-tx{flex:1; font-size:14px; font-weight:600;}
+.plan-item.X .plan-tx{color:var(--text3); text-decoration:line-through;}
+.plan-del{color:var(--text3); font-size:18px; padding:2px 6px; cursor:pointer;}
+.st-legend{display:flex; gap:14px; justify-content:center; margin-top:14px; font-size:12px; color:var(--text2); font-weight:700;}
+.st-legend span{display:flex; align-items:center; gap:4px;}
 .empty{text-align:center; color:var(--text3); font-size:13px; padding:26px 0; font-weight:600;}
 
 /* ranking */
@@ -174,27 +171,17 @@ main{padding:18px 16px 0;}
 .post-like.liked{color:var(--pink);}
 .post-del{font-size:12px; color:var(--text3); margin-left:auto; cursor:pointer;}
 
+/* settings */
+.set-group{margin-bottom:8px;}
+.set-group h3{font-size:13px; color:var(--pink); margin:0 0 10px;}
+
 /* bottom nav */
-.nav{
-  position:fixed; bottom:0; left:0; right:0; z-index:60;
-  background:rgba(255,255,255,.9); backdrop-filter:blur(14px);
-  border-top:2px solid var(--pink-soft);
-  display:flex; padding:8px 8px calc(8px + env(safe-area-inset-bottom,0)); max-width:620px; margin:0 auto;
-}
+.nav{position:fixed; bottom:0; left:0; right:0; z-index:60; background:rgba(255,255,255,.9); backdrop-filter:blur(14px); border-top:2px solid var(--pink-soft); display:flex; padding:8px 4px calc(8px + env(safe-area-inset-bottom,0)); max-width:620px; margin:0 auto;}
 .nav button{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:7px 0; border-radius:16px; color:var(--text3); transition:all .3s cubic-bezier(.34,1.56,.64,1);}
-.nav button .ico{font-size:22px; transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+.nav button .ico{font-size:21px; transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
 .nav button .lbl{font-size:10px; font-weight:800;}
 .nav button.on{color:var(--pink); background:var(--pink-soft);}
 .nav button.on .ico{transform:translateY(-3px) scale(1.18);}
-
-/* room setup screen */
-#roomsetup{display:none; min-height:100vh; align-items:center; justify-content:center; padding:24px; position:relative; z-index:2;}
-.setup-card{width:100%; max-width:380px; background:var(--pink-bg2); border-radius:32px; padding:32px 26px; box-shadow:var(--shadow); border:2px solid var(--pink-soft); animation:pop .5s cubic-bezier(.34,1.56,.64,1);}
-.setup-card h2{text-align:center; margin:0 0 4px; font-size:20px;}
-.setup-card p.hint{text-align:center; color:var(--text2); font-size:13px; margin:0 0 20px;}
-.setup-section{margin-bottom:18px; padding-bottom:18px; border-bottom:2px dashed var(--pink-soft);}
-.setup-section:last-child{border:none; margin:0; padding:0;}
-.setup-section h3{margin:0 0 10px; font-size:14px; color:var(--pink);}
 
 .toast{position:fixed; bottom:110px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--text); color:#fff; padding:11px 20px; border-radius:20px; font-size:13px; font-weight:700; opacity:0; transition:all .3s; z-index:200; pointer-events:none; box-shadow:0 6px 20px rgba(0,0,0,.2);}
 .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
@@ -219,13 +206,9 @@ main{padding:18px 16px 0;}
       <button id="tab-login" class="on" onclick="switchAuth('login')">로그인</button>
       <button id="tab-signup" onclick="switchAuth('signup')">회원가입</button>
     </div>
-    <div class="field" id="f-name" style="display:none;">
-      <label>닉네임</label>
-      <input id="in-name" type="text" placeholder="공부하는 딸기" maxlength="12" autocomplete="off">
-    </div>
     <div class="field">
-      <label>아이디</label>
-      <input id="in-id" type="text" placeholder="아이디 (영문/숫자)" autocomplete="off" autocapitalize="off">
+      <label>아이디 <span id="id-hint" style="display:none; color:var(--text3); font-weight:600;">(닉네임으로 표시돼요)</span></label>
+      <input id="in-id" type="text" placeholder="아이디 (영문/숫자 3~16자)" autocomplete="off" autocapitalize="off">
     </div>
     <div class="field">
       <label>비밀번호</label>
@@ -236,35 +219,15 @@ main{padding:18px 16px 0;}
   </div>
 </div>
 
-<!-- ══════════ ROOM SETUP ══════════ -->
-<div id="roomsetup">
-  <div class="setup-card">
-    <h2>🏠 스터디룸</h2>
-    <p class="hint">방을 만들거나 코드로 참여하세요</p>
-    <div class="setup-section">
-      <h3>✨ 새 방 만들기</h3>
-      <div class="field"><input id="room-newname" type="text" placeholder="방 이름 (예: 새벽반 화이팅)" maxlength="16"></div>
-      <button class="btn" onclick="createRoom()">방 만들기</button>
-    </div>
-    <div class="setup-section">
-      <h3>🔑 코드로 참여하기</h3>
-      <div class="field"><input id="room-code" type="text" placeholder="참여 코드 6자리" maxlength="6" autocapitalize="characters" style="text-transform:uppercase; letter-spacing:3px; text-align:center; font-weight:800;"></div>
-      <button class="btn ghost" onclick="joinRoom()">참여하기</button>
-    </div>
-    <p class="auth-msg" id="room-msg"></p>
-    <button class="btn ghost" style="margin-top:14px; font-size:13px;" onclick="logout()">로그아웃</button>
-  </div>
-</div>
-
 <!-- ══════════ APP ══════════ -->
 <div id="app">
   <header>
     <div class="brand"><span>🍓</span> 모여모여</div>
-    <div class="room-chip" id="room-chip" onclick="showRoomInfo()">🏠 방</div>
+    <div class="lobby-chip" id="lobby-chip">👥 로비</div>
     <div class="me-chip" id="me-chip">🍓</div>
   </header>
   <main>
-    <!-- 스터디룸 / 타이머 -->
+    <!-- 로비 / 타이머 -->
     <div class="panel on" id="p-room">
       <div class="card">
         <div class="timer-wrap">
@@ -284,21 +247,36 @@ main{padding:18px 16px 0;}
       </div>
       <div class="card">
         <h2>👀 지금 공부 중</h2>
-        <p class="sub">우리 방 멤버들의 실시간 현황이에요</p>
-        <div class="live-list" id="live-list"><div class="empty">멤버를 불러오는 중...</div></div>
+        <p class="sub">로비에 모인 친구들의 실시간 현황이에요</p>
+        <div class="live-list" id="live-list"><div class="empty">불러오는 중...</div></div>
       </div>
     </div>
 
-    <!-- 투두 -->
-    <div class="panel" id="p-todo">
+    <!-- 플래너 -->
+    <div class="panel" id="p-plan">
       <div class="card">
-        <h2>✅ 오늘의 목표</h2>
-        <p class="sub" id="todo-date"></p>
-        <div class="todo-add">
-          <input id="todo-in" type="text" placeholder="오늘 할 일을 적어보세요" maxlength="40" onkeydown="if(event.key==='Enter')addTodo()">
-          <button onclick="addTodo()">+</button>
+        <h2>📅 플래너</h2>
+        <div class="date-nav">
+          <button onclick="shiftDate(-1)">‹</button>
+          <div class="cur" id="plan-date-disp"></div>
+          <button onclick="shiftDate(1)">›</button>
         </div>
-        <div class="todo-list" id="todo-list"></div>
+        <div class="goal-box">
+          <span class="gl">🎯 목표 공부</span>
+          <input id="goal-h" type="number" min="0" max="24" placeholder="0" onchange="saveGoal()"><span class="u">시간</span>
+          <input id="goal-m" type="number" min="0" max="59" placeholder="0" onchange="saveGoal()"><span class="u">분</span>
+        </div>
+        <div class="actual-box">
+          <span class="lbl">⏱️ 실제 공부 시간</span>
+          <span class="val" id="actual-val">0분</span>
+        </div>
+        <div class="progress-line"><i id="goal-progress" style="width:0%"></i></div>
+        <div class="plan-add">
+          <input id="plan-in" type="text" placeholder="할 일을 적어보세요" maxlength="40" onkeydown="if(event.key==='Enter')addPlan()">
+          <button onclick="addPlan()">+</button>
+        </div>
+        <div class="plan-list" id="plan-list"></div>
+        <div class="st-legend"><span>⭕ 완료</span><span>🔺 부분</span><span>❌ 못함</span></div>
       </div>
     </div>
 
@@ -306,7 +284,7 @@ main{padding:18px 16px 0;}
     <div class="panel" id="p-rank">
       <div class="card">
         <h2>🏆 랭킹</h2>
-        <p class="sub">공부 시간으로 겨뤄봐요!</p>
+        <p class="sub">로비 친구들과 공부 시간으로 겨뤄봐요!</p>
         <div class="rank-toggle">
           <button class="on" id="rt-today" onclick="setRankMode('today')">오늘</button>
           <button id="rt-total" onclick="setRankMode('total')">전체</button>
@@ -327,13 +305,43 @@ main{padding:18px 16px 0;}
         <div class="post-list" id="post-list"></div>
       </div>
     </div>
+
+    <!-- 설정 -->
+    <div class="panel" id="p-set">
+      <div class="card">
+        <h2>⚙️ 설정</h2>
+        <p class="sub" id="set-me"></p>
+        <div class="set-group">
+          <h3>🔑 비밀번호 변경</h3>
+          <div class="field"><input id="set-curpw" type="password" placeholder="현재 비밀번호"></div>
+          <div class="field"><input id="set-newpw" type="password" placeholder="새 비밀번호 (4자 이상)"></div>
+          <button class="btn" onclick="changePw()">비밀번호 변경</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="set-group">
+          <h3>✏️ 아이디(닉네임) 변경</h3>
+          <div class="field"><input id="set-newid" type="text" placeholder="새 아이디 (영문/숫자 3~16자)" autocapitalize="off"></div>
+          <button class="btn" onclick="changeId()">아이디 변경</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="set-group">
+          <h3>🚪 계정</h3>
+          <button class="btn ghost" onclick="logout()">로그아웃</button>
+          <button class="btn danger" style="margin-top:10px;" onclick="deleteAccount()">회원 탈퇴</button>
+        </div>
+        <p class="auth-msg" id="set-msg"></p>
+      </div>
+    </div>
   </main>
 
   <nav class="nav">
-    <button class="on" data-p="room" onclick="nav('room')"><span class="ico">⏱️</span><span class="lbl">스터디룸</span></button>
-    <button data-p="todo" onclick="nav('todo')"><span class="ico">✅</span><span class="lbl">투두</span></button>
+    <button class="on" data-p="room" onclick="nav('room')"><span class="ico">⏱️</span><span class="lbl">로비</span></button>
+    <button data-p="plan" onclick="nav('plan')"><span class="ico">📅</span><span class="lbl">플래너</span></button>
     <button data-p="rank" onclick="nav('rank')"><span class="ico">🏆</span><span class="lbl">랭킹</span></button>
     <button data-p="board" onclick="nav('board')"><span class="ico">💬</span><span class="lbl">게시판</span></button>
+    <button data-p="set" onclick="nav('set')"><span class="ico">⚙️</span><span class="lbl">설정</span></button>
   </nav>
 </div>
 
@@ -360,7 +368,8 @@ catch(e){ console.error('Firebase 초기화 실패',e); }
 // ---------- helpers ----------
 const $=s=>document.querySelector(s);
 const AVATARS=['🍓','🐰','🐻','🐱','🐶','🦊','🐨','🐼','🦄','🌸','🎀','🌟','🍑','🍒','🧁','🌷'];
-const todayStr=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+function dstr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+const todayStr=()=>dstr(new Date());
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1900);}
 async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function fmtHMS(sec){sec=Math.max(0,Math.floor(sec));const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
@@ -369,11 +378,12 @@ function avatarFor(uid){return AVATARS[Math.abs([...(uid||'x')].reduce((a,c)=>a+
 function timeAgo(ts){if(!ts)return'';const s=Math.floor((Date.now()-ts)/1000);if(s<60)return'방금';if(s<3600)return Math.floor(s/60)+'분 전';if(s<86400)return Math.floor(s/3600)+'시간 전';return Math.floor(s/86400)+'일 전';}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
-// ---------- session state ----------
-let me=null;      // {uid, name}
-let roomId=null;
-let roomData=null;
+// ---------- state ----------
+let me=null;   // uid string (= nickname)
 let rankMode='today';
+let usersAll={}, liveAll={}, studyAll={}, posts={};
+let planDate=new Date();
+let planData={goalMin:0, items:[]};
 let timerRunning=false, timerStart=0, tickInt=null, todayBaseSec=0;
 const RING_LEN=590.6;
 
@@ -382,7 +392,7 @@ window.switchAuth=(mode)=>{
   const login=mode==='login';
   $('#tab-login').classList.toggle('on',login);
   $('#tab-signup').classList.toggle('on',!login);
-  $('#f-name').style.display=login?'none':'block';
+  $('#id-hint').style.display=login?'none':'inline';
   $('#auth-submit').textContent=login?'로그인 🎀':'가입하기 🎀';
   $('#auth-msg').textContent='';
   $('#auth-submit').dataset.mode=mode;
@@ -394,7 +404,6 @@ window.doAuth=async()=>{
   const mode=$('#auth-submit').dataset.mode;
   const id=$('#in-id').value.trim().toLowerCase();
   const pw=$('#in-pw').value;
-  const name=$('#in-name').value.trim();
   const msg=$('#auth-msg');
   if(!/^[a-z0-9_]{3,16}$/.test(id)){msg.textContent='아이디는 영문/숫자 3~16자예요';return;}
   if(pw.length<4){msg.textContent='비밀번호는 4자 이상이에요';return;}
@@ -402,194 +411,163 @@ window.doAuth=async()=>{
   try{
     const snap=await get(uref);
     if(mode==='signup'){
-      if(!name){msg.textContent='닉네임을 입력해주세요';return;}
       if(snap.exists()){msg.textContent='이미 있는 아이디예요 😢';return;}
-      await set(uref,{name, pw:await sha256(pw), createdAt:Date.now()});
-      me={uid:id,name}; saveSession();
-      toast('환영해요! '+name+'님 🎉'); afterLogin();
+      await set(uref,{name:id, pw:await sha256(pw), createdAt:Date.now()});
+      me=id; saveSession(); toast('환영해요! '+id+'님 🎉'); enterApp();
     }else{
       if(!snap.exists()){msg.textContent='없는 아이디예요';return;}
-      const u=snap.val();
-      if(u.pw!==await sha256(pw)){msg.textContent='비밀번호가 틀렸어요 😢';return;}
-      me={uid:id,name:u.name}; saveSession();
-      afterLogin();
+      if(snap.val().pw!==await sha256(pw)){msg.textContent='비밀번호가 틀렸어요 😢';return;}
+      me=id; saveSession(); enterApp();
     }
   }catch(e){console.error(e);msg.textContent='오류가 발생했어요';}
 };
 
-function saveSession(){localStorage.setItem('mymo_session',JSON.stringify({uid:me.uid,name:me.name}));}
-window.logout=()=>{localStorage.removeItem('mymo_session');location.reload();};
-
-async function afterLogin(){
-  $('#auth').style.display='none';
-  const snap=await get(ref(db,'app/users/'+me.uid));
-  roomId=snap.exists()?(snap.val().roomId||null):null;
-  if(roomId){ enterApp(); }
-  else{ $('#roomsetup').style.display='flex'; }
-}
-
-// ══════════ ROOM ══════════
-function genCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return s;}
-
-window.createRoom=async()=>{
-  const nm=$('#room-newname').value.trim();
-  if(!nm){$('#room-msg').textContent='방 이름을 입력해주세요';return;}
-  const code=genCode();
-  const rid='r_'+code;
-  await set(ref(db,'app/rooms/'+rid),{name:nm, code, owner:me.uid, createdAt:Date.now(), members:{[me.uid]:{name:me.name, joinedAt:Date.now()}}});
-  await update(ref(db,'app/users/'+me.uid),{roomId:rid});
-  roomId=rid; toast('방이 만들어졌어요! 🎉'); enterApp();
-};
-
-window.joinRoom=async()=>{
-  const code=$('#room-code').value.trim().toUpperCase();
-  if(code.length!==6){$('#room-msg').textContent='코드 6자리를 입력해주세요';return;}
-  const rid='r_'+code;
-  const snap=await get(ref(db,'app/rooms/'+rid));
-  if(!snap.exists()){$('#room-msg').textContent='그런 방이 없어요 😢';return;}
-  await update(ref(db,'app/rooms/'+rid+'/members/'+me.uid),{name:me.name, joinedAt:Date.now()});
-  await update(ref(db,'app/users/'+me.uid),{roomId:rid});
-  roomId=rid; toast('방에 참여했어요! 🎀'); enterApp();
-};
-
-window.showRoomInfo=()=>{
-  if(!roomData)return;
-  navigator.clipboard?.writeText(roomData.code).catch(()=>{});
-  toast('참여 코드 '+roomData.code+' 복사됨 📋');
-};
+function saveSession(){localStorage.setItem('mymo_uid',me);}
+window.logout=()=>{localStorage.removeItem('mymo_uid');location.reload();};
 
 // ══════════ APP INIT ══════════
 function enterApp(){
-  $('#roomsetup').style.display='none';
   $('#auth').style.display='none';
   $('#app').style.display='block';
-  $('#me-chip').textContent=avatarFor(me.uid);
-  bindRoom();
+  $('#me-chip').textContent=avatarFor(me);
+  $('#set-me').textContent='내 아이디: '+me+' '+avatarFor(me);
+  bindData();
   restoreTimer();
+  renderPlanner();
 }
 
-let roomBound=false;
-function bindRoom(){
-  if(roomBound)return; roomBound=true;
-  onValue(ref(db,'app/rooms/'+roomId),(snap)=>{
-    roomData=snap.val();
-    if(!roomData)return;
-    $('#room-chip').textContent='🏠 '+roomData.name;
-    renderLive(); renderRank();
-  });
-  onValue(ref(db,'app/rooms/'+roomId+'/todos/'+me.uid+'/'+todayStr()),(snap)=>{
-    myTodos=snap.val()?.items||[]; renderTodos();
-  });
-  onValue(ref(db,'app/rooms/'+roomId+'/posts'),(snap)=>{
-    posts=snap.val()||{}; renderPosts();
-  });
-  $('#todo-date').textContent=todayStr()+' 오늘의 할 일';
+let bound=false;
+function bindData(){
+  if(bound)return; bound=true;
+  onValue(ref(db,'app/users'),s=>{ usersAll=s.val()||{}; renderLive(); renderRank(); updateLobbyChip(); });
+  onValue(ref(db,'app/live'),s=>{ liveAll=s.val()||{}; renderLive(); updateLobbyChip(); });
+  onValue(ref(db,'app/study'),s=>{ studyAll=s.val()||{}; renderRank(); refreshActual(); });
+  onValue(ref(db,'app/posts'),s=>{ posts=s.val()||{}; renderPosts(); });
+}
+function updateLobbyChip(){
+  const n=Object.values(liveAll).filter(l=>l.running&&l.at&&Date.now()-l.at<70000).length;
+  $('#lobby-chip').textContent='👥 공부중 '+n+'명';
 }
 
 // ══════════ TIMER ══════════
 function restoreTimer(){
-  const saved=JSON.parse(localStorage.getItem('mymo_timer_'+me.uid)||'null');
+  const saved=JSON.parse(localStorage.getItem('mymo_timer_'+me)||'null');
   if(saved && saved.date===todayStr()){
     todayBaseSec=saved.base||0;
     if(saved.running){ timerRunning=true; timerStart=saved.start; startTick(); setBtn(true); }
     else updateTimerDisp();
   }else{ todayBaseSec=0; updateTimerDisp(); }
-  get(ref(db,'app/rooms/'+roomId+'/study/'+me.uid+'/'+todayStr())).then(s=>{
+  get(ref(db,'app/study/'+me+'/'+todayStr())).then(s=>{
     if(s.exists() && !timerRunning){ todayBaseSec=Math.max(todayBaseSec,s.val()); updateTimerDisp(); }
   });
 }
-function persistTimer(){localStorage.setItem('mymo_timer_'+me.uid,JSON.stringify({date:todayStr(),base:todayBaseSec,running:timerRunning,start:timerStart}));}
+function persistTimer(){localStorage.setItem('mymo_timer_'+me,JSON.stringify({date:todayStr(),base:todayBaseSec,running:timerRunning,start:timerStart}));}
 function curSec(){return todayBaseSec+(timerRunning?(Date.now()-timerStart)/1000:0);}
 function updateTimerDisp(){
   const s=curSec();
   $('#timer-disp').textContent=fmtHMS(s);
   $('#today-total').innerHTML='오늘 누적 <b>'+fmtMin(s)+'</b>';
-  const frac=Math.min(1,(s%3600)/3600);
-  $('#ring-fg').style.strokeDashoffset=RING_LEN*(1-frac);
+  $('#ring-fg').style.strokeDashoffset=RING_LEN*(1-Math.min(1,(s%3600)/3600));
 }
 function startTick(){clearInterval(tickInt);tickInt=setInterval(()=>{updateTimerDisp(); if(Math.floor(curSec())%5===0)pushLive();},1000);}
 function setBtn(on){const b=$('#timer-btn');b.textContent=on?'그만하기 ⏸':'시작하기 ▶';b.className='tbtn '+(on?'stop':'go');$('#timer-lbl').textContent=on?'열공 중이에요 🔥':'오늘 공부 시간';}
-
 window.toggleTimer=()=>{
-  if(!timerRunning){
-    timerRunning=true; timerStart=Date.now(); startTick(); setBtn(true); persistTimer(); pushLive();
-  }else{
-    todayBaseSec=curSec(); timerRunning=false; clearInterval(tickInt); setBtn(false);
-    persistTimer(); updateTimerDisp(); saveStudy(); pushLive();
-  }
+  if(!timerRunning){ timerRunning=true; timerStart=Date.now(); startTick(); setBtn(true); persistTimer(); pushLive(); }
+  else{ todayBaseSec=curSec(); timerRunning=false; clearInterval(tickInt); setBtn(false); persistTimer(); updateTimerDisp(); saveStudy(); pushLive(); }
 };
-function saveStudy(){
-  set(ref(db,'app/rooms/'+roomId+'/study/'+me.uid+'/'+todayStr()),Math.floor(curSec()));
-}
-function pushLive(){
-  update(ref(db,'app/rooms/'+roomId+'/live/'+me.uid),{
-    name:me.name, running:timerRunning, sec:Math.floor(curSec()), at:Date.now()
-  });
-  if(timerRunning) saveStudy();
-}
+function saveStudy(){ set(ref(db,'app/study/'+me+'/'+todayStr()),Math.floor(curSec())); }
+function pushLive(){ update(ref(db,'app/live/'+me),{name:me, running:timerRunning, sec:Math.floor(curSec()), at:Date.now()}); if(timerRunning)saveStudy(); }
 setInterval(()=>{ if(timerRunning){ saveStudy(); persistTimer(); } },20000);
 
 // ══════════ LIVE ══════════
 function renderLive(){
-  const box=$('#live-list'); if(!roomData){return;}
-  const live=roomData.live||{};
-  const members=roomData.members||{};
-  const rows=Object.keys(members).map(uid=>{
-    const l=live[uid]||{};
+  const box=$('#live-list');
+  const uids=Object.keys(usersAll);
+  if(!uids.length){box.innerHTML='<div class="empty">아직 멤버가 없어요</div>';return;}
+  const rows=uids.map(uid=>{
+    const l=liveAll[uid]||{};
     const active=l.running && l.at && (Date.now()-l.at<70000);
-    return {uid, name:members[uid].name, active, sec:l.sec||0};
+    return {uid, active, sec:l.sec||0};
   }).sort((a,b)=>(b.active-a.active)||(b.sec-a.sec));
-  if(!rows.length){box.innerHTML='<div class="empty">아직 멤버가 없어요</div>';return;}
   box.innerHTML=rows.map(r=>`
     <div class="live-row ${r.active?'studying':''}">
       <div class="live-av">${avatarFor(r.uid)}</div>
-      <div class="live-name">${esc(r.name)}${r.uid===me.uid?'<small>나</small>':''}</div>
+      <div class="live-name">${esc(r.uid)}${r.uid===me?'<small>나</small>':''}</div>
       ${r.active?'<span class="pulse"></span><span class="live-badge on">공부중</span>':'<span class="live-badge off">쉬는중</span>'}
     </div>`).join('');
 }
 
-// ══════════ TODOS ══════════
-let myTodos=[];
-window.addTodo=()=>{
-  const inp=$('#todo-in'); const tx=inp.value.trim(); if(!tx)return;
-  myTodos.push({tx,done:false}); inp.value=''; saveTodos();
+// ══════════ PLANNER ══════════
+window.shiftDate=(d)=>{ planDate.setDate(planDate.getDate()+d); renderPlanner(); };
+function renderPlanner(){
+  const ds=dstr(planDate);
+  const wk=['일','월','화','수','목','금','토'][planDate.getDay()];
+  const isToday=ds===todayStr();
+  $('#plan-date-disp').innerHTML=`${planDate.getMonth()+1}월 ${planDate.getDate()}일 (${wk})<small>${isToday?'오늘':ds}</small>`;
+  get(ref(db,'app/planner/'+me+'/'+ds)).then(s=>{
+    planData=s.val()||{goalMin:0, items:[]};
+    if(!planData.items)planData.items=[];
+    $('#goal-h').value=planData.goalMin?Math.floor(planData.goalMin/60)||'':'';
+    $('#goal-m').value=planData.goalMin?planData.goalMin%60||'':'';
+    renderPlanItems(); refreshActual();
+  });
+}
+function planRef(){return ref(db,'app/planner/'+me+'/'+dstr(planDate));}
+function savePlan(){set(planRef(),{goalMin:planData.goalMin||0, items:planData.items||[]});}
+window.saveGoal=()=>{
+  const h=parseInt($('#goal-h').value)||0, m=parseInt($('#goal-m').value)||0;
+  planData.goalMin=h*60+m; savePlan(); refreshActual();
 };
-function saveTodos(){set(ref(db,'app/rooms/'+roomId+'/todos/'+me.uid+'/'+todayStr()),{items:myTodos});}
-window.toggleTodo=(i)=>{myTodos[i].done=!myTodos[i].done; saveTodos();};
-window.delTodo=(i)=>{myTodos.splice(i,1); saveTodos();};
-function renderTodos(){
-  const box=$('#todo-list');
-  if(!myTodos.length){box.innerHTML='<div class="empty">할 일을 추가해보세요 🌱</div>';return;}
-  box.innerHTML=myTodos.map((t,i)=>`
-    <div class="todo-item ${t.done?'done':''}">
-      <div class="todo-check" onclick="toggleTodo(${i})">${t.done?'✓':''}</div>
-      <div class="todo-tx">${esc(t.tx)}</div>
-      <div class="todo-del" onclick="delTodo(${i})">×</div>
+window.addPlan=()=>{
+  const inp=$('#plan-in'); const tx=inp.value.trim(); if(!tx)return;
+  planData.items.push({tx, st:''}); inp.value=''; savePlan(); renderPlanItems();
+};
+window.cyclePlan=(i)=>{
+  const seq=['','O','T','X']; const cur=planData.items[i].st||'';
+  planData.items[i].st=seq[(seq.indexOf(cur)+1)%seq.length];
+  savePlan(); renderPlanItems();
+};
+window.delPlan=(i)=>{ planData.items.splice(i,1); savePlan(); renderPlanItems(); };
+function stChar(st){return st==='O'?'⭕':st==='T'?'🔺':st==='X'?'❌':'·';}
+function renderPlanItems(){
+  const box=$('#plan-list');
+  if(!planData.items.length){box.innerHTML='<div class="empty">할 일을 추가해보세요 🌱</div>';return;}
+  box.innerHTML=planData.items.map((t,i)=>`
+    <div class="plan-item ${t.st==='X'?'X':''}">
+      <div class="plan-st ${t.st}" onclick="cyclePlan(${i})">${stChar(t.st)}</div>
+      <div class="plan-tx">${esc(t.tx)}</div>
+      <div class="plan-del" onclick="delPlan(${i})">×</div>
     </div>`).join('');
+}
+function refreshActual(){
+  const ds=dstr(planDate);
+  let sec=(studyAll[me]&&studyAll[me][ds])||0;
+  if(ds===todayStr()) sec=Math.max(sec,Math.floor(curSec()));
+  $('#actual-val').textContent=sec?fmtMin(sec):'0분';
+  const goalSec=(planData.goalMin||0)*60;
+  $('#goal-progress').style.width=goalSec?Math.min(100,Math.round(sec/goalSec*100))+'%':'0%';
 }
 
 // ══════════ RANK ══════════
 window.setRankMode=(m)=>{rankMode=m;$('#rt-today').classList.toggle('on',m==='today');$('#rt-total').classList.toggle('on',m==='total');renderRank();};
 function renderRank(){
-  const box=$('#rank-list'); if(!roomData)return;
-  const members=roomData.members||{};
-  const study=roomData.study||{};
-  const rows=Object.keys(members).map(uid=>{
-    const us=study[uid]||{};
-    let sec=0;
-    if(rankMode==='today') sec=us[todayStr()]||0;
-    else sec=Object.values(us).reduce((a,b)=>a+(typeof b==='number'?b:0),0);
-    return {uid,name:members[uid].name,sec};
+  const box=$('#rank-list');
+  const uids=Object.keys(usersAll);
+  if(!uids.length){box.innerHTML='<div class="empty">아직 기록이 없어요</div>';return;}
+  const rows=uids.map(uid=>{
+    const us=studyAll[uid]||{};
+    let sec=rankMode==='today'?(us[todayStr()]||0):Object.values(us).reduce((a,b)=>a+(typeof b==='number'?b:0),0);
+    if(uid===me && rankMode==='today') sec=Math.max(sec,Math.floor(curSec()));
+    return {uid,sec};
   }).sort((a,b)=>b.sec-a.sec);
   const max=Math.max(1,...rows.map(r=>r.sec));
   const medals=['🥇','🥈','🥉'];
-  if(!rows.length){box.innerHTML='<div class="empty">아직 기록이 없어요</div>';return;}
   box.innerHTML=rows.map((r,i)=>`
-    <div class="rank-row ${r.uid===me.uid?'me':''}">
+    <div class="rank-row ${r.uid===me?'me':''}">
       <div class="rank-medal">${medals[i]||(i+1)}</div>
       <div class="rank-av">${avatarFor(r.uid)}</div>
       <div class="rank-info">
-        <div class="n">${esc(r.name)}${r.uid===me.uid?' 💗':''}</div>
+        <div class="n">${esc(r.uid)}${r.uid===me?' 💗':''}</div>
         <div class="rank-bar"><i style="width:${Math.round(r.sec/max*100)}%"></i></div>
       </div>
       <div class="rank-time">${r.sec?fmtMin(r.sec):'0분'}</div>
@@ -597,55 +575,110 @@ function renderRank(){
 }
 
 // ══════════ BOARD ══════════
-let posts={};
 window.addPost=()=>{
   const inp=$('#post-in'); const tx=inp.value.trim(); if(!tx)return;
   const id='p_'+Date.now()+'_'+Math.floor(Math.random()*999);
-  set(ref(db,'app/rooms/'+roomId+'/posts/'+id),{uid:me.uid,name:me.name,tx,at:Date.now(),likes:{}});
-  inp.value='';
+  set(ref(db,'app/posts/'+id),{uid:me,tx,at:Date.now(),likes:{}}); inp.value='';
 };
 window.likePost=(id)=>{
-  const p=posts[id]; if(!p)return;
-  const likes=p.likes||{};
-  if(likes[me.uid]) remove(ref(db,'app/rooms/'+roomId+'/posts/'+id+'/likes/'+me.uid));
-  else set(ref(db,'app/rooms/'+roomId+'/posts/'+id+'/likes/'+me.uid),true);
+  const p=posts[id]; if(!p)return; const likes=p.likes||{};
+  if(likes[me]) remove(ref(db,'app/posts/'+id+'/likes/'+me));
+  else set(ref(db,'app/posts/'+id+'/likes/'+me),true);
 };
-window.delPost=(id)=>{ if(posts[id]?.uid===me.uid) remove(ref(db,'app/rooms/'+roomId+'/posts/'+id)); };
+window.delPost=(id)=>{ if(posts[id]?.uid===me) remove(ref(db,'app/posts/'+id)); };
 function renderPosts(){
   const box=$('#post-list');
   const arr=Object.entries(posts).map(([id,p])=>({id,...p})).sort((a,b)=>b.at-a.at);
   if(!arr.length){box.innerHTML='<div class="empty">첫 글을 남겨보세요 ✏️</div>';return;}
   box.innerHTML=arr.map(p=>{
-    const likes=p.likes||{}; const cnt=Object.keys(likes).length; const liked=!!likes[me.uid];
+    const likes=p.likes||{}; const cnt=Object.keys(likes).length; const liked=!!likes[me];
     return `<div class="post">
       <div class="post-head">
         <div class="post-av">${avatarFor(p.uid)}</div>
-        <div class="post-name">${esc(p.name)}</div>
+        <div class="post-name">${esc(p.uid)}</div>
         <div class="post-time">${timeAgo(p.at)}</div>
       </div>
       <div class="post-body">${esc(p.tx)}</div>
       <div class="post-foot">
         <div class="post-like ${liked?'liked':''}" onclick="likePost('${p.id}')">${liked?'💗':'🤍'} ${cnt||''}</div>
-        ${p.uid===me.uid?`<div class="post-del" onclick="delPost('${p.id}')">삭제</div>`:''}
+        ${p.uid===me?`<div class="post-del" onclick="delPost('${p.id}')">삭제</div>`:''}
       </div>
     </div>`;
   }).join('');
 }
+
+// ══════════ SETTINGS ══════════
+window.changePw=async()=>{
+  const cur=$('#set-curpw').value, npw=$('#set-newpw').value; const msg=$('#set-msg');
+  const snap=await get(ref(db,'app/users/'+me));
+  if(snap.val().pw!==await sha256(cur)){msg.textContent='현재 비밀번호가 틀려요 😢';return;}
+  if(npw.length<4){msg.textContent='새 비밀번호는 4자 이상이에요';return;}
+  await update(ref(db,'app/users/'+me),{pw:await sha256(npw)});
+  $('#set-curpw').value='';$('#set-newpw').value=''; msg.textContent=''; toast('비밀번호가 변경됐어요 ✨');
+};
+
+window.changeId=async()=>{
+  const nid=$('#set-newid').value.trim().toLowerCase(); const msg=$('#set-msg');
+  if(!/^[a-z0-9_]{3,16}$/.test(nid)){msg.textContent='아이디는 영문/숫자 3~16자예요';return;}
+  if(nid===me){msg.textContent='지금 아이디와 같아요';return;}
+  if((await get(ref(db,'app/users/'+nid))).exists()){msg.textContent='이미 있는 아이디예요 😢';return;}
+  const old=me;
+  try{
+    // migrate user record, study, planner, posts
+    const u=(await get(ref(db,'app/users/'+old))).val();
+    u.name=nid;
+    await set(ref(db,'app/users/'+nid),u);
+    const st=(await get(ref(db,'app/study/'+old))).val(); if(st)await set(ref(db,'app/study/'+nid),st);
+    const pl=(await get(ref(db,'app/planner/'+old))).val(); if(pl)await set(ref(db,'app/planner/'+nid),pl);
+    const allPosts=(await get(ref(db,'app/posts'))).val()||{};
+    for(const [pid,p] of Object.entries(allPosts)){
+      if(p.uid===old) await update(ref(db,'app/posts/'+pid),{uid:nid});
+    }
+    // remove old
+    await remove(ref(db,'app/users/'+old));
+    await remove(ref(db,'app/study/'+old));
+    await remove(ref(db,'app/planner/'+old));
+    await remove(ref(db,'app/live/'+old));
+    // move local timer key
+    const tk=localStorage.getItem('mymo_timer_'+old);
+    if(tk)localStorage.setItem('mymo_timer_'+nid,tk);
+    localStorage.removeItem('mymo_timer_'+old);
+    me=nid; saveSession();
+    toast('아이디가 '+nid+'(으)로 바뀌었어요 🎀');
+    setTimeout(()=>location.reload(),900);
+  }catch(e){console.error(e);msg.textContent='변경 중 오류가 발생했어요';}
+};
+
+window.deleteAccount=async()=>{
+  if(!confirm('정말 탈퇴할까요? 모든 기록이 삭제되고 되돌릴 수 없어요 😢'))return;
+  try{
+    await remove(ref(db,'app/users/'+me));
+    await remove(ref(db,'app/study/'+me));
+    await remove(ref(db,'app/planner/'+me));
+    await remove(ref(db,'app/live/'+me));
+    const allPosts=(await get(ref(db,'app/posts'))).val()||{};
+    for(const [pid,p] of Object.entries(allPosts)){ if(p.uid===me) await remove(ref(db,'app/posts/'+pid)); }
+    localStorage.removeItem('mymo_timer_'+me); localStorage.removeItem('mymo_uid');
+    toast('탈퇴가 완료됐어요. 안녕히 가세요 🥲');
+    setTimeout(()=>location.reload(),1000);
+  }catch(e){console.error(e);$('#set-msg').textContent='탈퇴 중 오류가 발생했어요';}
+};
 
 // ══════════ NAV ══════════
 window.nav=(p)=>{
   document.querySelectorAll('.panel').forEach(el=>el.classList.remove('on'));
   $('#p-'+p).classList.add('on');
   document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
+  if(p==='plan')renderPlanner();
 };
 
-window.addEventListener('beforeunload',()=>{ if(roomId&&me)pushLive(); });
+window.addEventListener('beforeunload',()=>{ if(me)pushLive(); });
 document.addEventListener('visibilitychange',()=>{ if(document.hidden&&timerRunning)saveStudy(); });
 
 // ══════════ BOOT ══════════
 (function boot(){
-  const s=JSON.parse(localStorage.getItem('mymo_session')||'null');
-  if(s&&s.uid){ me=s; afterLogin(); }
+  const uid=localStorage.getItem('mymo_uid');
+  if(uid){ me=uid; enterApp(); }
 })();
 </script>
 </body>
